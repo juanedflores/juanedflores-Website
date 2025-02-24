@@ -214,7 +214,7 @@ The `[slide]` operator takes two parameters.
 <div class="rnbo-parameter-sliders" id="rnbo-parameter-sliders_device_1"></div>
 </div>
 
-The result in a much cleaner sound. This completes the barebones of a sequencer. By adding more sounds triggered at different times we can create interesting additive results.
+The result is a much cleaner sound. This completes the barebones of a sequencer. By adding more sounds triggered at different times we can create interesting additive results.
 
 <img src="./imgs/additive.png"></img>
 

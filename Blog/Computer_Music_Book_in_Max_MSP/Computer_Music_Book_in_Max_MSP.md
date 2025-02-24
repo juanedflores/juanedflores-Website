@@ -9,7 +9,7 @@ date_created: March 28, 2023
 
 ## Introduction
 
-This post is about exploring some fundamental concepts in Digital Signal Processing (DSP) and Digital Sound Synthesis by using a program called Max, a visual programming language.
+This post is about exploring some fundamental concepts in Digital Signal Processing (DSP) and Digital Sound Synthesis by using a program called Max, a visual programming language. test
 
 ### Computer Music Book
 
@@ -111,7 +111,6 @@ In Max MSP, the term UGen is not used. Instead, they are called objects, but und
 
 
 Note that for this purpose, phase does not effect the sound.
-
 
 ### Signal Flowcharts
 
@@ -305,7 +304,6 @@ The function also adds the ability to sustain on a single point position. You ca
 
 <div class="caption" style="text-align: center; padding-bottom: 1em;"><i style="color: #ccd3d5;">Example using function~ using sustain</i></div>
 
-
 ### Additive Synthesis
 
 A waveform at a constant frequency enclosed in an envelope is based on the Helmholtz model of musical sound. Helmholtz showed that the timbre of musical notes, and vowel sounds, are a result of their complex combination of many sounds. Just like white light is a combination of many colors, musical notes are composed of many different tones.
@@ -332,4 +330,3 @@ This device created by Helmholtz around 1860 can be considered the very first so
 [^1]: An interview with Charles Dodge (1993). <a href="https://www.jstor.org/stable/3681298">https://www.jstor.org/stable/3681298</a>
 [^2]: Max Mathews, An Acoustical Compiler for Musical and Psychological Stimuli, Bell Telephone System Technical Journal, 1961. <a href="https://ia801601.us.archive.org/32/items/bstj40-3-677">https://archive.org/details/bstj40-3-677</a>
 [^3]: <a href="https://doc.sccode.org/Tutorials/Getting-Started/05-Functions-and-Sound.html">https://doc.sccode.org/Tutorials/Getting-Started/05-Functions-and-Sound.html</a>
-

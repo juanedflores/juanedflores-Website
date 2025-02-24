@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juan Eduardo Flores</title>
+    <link href="./css/website_style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.vidstack.io/player/theme.css" />
+    <link rel="stylesheet" href="https://cdn.vidstack.io/player/video.css" />
+
+    <script type="module">
+      import { VidstackPlayer, VidstackPlayerLayout } from 'https://cdn.vidstack.io/player';
+
+      const player = await VidstackPlayer.create({
+        target: '#target',
+        title: 'VOLTAJE REEL',
+        controls: false,
+        autoplay: true,
+        loop: true,
+        src: './work/Voltaje_export.mov',
+        poster: 'https://i.vimeocdn.com/video/1985967222-caec143ad36d771d617a7e827be66eccee03ca0295e36518433dfa8b195d6456-d_640',
+        layout: new VidstackPlayerLayout({
+          thumbnails: 'https://i.vimeocdn.com/video/1985967222-caec143ad36d771d617a7e827be66eccee03ca0295e36518433dfa8b195d6456-d_640',
+        }),
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="video_container">
+      <div id="target"></div>
+    </div>
+  </body>
+</html>
