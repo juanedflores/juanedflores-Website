@@ -1,0 +1,12 @@
+#left-col {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #222;
+  width: 260px;
+  z-index: 1;
+  overflow: scroll;
+}
