@@ -1,342 +1,89 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>juanedflores blog</title>
-    <link rel="stylesheet" href="./css/uikit.min.css" />
-    <link rel="stylesheet" href="./css/blog_style.css" />
-    <script src="./js/uikit.min.js"></script>
-    <script src="./js/uikit-icons.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- FONTS -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&display=swap" rel="stylesheet" />
-    <script charset="utf-8">
-      document.addEventListener('DOMContentLoaded', function (event) {
-        hash = document.location.hash;
-        console.log('Hash: ' + hash);
-        if (hash == '') {
-          var filter = document.querySelector('.js-filter');
-          var filterBar = document.querySelector('#filter-bar');
-          var activeFilter = document.querySelector('.featured');
-          UIkit.filter(filterBar, {
-            target: filter,
-            selActive: activeFilter,
-          });
-        }
-      });
-      $('div').click(function () {
-        window.location = $(this).find('a').attr('href');
-        return false;
-      });
+    <title>Art &amp; Technology Blog · Juan Eduardo Flores</title>
+    <meta
+      name="description"
+      content="Juan Eduardo Flores's Art &amp; Technology blog: notes on sound, synthesis, electronics, creative coding and video."
+    />
+    <link rel="stylesheet" href="css/blog_home.css" />
+    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
+    <!-- set the theme before the page paints -->
+    <script>
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem('jef-blog-theme');
+        } catch (e) {}
+        if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
     </script>
-
-    <!-- FAVICON -->
-    <link rel="shortcut icon" href="./resources/favicon.ico" type="image/x-icon" />
+    <script src="js/blog_home.js" defer></script>
   </head>
 
-  <body class="uk-margin-large-bottom" style="overflow-y: scroll">
-    <div class="uk-align-center uk-margin-remove-vertical overlay" id="blogEntryArea">
-      <!-- MENU BUTTON AND HEADING -->
-      <div
-        class="uk-flex uk-flex-left uk-background-cover"
-        style="background-image: url(resources/textured_black_sharpened.png); height: 50px"
-        uk-sticky
-      >
-        <!-- MENU BUTTON -->
-        <button class="uk-button uk-button-default" type="button" style="border: none" uk-toggle="target: #blog-filter">
-          <span uk-icon="icon: menu; ratio: 1.5;" style="color: white"></span>
-        </button>
-        <!-- HEADING -->
-        <h2
-          id="heading"
-          class="uk-flex uk-flex-center uk-margin-remove uk-padding-small uk-padding-remove-vertical uk-position-center-left"
-          style="font-family: 'Inter-ExtraLight', serif; color: white; left: 60px"
-        >
-          <a class="uk-text" style="color: white; font-weight: normal; font-size: 1em" href="./blog.html">Art & Technology</a>
-          &nbsp;&nbsp;
-          <span style="font-family: Rozha One, serif; font-size: 100%">[ BLOG ]</span>
-        </h2>
+  <body>
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+        <span class="menu-btn-label">J·E·F</span>
+        <svg class="menu-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+      </button>
+      <a class="logo" href="blog.html">ART &amp; TECHNOLOGY</a>
+      <nav class="topnav" aria-label="Site">
+        <a href="blog.html" aria-current="page">Topics</a>
+        <a href="Blog/More_About_This_Blog/More_About_This_Blog.html">About This Blog</a>
+        <a href="index.html">Artist Website</a>
+      </nav>
+      <button id="theme_toggle" type="button" aria-label="Switch to dark mode"></button>
+    </header>
+
+    <!-- LEFT SIDEBAR (slide-out drawer on small screens) -->
+    <aside id="sidebar">
+      <div class="side-nav">
+        <a href="blog.html">Topics</a>
+        <a href="Blog/More_About_This_Blog/More_About_This_Blog.html">About This Blog</a>
+        <a href="index.html">Artist Website</a>
       </div>
-      <!-- FULL PAGE CONTENT -->
-      <div
-        id="content-area"
-        class="uk-container uk-width-1-1"
-        style="width: 100%; height: 100%"
-        uk-filter="target: .js-filter; selActive: .featured"
-      >
-        <!-- OFFCANVAS -->
-        <div id="blog-filter" class="uk-position-fixed" style="top: 50px" uk-offcanvas="bg-close: false; mode: slide;">
-          <!-- OFFCANVAS BAR CONTENT -->
-          <div class="uk-offcanvas-bar">
-            <ul uk-accordion>
-              <!-- FILTER -->
-              <li>
-                <a class="uk-accordion-title" href="#" style="background-color: #222222">Filter</a>
-                <div class="uk-accordion-content">
-                  <ul id="filter-bar" class="uk-subnav uk-subnav-pill uk-flex uk-flex-column">
-                    <li uk-filter-control>
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #ffffff">All</span>
-                      </a>
-                    </li>
-                    <li class="featured" uk-filter-control="">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #fff202"><span uk-icon="icon: star"></span></span>
-                      </a>
-                    </li>
-                    <hr />
-                    <!-- START TAGS -->
-                    <li uk-filter-control=".tag-shaders">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #9bd716; color: white">shaders</span>
-                      </a>
-                    </li>
+      <hr />
+      <h5>By Year</h5>
+      <ul id="year-nav"></ul>
+      <hr />
+      <h5>About</h5>
+      <p>
+        I started this blog in 2021 to keep track of what I'm learning, with a focus on Art &amp; Technology. It began as notes
+        for my future self, but I write so that anyone can follow along. Think of it as a
+        <a href="https://www.technologyreview.com/2020/09/03/1007716/digital-gardens-let-you-cultivate-your-own-little-bit-of-the-internet/"
+          >digital garden</a
+        >: always a work in progress.
+      </p>
+      <p><a class="kofi" href="https://ko-fi.com/B0B83HU7T">☕ Support me on Ko-fi</a></p>
+      <hr />
+      <h5>Links</h5>
+      <ul class="side-links">
+        <li><a href="https://phagesofficial.com">PHAGES</a></li>
+        <li><a href="https://www.blackcinderblock.com/">Black Cinder Block Store</a></li>
+        <li><a href="https://juanedflores.itch.io/">itch.io</a></li>
+      </ul>
+    </aside>
+    <div class="scrim" hidden></div>
 
-                    <li uk-filter-control=".tag-graphics">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #d0f24e; color: white">graphics</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #4d2a79; color: white"></span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-hello">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #67ebc7; color: white">hello</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-video">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #9547e2; color: white">video</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-modular">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #f01f56; color: white">modular</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-real-time">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #180945; color: white">real-time</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-synthesis">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #a17987; color: white">synthesis</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-what">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #6bb137; color: white">what</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-up">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #234ae6; color: white">up</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-glsl">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #3663f8; color: white">glsl</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-synth">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #49d9f1; color: white">synth</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Analog_Electronics">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #bb158a; color: white">Analog Electronics</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Realtime">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #84bb76; color: white">Realtime</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Retro_Tech">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #b9702; color: white">Retro Tech</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Photography">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #b8a1e; color: white">Photography</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Color_Theory">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #4a4ad6; color: white">Color Theory</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Arduino">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #a260c1; color: white">Arduino</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Max">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #e6bcb; color: white">Max</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Visual_Programming_Language">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #1392df; color: white">Visual Programming Language</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Javascript">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #b5000c; color: white">Javascript</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Robot">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #aa905f; color: white">Robot</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Python">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #2cbf82; color: white">Python</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Electronics">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #483a8a; color: white">Electronics</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Sound">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #630b7f; color: white">Sound</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-DSP">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #3ad237; color: white">DSP</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Eurorack">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #c26314; color: white">Eurorack</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-Analog_Synthesis">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #e6366b; color: white">Analog Synthesis</span>
-                      </a>
-                    </li>
-
-                    <li uk-filter-control=".tag-RNBO">
-                      <a href="#">
-                        <span class="uk-label" style="background-color: #347fd1; color: white">RNBO</span>
-                      </a>
-                    </li>
-
-                    <!-- END TAGS -->
-                  </ul>
-                </div>
-              </li>
-              <!-- ABOUT THIS BLOG -->
-              <li>
-                <a class="uk-accordion-title" href="#" style="background-color: #222222">About This Blog</a>
-                <div class="uk-accordion-content">
-                  <p style="color: white">
-                    I created this blog in 2021 to keep track of my learning process in various topics. It has a focus in Art &amp;
-                    Technology. While it started as a reference for my future self, I try to write in a way that may be accessible for
-                    someone to follow along. I am interested in blogging as a "
-                    <a
-                      href="https://www.technologyreview.com/2020/09/03/1007716/digital-gardens-let-you-cultivate-your-own-little-bit-of-the-internet/"
-                      style="color: yellow"
-                    >
-                      digital garden
-                    </a>
-                    ".
-                  </p>
-                  <p style="color: white">
-                    A more detailed explanation of the functionality of this blog is documented in the
-                    <a href="./Blog/More_About_This_Blog/More_About_This_Blog.html">'More About This Blog'</a>
-                    post. Which is, like many entries in this blog, always a work in progress.
-                  </p>
-                  <p>
-                    <script type="text/javascript" src="https://ko-fi.com/widgets/widget_2.js"></script>
-                    <script type="text/javascript">
-                      kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'B0B83HU7T');
-                      kofiwidget2.draw();
-                    </script>
-                  </p>
-                </div>
-              </li>
-              <!-- EXTRA LINKS -->
-              <li>
-                <a class="uk-accordion-title" href="#" style="background-color: #222222">Links</a>
-                <div class="uk-accordion-content">
-                  <ul>
-                    <li>
-                      <a href="./index.html">Artist Website</a>
-                    </li>
-                    <li>
-                      <a href="https://phagesofficial.com">PHAGES</a>
-                    </li>
-                    <li>
-                      <a href="https://www.blackcinderblock.com/">Black Cinder Block Store</a>
-                    </li>
-                    <li>
-                      <a href="https://juanedflores.itch.io/">itch.io</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
+    <!-- POSTS: built by js/blog_home.js from Blog/posts.json -->
+    <main id="main">
+      <section id="topics">
+        <h1>Topics</h1>
+        <div class="tp-bar">
+          <input type="search" class="tp-search" placeholder="Search posts, e.g. Eurorack, Arduino, shaders" aria-label="Search posts" />
+          <div class="tp-filters" role="group" aria-label="Filter by category"></div>
         </div>
-        <!-- BLOG ENTRIES --><ul class='js-filter uk-list uk-width-2-3@l uk-align-center'>          <!-- Computer Music Book in Max MSP -->          <li class="tag-sound">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Computer_Music_Book_in_Max_MSP/Computer_Music_Book_in_Max_MSP.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Computer_Music_Book_in_Max_MSP/cover/cover.png"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Computer Music Book in Max MSP</h3>                    <span>last modified: 2024-12-11</span>                    <p style="color: black">                      Dodge and Jerse's book serves as a good reference for learning DSP. This is to walk through some of their examples                      with Max.                    </p>                    <span class="uk-label" style="background-color: #630b7f">sound</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Computer_Music_Book_in_Max_MSP/Computer_Music_Book_in_Max_MSP.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Electrosmith Daisy Seed to make Custom Synth Modules -->          <li class="tag-DSP tag-Eurorack">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules/Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img class="uk-cover" style="width: 100%; height: 100%; object-fit: cover"                  src="./Blog/Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules/cover/cover.png" alt="" />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Electrosmith Daisy Seed to make Custom Synth Modules</h3>                    <span>last modified: 2024-08-03</span>                    <p style="color: black">                      A kickstarter project that started in 2020 is now the hottest board for DSP projects. Perfect for sound installations                      and making custom eurorack synth modules. This blog post documents the Max/MSP gen~ patch development for a DIY synth                      workshop hosted by CCAM (Center for Concrete and Abstract Machines).                    </p>                    <span class="uk-label" style="background-color: #3ad237">DSP</span>                    <span class="uk-label" style="background-color: #c26314">Eurorack</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules/Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Recreating the EMU Modular System in VCV Rack using Max MSP RNBO -->          <li class="tag-Analog_Synthesis tag-RNBO">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO/Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO/cover/cover.png"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Recreating the EMU Modular System in VCV Rack using Max MSP RNBO</h3>                    <span>last modified: 2024-04-12</span>                    <p style="color: black">The E-mu Modular System was built in 1974 by E-mu Systems.</p>                    <span class="uk-label" style="background-color: #e6366b">Analog Synthesis</span>                    <span class="uk-label" style="background-color: #347fd1">RNBO</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO/Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- More About This Blog -->          <li class="tag-productivity tag-featured">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/More_About_This_Blog/More_About_This_Blog.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/More_About_This_Blog/cover/cover.png"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Workflow for this Blog</h3>                    <span>last modified: 2024-04-10</span>                    <p style="color: black">I detail the features of this blog, the intentions, and the code that makes it work.</p>                    <span class="uk-label" style="background-color: #dbd276">Productivity</span>                    <br />                    <br />                    <a href="https://juanedflores.com/Blog/More_About_This_Blog/More_About_This_Blog.html#disqus_thread">Link</a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- CD40106 Oscillators and Using an Oscilloscope -->          <li class="tag-Electronics tag-Sound">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/CD40106_Oscillators_and_Using_an_Oscilloscope/CD40106_Oscillators_and_Using_an_Oscilloscope.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/CD40106_Oscillators_and_Using_an_Oscilloscope/cover/cover.png"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">CD40106 Oscillators and Using an Oscilloscope</h3>                    <span>last modified: 2022-09-23</span>                    <p style="color: black">                      The CD40106 IC has 6 Schmitt-Trigger Inverters that can be used to make 6 simple pulse oscillators. I use this simple                      circuit to explore how an oscillation is made and how to use an oscilloscope to see what is happening.                    </p>                    <span class="uk-label" style="background-color: #483a8a">Electronics</span>                    <span class="uk-label" style="background-color: #630b7f">Sound</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/CD40106_Oscillators_and_Using_an_Oscilloscope/CD40106_Oscillators_and_Using_an_Oscilloscope.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Controlling a KUKA Robot with Python and RoboDK -->          <li class="tag-Robot tag-Python">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Controlling_a_KUKA_Robot_with_Python_and_RoboDK/Controlling_a_KUKA_Robot_with_Python_and_RoboDK.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Controlling_a_KUKA_Robot_with_Python_and_RoboDK/cover/cover.gif"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Controlling a KUKA Robot with Python and RoboDK</h3>                    <span>last modified: 2022-08-05</span>                    <p style="color: black">                      The RoboDK API has a reference for python scripting. This is a documentation of a simple project to learn the movement                      of the robot.                    </p>                    <span class="uk-label" style="background-color: #aa905f">Robot</span>                    <span class="uk-label" style="background-color: #2cbf82">Python</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Controlling_a_KUKA_Robot_with_Python_and_RoboDK/Controlling_a_KUKA_Robot_with_Python_and_RoboDK.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Traversing Max Graphs to Make Dynamic Patches -->          <li class="tag-Max tag-Visual_Programming_Language tag-Javascript">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Traversing_Max_Graphs_to_Make_Dynamic_Patches/Traversing_Max_Graphs_to_Make_Dynamic_Patches.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Traversing_Max_Graphs_to_Make_Dynamic_Patches/cover/cover.gif"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Traversing Max Graphs to Make Dynamic Patches</h3>                    <span>last modified: 2022-08-05</span>                    <p style="color: black">                      The Max js object allows scripting within a patcher. With it, you can create, delete, and modify objects for a range                      of creative possibilities.                    </p>                    <span class="uk-label" style="background-color: #e6bcb">Max</span>                    <span class="uk-label" style="background-color: #1392df">Visual Programming Language</span>                    <span class="uk-label" style="background-color: #b5000c">Javascript</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Traversing_Max_Graphs_to_Make_Dynamic_Patches/Traversing_Max_Graphs_to_Make_Dynamic_Patches.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Experiments with the Game Boy Camera -->          <li class="tag-Retro_Tech tag-Photography tag-Color_Theory tag-Arduino">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Experiments_with_the_Game_Boy_Camera/Experiments_with_the_Game_Boy_Camera.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Experiments_with_the_Game_Boy_Camera/cover/cover.png"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Experiments with the Game Boy Camera</h3>                    <span>last modified: 2022-08-05</span>                    <p style="color: black">                      Released in 1998, the Game Boy Camera shot a 128x112 pixel grayscale picture with only 4 colors. Being more than 20                      years old, these limitations have interested hobbyists to hack it and get the most out of the hardware.                    </p>                    <span class="uk-label" style="background-color: #b9702">Retro Tech</span>                    <span class="uk-label" style="background-color: #b8a1e">Photography</span>                    <span class="uk-label" style="background-color: #4a4ad6">Color Theory</span>                    <span class="uk-label" style="background-color: #a260c1">Arduino</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Experiments_with_the_Game_Boy_Camera/Experiments_with_the_Game_Boy_Camera.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-          <!-- Linking Old and New Analog Video Synthesis -->          <li class="tag-Analog_Electronics tag-Shaders tag-Realtime">            <div class="entry">              <div                class="uk-card uk-card-default uk-grid-collapse uk-transition-toggle uk-child-width-1-2@s uk-margin"                onclick="location.href='./Blog/Linking_Old_and_New_Analog_Video_Synthesis/Linking_Old_and_New_Analog_Video_Synthesis.html'"                style="border: 1px solid #000000; border-radius: 3px"                uk-grid              >                <div class="uk-flex-last@s uk-card-media-right uk-transition-opaque uk-transition-scale-up uk-cover-container">                  <img                    class="uk-cover"                    style="width: 100%; height: 100%; object-fit: cover"                    src="./Blog/Linking_Old_and_New_Analog_Video_Synthesis/cover/cover.gif"                    alt=""                  />                  <canvas width="600" height="400"></canvas>                </div>                <div>                  <div class="uk-card-body">                    <h3 class="uk-card-title">Linking Old and New Analog Video Synthesis</h3>                    <span>last modified: 2022-08-05</span>                    <p style="color: black">                      An investigation of analog video synthesis through two pioneering synthesizers, the Paik/Abe Synthesizer (1960s) and                      the Sandin Image Processor (1970s), comparing them to newer digital video synthesizers like Lumen, VSynth for Max/MSP                      and Hydra.                    </p>                    <span class="uk-label" style="background-color: #bb158a">Analog Electronics</span>                    <span class="uk-label" style="background-color: #9bd716">Shaders</span>                    <span class="uk-label" style="background-color: #84bb76">Realtime</span>                    <br />                    <br />                    <a                      href="https://juanedflores.com/Blog/Linking_Old_and_New_Analog_Video_Synthesis/Linking_Old_and_New_Analog_Video_Synthesis.html#disqus_thread"                    >                      Link                    </a>                  </div>                </div>              </div>            </div>          </li>
-
-
-
-<!-- BLOG ENTRIES END --></ul><script id='dsq-count-scr' src='//juanedflores-blog.disqus.com/count.js' async></script></div></div></body></html>
+        <p class="tp-count" aria-live="polite">Loading posts…</p>
+        <div id="tp-units"></div>
+        <p class="tp-empty" hidden>No posts match. Try another word, or clear the filters.</p>
+      </section>
+    </main>
+  </body>
+</html>

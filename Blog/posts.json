@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Computer Music Book in Max MSP",
+    "slug": "Computer_Music_Book_in_Max_MSP",
+    "category": "sound",
+    "modified": "2024-12-11",
+    "description": "Dodge and Jerse's book serves as a good reference for learning DSP. This is to walk through some of their examples with Max.",
+    "tags": [
+      "sound"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "Electrosmith Daisy Seed to make Custom Synth Modules",
+    "slug": "Electrosmith_Daisy_Seed_to_make_Custom_Synth_Modules",
+    "category": "sound",
+    "modified": "2024-08-03",
+    "description": "A kickstarter project that started in 2020 is now the hottest board for DSP projects. Perfect for sound installations and making custom eurorack synth modules. This blog post documents the Max/MSP gen~ patch development for a DIY synth workshop hosted by CCAM (Center for Concrete and Abstract Machines).",
+    "tags": [
+      "DSP",
+      "Eurorack"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "Recreating the EMU Modular System in VCV Rack using Max MSP RNBO",
+    "slug": "Recreating_the_EMU_Modular_System_in_VCV_Rack_using_Max_MSP_RNBO",
+    "category": "sound",
+    "modified": "2024-04-12",
+    "description": "The E-mu Modular System was built in 1974 by E-mu Systems.",
+    "tags": [
+      "Analog Synthesis",
+      "RNBO"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "Workflow for this Blog",
+    "slug": "More_About_This_Blog",
+    "category": "process",
+    "modified": "2024-04-10",
+    "description": "I detail the features of this blog, the intentions, and the code that makes it work.",
+    "tags": [
+      "Productivity"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "CD40106 Oscillators and Using an Oscilloscope",
+    "slug": "CD40106_Oscillators_and_Using_an_Oscilloscope",
+    "category": "electronics",
+    "modified": "2022-09-23",
+    "description": "The CD40106 IC has 6 Schmitt-Trigger Inverters that can be used to make 6 simple pulse oscillators. I use this simple circuit to explore how an oscillation is made and how to use an oscilloscope to see what is happening.",
+    "tags": [
+      "Electronics",
+      "Sound"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "Controlling a KUKA Robot with Python and RoboDK",
+    "slug": "Controlling_a_KUKA_Robot_with_Python_and_RoboDK",
+    "category": "code",
+    "modified": "2022-08-05",
+    "description": "The RoboDK API has a reference for python scripting. This is a documentation of a simple project to learn the movement of the robot.",
+    "tags": [
+      "Robot",
+      "Python"
+    ],
+    "cover": "cover/cover.gif"
+  },
+  {
+    "title": "Traversing Max Graphs to Make Dynamic Patches",
+    "slug": "Traversing_Max_Graphs_to_Make_Dynamic_Patches",
+    "category": "code",
+    "modified": "2022-08-05",
+    "description": "The Max js object allows scripting within a patcher. With it, you can create, delete, and modify objects for a range of creative possibilities.",
+    "tags": [
+      "Max",
+      "Visual Programming Language",
+      "Javascript"
+    ],
+    "cover": "cover/cover.gif"
+  },
+  {
+    "title": "Experiments with the Game Boy Camera",
+    "slug": "Experiments_with_the_Game_Boy_Camera",
+    "category": "image",
+    "modified": "2022-08-05",
+    "description": "Released in 1998, the Game Boy Camera shot a 128x112 pixel grayscale picture with only 4 colors. Being more than 20 years old, these limitations have interested hobbyists to hack it and get the most out of the hardware.",
+    "tags": [
+      "Retro Tech",
+      "Photography",
+      "Color Theory",
+      "Arduino"
+    ],
+    "cover": "cover/cover.png"
+  },
+  {
+    "title": "Linking Old and New Analog Video Synthesis",
+    "slug": "Linking_Old_and_New_Analog_Video_Synthesis",
+    "category": "image",
+    "modified": "2022-08-05",
+    "description": "An investigation of analog video synthesis through two pioneering synthesizers, the Paik/Abe Synthesizer (1960s) and the Sandin Image Processor (1970s), comparing them to newer digital video synthesizers like Lumen, VSynth for Max/MSP and Hydra.",
+    "tags": [
+      "Analog Electronics",
+      "Shaders",
+      "Realtime"
+    ],
+    "cover": "cover/cover.gif"
+  }
+]
