@@ -1,0 +1,535 @@
+<!doctype html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="pandoc" />
+    <title>Understanding Wavetable Synthesis · JUANEDFLORES</title>
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- UIkit: some posts use its accordions and tooltips in their markdown -->
+    <link rel="stylesheet" href="../../css/uikit.min.css" />
+    <script src="../../js/uikit.min.js"></script>
+    <script src="../../js/uikit-icons.min.js"></script>
+
+    <!-- icons for the code blocks' copy button -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <!-- code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+
+    <!-- site styles (after UIkit so they win) -->
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/post.css" />
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/post.js" defer></script>
+
+    <!-- math rendering, when built with --katex -->
+    <script defer=""
+src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+<script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+</script>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
+
+    
+  </head>
+
+  <body>
+    <!-- TOP BAR -->
+    <header class="post-bar">
+      <a class="bar-home" href="../../blog.html"><span class="bar-name">JUANEDFLORES</span> <span class="bar-back">← all notes</span></a>
+      <span class="bar-fill"></span>
+      <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">contents</button>
+      <button class="theme-toggle" type="button"></button>
+    </header>
+
+    <div class="post-layout">
+      <!-- TABLE OF CONTENTS: a sidebar on wide screens, a drop-down on small ones -->
+      <nav id="toc" class="toc" aria-label="Contents">
+        <p class="toc-title">Contents</p>
+        <ul>
+        <li><a href="#phase-vs.-table-index-ratio"
+        id="toc-phase-vs.-table-index-ratio">Phase vs. Table Index
+        Ratio</a></li>
+        <li><a
+        href="#stepping-through-a-wavetable-using-floor-0th-order-interpolation"
+        id="toc-stepping-through-a-wavetable-using-floor-0th-order-interpolation">Stepping
+        Through a Wavetable &amp; Using <code>floor()</code> (0th Order
+        Interpolation)</a></li>
+        <li><a href="#linear-interpolation"
+        id="toc-linear-interpolation">Linear Interpolation</a></li>
+        <li><a href="#generating-a-4-cycle-wavetable"
+        id="toc-generating-a-4-cycle-wavetable">Generating a 4 cycle
+        wavetable</a>
+        <ul>
+        <li><a href="#methods-in-maxmsp"
+        id="toc-methods-in-maxmsp">Methods in Max/MSP</a></li>
+        </ul></li>
+        <li><a href="#cycling-through-the-wavetable"
+        id="toc-cycling-through-the-wavetable">Cycling Through the
+        Wavetable</a></li>
+        </ul>
+      </nav>
+
+      <article class="post">
+        <!-- HEADING -->
+        <header class="post-head">
+          <img src="./cover/cover.png" id="cover-img" class="post-cover" alt="" onerror="this.hidden = true" />
+          <p class="post-meta" id="post-meta"></p>
+          <h1 class="post-title">Understanding Wavetable Synthesis</h1>
+          <p class="post-tags" id="post-tags"></p>
+        </header>
+
+        <!-- BODY -->
+        <div id="ArticleBody" class="post-body"><p>Let’s understand the
+concept of wavetable synthesis by designing a sine wave oscillator that
+uses a 64 sample wavetable of one cycle.</p>
+<p>Here is the general formula to generate a sinusoid:</p>
+<p> </p>
+<p><span class="math display"> s(t) = Asin(2\pi ft + \phi) </span></p>
+<p> </p>
+<p>Where:</p>
+<p> </p>
+<ul>
+<li>A: <strong>Amplitude</strong>, the peak deviation of the function
+from zero.</li>
+<li><span class="math inline">f</span>: <strong>frequency</strong>, the
+number of oscillations (cycles) that occur each second of time.</li>
+<li><span class="math inline">\phi</span>: <strong>phase</strong>,
+specifies (in radians) where in its cycle the oscillation is at t =
+0.</li>
+<li><span class="math inline">t</span>: a unit of time</li>
+</ul>
+<p>Having this formula, we are able to any point in time <span
+class="math inline">t</span>.</p>
+<p>Remember that in digital audio, time passes in <strong>sample
+frames</strong>.</p>
+<p><strong>Samples</strong> are related to time by a <strong>sampling
+rate</strong> (how many discrete values are produced per second).</p>
+<hr />
+<p>We can compute time in seconds:</p>
+<p><span class="math display"> t = \frac{n}{f_s} </span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">n</span>: <strong>sample index</strong>,
+an integer, representing where in the sequence a sample occurs.</li>
+<li><span class="math inline">f_s</span>: <strong>sampling
+rate</strong>, the number of samples taken per second. Where <span
+class="math inline">f_s = \frac{1}{T_s}</span>. <span
+class="math inline">T_s</span> is the <strong>sampling period</strong>
+(the time interval). For example, with a sampling period of 0.25 of a
+second (we are storing a value every 1/4th second), we can calculate the
+sampling rate by taking the inverse (1/0.25). This will give us a value
+of 4 as the sampling rate.</li>
+</ul>
+<p>With a sampling rate of 44.1k, we can find <span
+class="math inline">t</span> by trying different values of <span
+class="math inline">n</span>.</p>
+<p><span class="math inline">n = 5</span></p>
+<p><span class="math inline">5 / 44100 = 0.00011338</span> seconds</p>
+<p><span class="math inline">n = 22050</span></p>
+<p><span class="math inline">22050 / 44100 = 0.5</span> seconds</p>
+<p><span class="math inline">n = 114660</span></p>
+<p><span class="math inline">114660 / 44100 = 2.598</span> seconds</p>
+<p>For a simple wavetable synth program, we can ignore the phase since
+it will always start at 0.</p>
+<p>Here is the formula rewritten:</p>
+<p> </p>
+<p><span class="math display"> s[n] = Asin(2\pi f * \frac{f_n}{f_s})
+</span></p>
+<p> </p>
+<p>A rabbit hole topic is looking into the question of how computers
+calculate the value of <code>sin()</code> or <code>cos()</code>.</p>
+<p>One common method is using <strong>Taylor Expansion</strong>. But my
+point is that if we want to generate a sine wave tone and are using a
+sample rate of 44.1k, that means we would be doing this calculation
+44,100 times per second, which can be computationally expensive. Modern
+computers can handle it, but it is a waste of resources.</p>
+<p>Instead, we could just calculate one cycle, store the values in a
+table of a small size, and then use that table to lookup/approximate
+values for any frequency wave.</p>
+<p> </p>
+<div class="box">
+<p><strong>Wavetable Definition</strong></p>
+<p> </p>
+<p>A wavetable is an array in memory that stores a fragment of a
+waveform</p>
+<p><img src="https://i.imgur.com/xsooa4R.png"
+style="width:550px" /><br />
+<span class="caption">A plot of the cosine wave values from a
+wavetable.</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/f6yvJSN.png" /> <span
+class="caption">In Max/MSP, we use a buffer~ object, in this case it is
+48 samples long, and a cosine function is applied.</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/Heq0RXV.png" /> <span
+class="caption">The data in the wavetable. The floating-<em>point</em>
+numbers are the amplitude levels that are stored.</span></p>
+</div>
+<p> </p>
+<h2 id="phase-vs.-table-index-ratio">Phase vs. Table Index Ratio</h2>
+<p>Remember that the period of a sine wave form is exactly <span
+class="math inline">2\pi</span> radians long.</p>
+<p>If we store one period of a sine wave in a table, we can compute the
+index that corresponds to a specific phase, by using the ratio
+below.</p>
+<p>The ratio of the phase <span class="math inline">\theta</span>
+relative to the period is exactly the same as the table index relative
+to the table size:</p>
+<p><span class="math display"> \frac{k}{L} = \frac{\theta}{2\pi}
+</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">L</span>: <strong>Length of
+Wavetable</strong></li>
+<li><span class="math inline">k</span>: <strong>wavetable index</strong>
+(must be between 0 - <span class="math inline">L</span>)</li>
+<li><span class="math inline">\theta</span>: <strong>phase in
+radians</strong> (must be between 0 - <span
+class="math inline">2\pi</span>)</li>
+</ul>
+<p>We can find the value of k:</p>
+<p><span class="math display"> k = \frac{\theta L}{2\pi} </span></p>
+<p>If we have a wavetable that is 64 samples long, and we want to know
+the index <span class="math inline">k</span> of a wave with a phase of
+3.14, then:</p>
+<ul>
+<li><span class="math inline">L</span> = 64</li>
+<li><span class="math inline">\theta</span> = 3.14</li>
+</ul>
+<p><span class="math display"> k = \frac{3.14 * 64}{2\pi} </span></p>
+<p> </p>
+<p><span class="math display"> k = \frac{200.96}{2\pi} </span></p>
+<p> </p>
+<p><span class="math display"> k = 32 </span></p>
+<p>In this case we got a result that is exactly an integer, but in most
+cases k will be between two sample points. For example, with a phase
+value of 3.0, we get a <span class="math inline">k</span> value of
+30.573.</p>
+<p>There are several strategies we can use:</p>
+<ul>
+<li><p>We could use <strong>truncation</strong>, which is just removing
+the decimal information. A value of 30.573 would just turn to 30. This
+is the same as using the <code>floor()</code> function.</p></li>
+<li><p>We could also <strong>round</strong> <span
+class="math inline">k</span> to the nearest integer. 30.573 would turn
+to 31.</p></li>
+<li><p>We could use <strong>linear interpolation</strong>, which
+involves the weighted sum of the two values in the wavetable that are
+nearest.</p></li>
+</ul>
+<hr />
+<h2
+id="stepping-through-a-wavetable-using-floor-0th-order-interpolation">Stepping
+Through a Wavetable &amp; Using <code>floor()</code> (0th Order
+Interpolation)</h2>
+<p>The easiest implementation is to use the <code>floor()</code>
+function for truncating the <code>k</code> value to an integer.</p>
+<p>But first, in order to hear our sine tone, we have to step through
+the wavetable a certain amount at the sampling rate to hear our desired
+frequency tone. This is called the <strong>index increment</strong>, but
+in order to find that value, we must first find the <strong>phase
+increment</strong>, which is the amount in radians to increment the
+phase each sample frame.</p>
+<p>We can calculate the phase increment by subtracting the phase of the
+sample frame after a current sample frame with the phase of the current
+sample frame:</p>
+<p>Remember that what is inside the parantheses of <code>sin()</code> in
+<span class="math inline">s[n] = Asin(\frac{2\pi fn}{f_s})</span> is
+considered the phase in radians.</p>
+<p><span class="math display"> \theta = 2\pi f * \frac{n}{f_s} =
+\frac{2\pi fn}{f_s} </span></p>
+<p><span class="math display"> \theta_{inc}(f) = \frac{2\pi f(n+1)}{f_s}
+- \frac{2\pi fn}{f_s} </span></p>
+<p><span class="math display"> \theta_{inc}(f) = \frac{2\pi f}{f_s}
+</span></p>
+<hr />
+<p>Now with the phase increment <span
+class="math inline">\theta_{inc}</span> we can calculate the index
+increment <span class="math inline">k_{inc}</span> using the ratio
+described before that we used to calculate for <span
+class="math inline">k</span> (<span class="math inline">k = \frac{\theta
+L}{2 \pi}</span>)</p>
+<p><span class="math display"> k_{inc} = (k + 1) - k </span></p>
+<p><span class="math display"> (k + 1) - k = \frac{(\phi_x +
+\theta_{inc}) L}{2\pi} - \frac{\phi_x L}{2\pi} </span></p>
+<p>Subtract:</p>
+<p><span class="math display"> \frac{\theta_{inc} L}{2\pi} </span></p>
+<p>Replace <span class="math inline">\theta_{inc}</span>:</p>
+<p><span class="math display"> \frac{\frac{2\pi f}{f_s} L}{2\pi}
+</span></p>
+<p><span class="math inline">2\pi</span> cancels out:</p>
+<p><span class="math display"> \frac{1}{f_s} * f * L </span></p>
+<p>Which leaves us with:</p>
+<p><span class="math display"> k_{inc} = \frac{fL}{f_s} </span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">f</span>: <strong>the desired frequency in
+Hz</strong>. If you want to play an A4 note, the <span
+class="math inline">f</span> value would be 440.</li>
+</ul>
+<hr />
+<div class="box">
+<p><strong>NOTE</strong></p>
+<p> </p>
+<p>In the Max/MSP tutorials, they talk about how the <code>cycle~</code>
+MSP object is a 512 sample wavetable (maybe 16384 now). They use the
+formula where <span class="math inline">I</span> is the index increment,
+<span class="math inline">f</span> is the desired frequency, <span
+class="math inline">L</span> is the sample length of the wavetable, and
+<span class="math inline">R</span> is the audio sampling rate.</p>
+<p> </p>
+<p>Also noted is that <code>cycle~</code> uses linear interpolation.</p>
+<p><span class="math display"> I = \frac{fL}{R} </span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">R</span> is <span
+class="math inline">f_s</span>, the sampling rate</li>
+<li><span class="math inline">I</span> is index increment</li>
+</ul>
+<p>Other MSP objects use more computationally expensive polynomial
+interpolation.</p>
+</div>
+<hr />
+<p>Here is a python implementation of a wavetable oscillator program
+using the <code>floor()</code> method:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.io.wavfile <span class="im">as</span> wav</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    sample_rate <span class="op">=</span> <span class="dv">44100</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> <span class="dv">440</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    wavetable_length <span class="op">=</span> <span class="dv">64</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    wave_table <span class="op">=</span> np.zeros((wavetable_length,))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> np.zeros((t <span class="op">*</span> sample_rate,))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># iterate through wavetable to generate values based on n</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(wavetable_length):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        wave_table[n] <span class="op">=</span> np.sin(<span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> n <span class="op">/</span> wavetable_length)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># calculate the index increment</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    index_increment <span class="op">=</span> f <span class="op">*</span> wavetable_length <span class="op">/</span> sample_rate</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># iterate through .wav file buffer (44.1k samples * 3)</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(output.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the wave sample value written in output array</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        output[n] <span class="op">=</span> wave_table[<span class="bu">int</span>(np.floor(index))]</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># increment index</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        index <span class="op">+=</span> index_increment</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># keep index within wavetable size</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        index <span class="op">%=</span> wavetable_length</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># creates a 3 second .wav file of a sine tone</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    wav.write(<span class="st">&quot;sine440Hz.wav&quot;</span>, sample_rate, output.astype(np.float32))</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div>
+<p>When printing out the value of the index increment, the program
+returns:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.6385487528344671</span></span></code></pre></div>
+<p>To recreate this same program in Max/MSP gen~, let’s first confirm we
+get the same value.</p>
+<p>Here we calculate the index increment:</p>
+<p><img src="https://i.imgur.com/3XyOkm1.png"
+style="width:450px" /><br />
+<span class="caption">We are following the same equation where we
+multiply table size and frequency, then divide that result with the
+sampling rate.</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/mViPClT.png"
+style="width:550px" /><br />
+<span class="caption">We are using the same parameters. We have a
+buffer/wavetable that is 64 samples long, filled with a cosine function,
+and we want a tone with a frequency of 440 Hz.</span></p>
+<p>The next step would be to accumulate that index increment to hold the
+value <span class="math inline">k</span>.</p>
+<p><img src="https://i.imgur.com/qQDf2QM.png"
+style="width:550px" /><br />
+<span class="caption">The <code>accum</code> operator continues to
+increment by the index increment. The output will be our <span
+class="math inline">k</span></span></p>
+<p>Now we can go ahead and do a table lookup. We can use the
+<code>peek</code> operator, but first we must round it down to convert
+the value into an integer, and we must keep it within the 0-63
+range.</p>
+<p><img src="https://i.imgur.com/GQiwnQ3.png"
+style="width:450px" /><br />
+<span class="caption">outlet value of the <code>wrap</code> operator
+will be the wavetable index.</span></p>
+<p>This truncation method with the <code>floor</code> operator is
+<strong>0th-order interpolation</strong>. Also known as Zero-Order Hold
+(ZOH).</p>
+<p>Here is the final gen~ patch:</p>
+<p><img src="https://i.imgur.com/1k6HgxF.png"
+style="width:400px" /><br />
+<span class="caption">We are using the <code>peek</code> operator to
+lookup the value corresponding to the wavetable index.</span></p>
+<p>Here is a 1 ms plot of the waveform:</p>
+<p><img src="https://i.imgur.com/tkp4idJ.png"
+style="width:550px" /><br />
+<span class="caption">You can see that the sinusoid is recognizable.
+Notice that there is a slight staircase pattern.</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/49JKqsj.png"
+style="width:500px" /><br />
+<span class="caption">The spectrogram shows the spectral consequence of
+the choppy waveform. It results in high-frequency partials that cause an
+annoying ringing.</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/qpFiVdz.png"
+style="width:550px" /><br />
+<span class="caption">The 440 Hz tone is present. Along with a lot of
+aliasing.</span></p>
+<h2 id="linear-interpolation">Linear Interpolation</h2>
+<p>Let’s do a linear interpolation implementation of both the python and
+gen~ programs. This is also known as <strong>1st-order
+interpolation</strong>.</p>
+<p><img src="https://i.imgur.com/oPI83GT.png"
+style="width:350px" /><br />
+<span class="caption">Graphic from a wikipedia article.</span></p>
+<p>The problem is this:</p>
+<p>We have two known points <span class="math inline">(x_0, y_0)</span>
+and <span class="math inline">(x_1, y_1)</span>.</p>
+<p>We want to know the value of <span class="math inline">y</span> of an
+<span class="math inline">x</span> that is in-between the two known
+points. The values in between these two points are in a straight line.
+This is why it is called <strong>linear</strong> interpolation.</p>
+<p>This algorithm can be understood as a weighted average.</p>
+<p>Say:</p>
+<ul>
+<li><span class="math inline">x_o</span>: 1, <span
+class="math inline">y_0</span>: 1</li>
+<li><span class="math inline">x_1</span>: 3, <span
+class="math inline">y_1</span>: 5</li>
+</ul>
+<p>If I want to know the value of <span class="math inline">y</span>
+halfway between these two points, then I know I can just find the
+average. Since I know that it is halway, I know I can just multiply the
+sum by 0.5.</p>
+<p><span class="math display"> \frac{1 + 5}{2} = 3 </span></p>
+<p>By weight, what we mean is that <span class="math inline">y_0</span>
+and <span class="math inline">y_1</span> both have different amounts of
+weight (influence) depending on how close our desired point is to them.
+In the above example, both points had an equal amount of weight of
+0.5.</p>
+<p><span class="math inline">(1 * 0.5) + (5 * 0.5)</span></p>
+<p>If our point is closer to <span class="math inline">(x_1,
+y_1)</span>, then it will have more weight, and consequently, <span
+class="math inline">(x_o, y_o)</span> will have less weight. Both weight
+values will equal to 1.</p>
+<p>Say our desired point is 75% far along the line. This means that it
+needs to travel 25% more of the line to make it to <span
+class="math inline">(x_1, y_1)</span>.</p>
+<p>Then:</p>
+<p><span class="math inline">(1 * 0.25) + (5 * 0.75) = 4</span></p>
+<p>The question is, how do you find the weight values?</p>
+<p>Well, we already have an index <span class="math inline">k</span>
+that is in-between two samples. If <span class="math inline">k</span> is
+30.65, then the value at index 31 has a weight of 0.65, and the value at
+index 30 has a weight of 0.35.</p>
+<p><span class="math inline">(table[n] * 0.35) + (table[n+1] * 0.65) =
+interpolated\_value</span></p>
+<p>Here is the <code>lerp()</code> function in python:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lerp(wave_table, index):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    truncated_index <span class="op">=</span> <span class="bu">int</span>(np.floor(index))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    next_index <span class="op">=</span> (truncated_index <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> wave_table.shape[<span class="dv">0</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    next_index_weight <span class="op">=</span> index <span class="op">-</span> truncated_index</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    truncated_index_weight <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> next_index_weight</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        truncated_index_weight <span class="op">*</span> wave_table[truncated_index]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> next_index_weight <span class="op">*</span> wave_table[next_index]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<hr />
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>output[n] <span class="op">=</span> lerp(wave_table, index)</span></code></pre></div>
+<h2 id="generating-a-4-cycle-wavetable">Generating a 4 cycle
+wavetable</h2>
+<p>My goal is to generate four different waveforms and place them all in
+a single buffer. This buffer will be our wavetable. I want a sine wave,
+triangle wave, saw wave, and a square wave.</p>
+<h3 id="methods-in-maxmsp">Methods in Max/MSP</h3>
+<p>There are many ways of doing this. The following will be just a few
+examples. I will use buffers with a size of 64 samples.</p>
+<h4 id="sine-wave">Sine Wave</h4>
+<p>We are storing this cycle in a buffer called <code>sin.</code></p>
+<p><img src="https://i.imgur.com/IkksdWF.png"
+style="width:500px" /><br />
+<span class="caption">sending the message “fill sin” will fill the
+buffer with a single cycle sine wave.</span></p>
+<h4 id="triangle-wave">Triangle Wave</h4>
+<p><img src="https://i.imgur.com/l4wBilL.png"
+style="width:500px" /><br />
+<span class="caption">This method seems a bit complicated. It divides
+the current index with the total length, then scales it from 0. - 1. to
+-1. to 1. Any negative number result will result in a positive slope,
+while a positive result in a negative slope.</span></p>
+<h4 id="saw-wave">Saw Wave</h4>
+<p><img src="https://i.imgur.com/ZOJEKdb.png"
+style="width:500px" /><br />
+<span class="caption">Generate a square wave and then apply a triangle
+window function.</span></p>
+<h4 id="square-wave">Square Wave</h4>
+<p><img src="https://i.imgur.com/vPxTV72.png"
+style="width:500px" /><br />
+<span class="caption">A square wave is generated with a simple if
+statement.</span></p>
+<h4 id="concatenating-the-buffers-to-create-wavetable.wav">Concatenating
+the Buffers to Create wavetable.wav</h4>
+<p><img src="https://i.imgur.com/KoSQndL.png"
+style="width:500px" /><br />
+<span class="caption">Max patch to concatenate all buffers together. The
+“write” message will open your os file manager to save the buffer into a
+file. I will save it with the name <code>wavetable.wav</code></span></p>
+<h2 id="cycling-through-the-wavetable">Cycling Through the
+Wavetable</h2>
+<p>First, we must create our buffer and load our wavetable.</p>
+<p><img src="https://i.imgur.com/kmVMHoE.png"
+style="width:400px" /><br />
+<span class="caption">The <span class="citation"
+data-cites="file">@file</span> parameter allows you to write the desired
+file to load into the buffer.</span></p></div>
+
+        <!-- previous / next, filled in from Blog/posts.json -->
+        <nav class="post-nav" id="post-nav" aria-label="More notes">
+          <a class="post-nav-all" href="../../blog.html">← all notes</a>
+        </nav>
+      </article>
+    </div>
+
+    <!-- copy buttons on code blocks -->
+    <script src="../../js/highlightjs-badge.js"></script>
+  </body>
+</html>

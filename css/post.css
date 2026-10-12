@@ -148,6 +148,13 @@ body {
   border-left-color: var(--heading);
   color: var(--heading);
 }
+/* code in headings, e.g. floor(): plain text here (UIkit styles it pink) */
+.toc code {
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
 
 /* ---------- heading ---------- */
 
@@ -639,6 +646,52 @@ h1.post-title {
 .post-download small {
   font-weight: 400;
   opacity: 0.75;
+}
+
+/* "in progress" note at the end of unfinished notes (status in the JSON) */
+.post-status {
+  margin: 48px 0 0;
+  padding: 14px 18px;
+  border: 1px dashed var(--heading);
+  border-radius: 8px;
+  color: var(--muted);
+}
+.post-status p {
+  margin: 0;
+}
+.post-status-label {
+  margin-bottom: 4px !important;
+  color: var(--heading);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.post-status-label::before {
+  content: '▍';
+  animation: post-status-blink 1.1s steps(1) infinite;
+}
+@keyframes post-status-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .post-status-label::before {
+    animation: none;
+  }
+}
+
+/* math (KaTeX) */
+.post-body .katex-display {
+  margin: 1.2em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.post-body .katex {
+  color: var(--text);
+  font-size: 1.08em;
 }
 
 /* ---------- previous / next ---------- */

@@ -170,6 +170,18 @@ function setupDetails() {
         tags.parentNode.insertBefore(dl, tags.nextSibling);
       }
 
+      // unfinished notes say so in the meta line and at the end
+      if (post.status) {
+        meta.textContent += ' · ' + post.status;
+        var note = document.createElement('aside');
+        note.className = 'post-status';
+        note.innerHTML =
+          '<p class="post-status-label">' + escapeHTML(post.status) + '</p>' +
+          '<p>This note is still being written. Some sections are unfinished and may change.</p>';
+        var body = document.getElementById('ArticleBody');
+        body.parentNode.insertBefore(note, body.nextSibling);
+      }
+
       // covers can be .png or .gif
       var cover = document.getElementById('cover-img');
       if (post.cover && cover.getAttribute('src') !== './' + post.cover) {

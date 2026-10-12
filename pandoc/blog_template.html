@@ -32,6 +32,9 @@
     <script src="../../js/theme.js"></script>
     <script src="../../js/post.js" defer></script>
 
+    <!-- math rendering, when built with --katex -->
+    $if(math)$$math$$endif$
+
     $for(header-includes)$ $header-includes$ $endfor$
   </head>
 

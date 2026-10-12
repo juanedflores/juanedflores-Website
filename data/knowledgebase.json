@@ -5,9 +5,29 @@
     "category": "code",
     "modified": "2026-09-25",
     "description": "A beginner's guide to the PICO-8 fantasy console: where it comes from, the command line, SPLORE, the code and sprite editors, and making a first animation with clouds drifting across the screen.",
-    "tags": ["PICO-8", "Lua", "game design", "pixel art"],
+    "tags": [
+      "PICO-8",
+      "Lua",
+      "game design",
+      "pixel art"
+    ],
     "cover": "cover/cover.jpg",
     "pdf": "PICO-8_Getting_Started.pdf",
     "pdfSize": "7 MB"
+  },
+  {
+    "title": "Understanding Wavetable Synthesis",
+    "slug": "Wavetable_Synthesis",
+    "category": "sound",
+    "modified": "2026-09-25",
+    "description": "Designing a sine wave oscillator from a single-cycle wavetable: the math of phase and table index, stepping through a table, linear interpolation in Python, and building a four-waveform wavetable in Max/MSP.",
+    "tags": [
+      "wavetable",
+      "DSP",
+      "Max/MSP",
+      "Python"
+    ],
+    "cover": "cover/cover.png",
+    "status": "in progress"
   }
 ]

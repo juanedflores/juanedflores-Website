@@ -2,7 +2,9 @@
      export in Creative_Coding_Guides) into web-friendly HTML.
 
      - \commandline{...} boxes become terminal-style lines
-     - other raw LaTeX (\begin{center}, \pagebreak, ...) is dropped
+     - \textcolor{lightgray}{...} image captions become captions
+     - other raw LaTeX (\begin{center}, \pagebreak, ...) and HTML
+       comments are dropped
      - inline color spans map to the site's palette so they read in
        night and day mode
      - Obsidian image sizes ("|400" in the alt text) are removed, and
@@ -40,23 +42,19 @@ local function commandlines(text)
 end
 
 function RawBlock(el)
+  if el.format == 'html' then
+    -- drop HTML comments (private notes like <!-- TODO ... -->)
+    if el.text:match('^%s*<!%-%-.*%-%->%s*$') then
+      return {}
+    end
+    return nil
+  end
   if el.format ~= 'latex' and el.format ~= 'tex' then
     return nil
   end
   local html = commandlines(el.text)
   if #html > 0 then
     return pandoc.RawBlock('html', table.concat(html, '\n'))
-  end
-  return {}
-end
-
-function RawInline(el)
-  if el.format ~= 'latex' and el.format ~= 'tex' then
-    return nil
-  end
-  local html = commandlines(el.text)
-  if #html > 0 then
-    return pandoc.RawInline('html', table.concat(html, ''))
   end
   return {}
 end
@@ -69,6 +67,26 @@ local COLOR_CLASSES = {
   gray = 'tc-muted',
   grey = 'tc-muted',
 }
+
+function RawInline(el)
+  if el.format ~= 'latex' and el.format ~= 'tex' then
+    return nil
+  end
+  local html = commandlines(el.text)
+  if #html > 0 then
+    return pandoc.RawInline('html', table.concat(html, ''))
+  end
+  -- \textcolor{lightgray}{...} is how image captions are written; the text
+  -- inside is markdown
+  local color, body = el.text:match('^\\textcolor{([%w%-]+)}(%b{})%s*$')
+  if color then
+    local doc = pandoc.read(body:sub(2, -2), 'markdown')
+    local inlines = doc.blocks[1] and doc.blocks[1].content or {}
+    local class = (color == 'lightgray' or color == 'gray') and 'caption' or (COLOR_CLASSES[color] or ('tc-' .. color))
+    return pandoc.Span(inlines, { class = class })
+  end
+  return {}
+end
 
 function Span(el)
   local style = el.attributes.style

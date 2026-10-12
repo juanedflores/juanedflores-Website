@@ -62,12 +62,12 @@ function fromGuide(g) {
   var dir = 'KnowledgeBase/' + g.slug + '/';
   return {
     title: g.title,
-    meta: 'guide · ' + (CATEGORY_LABELS[g.category] || g.category) + ' · ' + g.modified.slice(0, 4),
+    meta: ['guide', CATEGORY_LABELS[g.category] || g.category, g.modified.slice(0, 4)].concat(g.status ? [g.status] : []).join(' · '),
     url: dir + g.slug + '.html',
     description: g.description,
     tags: g.tags,
     cover: dir + g.cover,
-    pdf: dir + g.pdf,
+    pdf: g.pdf && dir + g.pdf,
     pdfSize: g.pdfSize,
   };
 }
