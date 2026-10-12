@@ -312,7 +312,7 @@ A waveform at a constant frequency enclosed in an envelope is based on the Helmh
 
 This device created by Helmholtz around 1860 can be considered the very first sound synthesizer. It used tuning forks to generate a fundamental frequency and the first six overtones which may then be combined in varying proportions. By varying the combination of tones and their intensities, one can see how it affects the timbre of the overall sound.
 
-<div style="margin-bottom: 15px"><iframe width="100%" height="480" src="https://www.youtube.com/embed/_OdO8gWayjE?si=ag2h5FDgWyLvvfYS&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen uk-responsive uk-video></iframe></div>
+<div style="margin-bottom: 15px"><iframe width="100%" height="480" src="https://www.youtube.com/embed/_OdO8gWayjE?si=ag2h5FDgWyLvvfYS&amp;controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen uk-responsive uk-video="autoplay: false"></iframe></div>
 
 .
 
