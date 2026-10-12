@@ -6,37 +6,42 @@
     <title>JUANEDFLORES · teaching &amp; resources</title>
     <meta
       name="description"
-      content="Teaching materials, class sites and notes by Juan Eduardo Flores: sound, synthesis, electronics, Arduino and creative coding."
+      content="Notes, tutorials and class work by Juan Eduardo Flores: sound, synthesis, electronics, Arduino and creative coding."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/blog_home.css" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
+    <!-- night or day, before the page paints: the visitor's choice, else their device setting -->
+    <script>
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem('jef-theme');
+        } catch (e) {}
+        if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <script src="js/blog_home.js" defer></script>
   </head>
 
   <body>
-    <!-- TABLINE -->
-    <header class="tabline">
-      <a class="tab tab-sel" href="blog.html" aria-current="page">JUANEDFLORES</a>
-      <a class="tab" href="index.html">artist-website</a>
-      <span class="tab-fill"></span>
-      <span class="tab-right">teaching &amp; resources</span>
-    </header>
-
-    <main class="buffer">
-      <!-- DASHBOARD (like alpha.nvim) -->
-      <section class="dashboard" aria-label="Menu">
-        <h1 class="logo">
-          <pre class="logo-wide" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄   ▄████  █    ████▄ █▄▄▄▄ ▄███▄     ▄▄▄▄▄
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="blog.html">
+          <pre class="logo logo-wide" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄   ▄████  █    ████▄ █▄▄▄▄ ▄███▄     ▄▄▄▄▄
 ▄▀  █    █  █ █      █  █▀   ▀  █  █  █▀   ▀ █    █   █ █  ▄▀ █▀   ▀   █     ▀▄
     █ █   █ █▄▄█ ██   █ ██▄▄    █   █ █▀▀    █    █   █ █▀▀▌  ██▄▄   ▄  ▀▀▀▀▄
  ▄ █  █   █ █  █ █ █  █ █▄   ▄▀ █  █  █      ███▄ ▀████ █  █  █▄   ▄▀ ▀▄▄▄▄▀
   ▀   █▄ ▄█    █ █  █ █ ▀███▀   ███▀   █         ▀        █   ▀███▀
        ▀▀▀    █  █   ██                 ▀                ▀
              ▀</pre>
-          <pre class="logo-narrow" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄
+          <pre class="logo logo-narrow" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄
 ▄▀  █    █  █ █      █  █▀   ▀  █  █
     █ █   █ █▄▄█ ██   █ ██▄▄    █   █
  ▄ █  █   █ █  █ █ █  █ █▄   ▄▀ █  █
@@ -50,57 +55,45 @@
  █         ▀        █   ▀███▀
   ▀                ▀</pre>
           <span class="visually-hidden">JUANEDFLORES</span>
-        </h1>
-        <p class="tagline">teaching materials, class sites &amp; notes on sound, electronics and code</p>
+        </a>
+        <div class="intro">
+          <h1>Teaching &amp; resources</h1>
+          <p>
+            Notes, tutorials and class work by Juan Eduardo Flores, on sound, synthesis, electronics, Arduino and creative coding.
+          </p>
+          <p class="intro-links">
+            <a class="artist-link" href="index.html">Artist website →</a>
+            <button class="theme-toggle" id="theme_toggle" type="button"></button>
+          </p>
+        </div>
+      </div>
+    </header>
 
-        <ul class="buttons">
-          <li><a href="#picker" data-key="t" data-filter="teaching"><span>▤ &gt; Teaching</span><kbd>t</kbd></a></li>
-          <li><a href="#picker" data-key="b" data-filter="post"><span>✎ &gt; Notes &amp; tutorials</span><kbd>b</kbd></a></li>
-          <li><a href="#picker" data-key="/" data-filter="search"><span>⌕ &gt; Search everything</span><kbd>/</kbd></a></li>
-          <li><a href="index.html" data-key="a"><span>◆ &gt; Artist website</span><kbd>a</kbd></a></li>
-        </ul>
+    <main class="wrap">
+      <div class="toolbar">
+        <label class="search">
+          <span class="search-caret" aria-hidden="true">/</span>
+          <input type="search" id="search" placeholder="Search, e.g. Arduino, Eurorack, p5.js" autocomplete="off" aria-label="Search" />
+        </label>
+        <div class="filters" role="group" aria-label="Show">
+          <button data-filter="all" aria-pressed="true">All</button>
+          <button data-filter="teaching" aria-pressed="false">Teaching</button>
+          <button data-filter="post" aria-pressed="false">Notes</button>
+        </div>
+      </div>
+
+      <section class="group" id="teaching" data-kind="teaching">
+        <h2>Teaching <span class="group-count"></span></h2>
+        <div class="grid"></div>
       </section>
 
-      <!-- PICKER (like telescope.nvim) -->
-      <section id="picker" class="picker" aria-label="Teaching and resources">
-        <div class="win prompt-win">
-          <span class="win-title">Find</span>
-          <label class="prompt">
-            <span class="prompt-caret" aria-hidden="true">❯</span>
-            <input type="search" id="search" placeholder="breadboard, Eurorack, p5.js…" autocomplete="off" aria-label="Search teaching and notes" />
-          </label>
-          <div class="modes" role="group" aria-label="Show">
-            <button data-filter="all" aria-pressed="true">:all</button>
-            <button data-filter="teaching" aria-pressed="false">:teaching</button>
-            <button data-filter="post" aria-pressed="false">:notes</button>
-          </div>
-        </div>
-
-        <div class="picker-body">
-          <div class="win results-win">
-            <span class="win-title">Results</span>
-            <ul id="results" role="listbox" aria-label="Results"></ul>
-            <p class="empty" hidden>-- no matches --</p>
-          </div>
-          <div class="win preview-win" aria-live="polite">
-            <span class="win-title">Preview</span>
-            <div id="preview"></div>
-          </div>
-        </div>
+      <section class="group" id="notes" data-kind="post">
+        <h2>Notes &amp; tutorials <span class="group-count"></span></h2>
+        <div class="grid"></div>
       </section>
 
-      <p class="eob" aria-hidden="true">~<br />~<br />~</p>
+      <p class="empty" hidden>No matches. Try another word, or press Esc to clear.</p>
     </main>
 
-    <!-- STATUSLINE (like lualine) -->
-    <footer class="statusline">
-      <span class="sl-a" id="mode">NORMAL</span>
-      <span class="sl-b">⎇ master</span>
-      <span class="sl-c">resources</span>
-      <span class="sl-fill"></span>
-      <span class="sl-b sl-count" id="count"></span>
-      <span class="sl-a sl-pos" id="pos">Top</span>
-    </footer>
-    <div class="cmdline" id="cmdline">j/k move · enter open · / search · t teaching · b notes · esc clear</div>
   </body>
 </html>
