@@ -105,7 +105,9 @@ def updateEntry():
     entries_raw = re.findall(
         '<!-- BLOG ENTRIES -->(.*?)<!-- BLOG ENTRIES END -->', htmlFile, re.DOTALL)
     #  splits the blog entries section into individual entries
-    lineiterator = iter(entries_raw[0].splitlines())
+    # drop the wrapper <ul> written by the previous run so it doesn't nest
+    entries_section = re.sub("<ul class='js-filter[^>]*>", "", entries_raw[0])
+    lineiterator = iter(entries_section.splitlines())
     entries = []
     cur_entry = ""
     found_entry = False
@@ -191,8 +193,10 @@ def addEntrytoHTML():
     # finds the blog entries section
     entries_raw = re.findall(
         '<!-- BLOG ENTRIES -->(.*?)<!-- BLOG ENTRIES END -->', htmlFile, re.DOTALL)
+    # drop the wrapper <ul> written by the previous run so it doesn't nest
+    entries_section = re.sub("<ul class='js-filter[^>]*>", "", entries_raw[0])
     # splits the blog entries section into lines
-    lineiterator = iter(entries_raw[0].splitlines())
+    lineiterator = iter(entries_section.splitlines())
     # instantiates an array that holds each entry
     entries = []
     # instantiates a string that holds the new entry
@@ -263,7 +267,7 @@ def addEntrytoHTML():
     # stripped += "<!-- BLOG ENTRIES END -->"
     # stripped += "</ul><script id='dsq-count-scr' src='//juanedflores-blog.disqus.com/count.js' async></script></div></div></body></html>"
 
-    stripped += "\n\n<!-- BLOG ENTRIES END --></ul><script id='dsq-count-scr' src='//juanedflores-blog.disqus.com/count.js' async></script>"
+    stripped += "\n\n<!-- BLOG ENTRIES END --></ul><script id='dsq-count-scr' src='//juanedflores-blog.disqus.com/count.js' async></script></div></div></body></html>"
 
     # print(stripped)
     f = open("../blog.html", "w")
