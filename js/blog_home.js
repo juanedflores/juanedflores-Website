@@ -1,9 +1,9 @@
 // Teaching & resources page (blog.html). Builds the cards from
-// data/teaching.json (edited by hand), data/knowledgebase.json (guides built
-// by KnowledgeBase/build.sh) and Blog/posts.json (kept up to date by
-// Blog/newBlogEntry.py), with search and filters.
-// Keyboard extras: / searches, t shows teaching, k the knowledge base,
-// b notes, esc clears.
+// data/teaching.json (edited by hand), and the notes from Blog/posts.json
+// (kept up to date by Blog/newBlogEntry.py) together with the guides in
+// data/knowledgebase.json (built by KnowledgeBase/build.sh), with search
+// and filters.
+// Keyboard extras: / searches, t shows teaching, b shows notes, esc clears.
 
 var CATEGORY_LABELS = {
   sound: 'sound',
@@ -124,8 +124,6 @@ function setupEvents() {
       search.focus();
     } else if (e.key === 't') {
       setFilter('teaching');
-    } else if (e.key === 'k') {
-      setFilter('kb');
     } else if (e.key === 'b') {
       setFilter('post');
     } else if (e.key === 'Escape') {
@@ -297,11 +295,27 @@ document.addEventListener('DOMContentLoaded', function () {
         return b.modified.localeCompare(a.modified);
       });
       document.querySelector('#teaching .grid').innerHTML = data[0].map(fromTeaching).map(cardHTML).join('');
-      document.querySelector('#notes .grid').innerHTML = posts.map(fromPost).map(cardHTML).join('');
-      document.querySelector('#knowledgebase .grid').innerHTML = data[2].map(fromGuide).map(cardHTML).join('');
+      // notes: posts and guides together, most recently updated first
+      var notes = posts
+        .map(function (p) {
+          return { modified: p.modified, item: fromPost(p) };
+        })
+        .concat(
+          data[2].map(function (g) {
+            return { modified: g.modified, item: fromGuide(g) };
+          })
+        )
+        .sort(function (a, b) {
+          return b.modified.localeCompare(a.modified);
+        });
+      document.querySelector('#notes .grid').innerHTML = notes
+        .map(function (n) {
+          return cardHTML(n.item);
+        })
+        .join('');
       apply();
       setupFeatured(posts);
-      // the sections fill in after load, so jump to #knowledgebase etc. now,
+      // the sections fill in after load, so jump to #notes etc. now,
       // and again once images and fonts above it have finished loading
       var target = location.hash && document.getElementById(location.hash.slice(1));
       if (target) {

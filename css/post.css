@@ -534,6 +534,21 @@ h1.post-title {
 .post-body p:has(> img + br:last-child) {
   margin-bottom: 0.4em;
 }
+/* several images in one paragraph sit side by side, one per column (in the
+   PDF, LaTeX splits them across the columns; e.g. the two color palettes) */
+.post-body p:has(> img ~ img) {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: center;
+  gap: 16px;
+  column-span: all;
+}
+.post-body p:has(> img ~ img) img {
+  max-width: 100%;
+  margin: 0;
+}
 
 /* note and tip boxes */
 .post-body .info,

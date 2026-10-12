@@ -104,31 +104,45 @@ function setupToc() {
 }
 
 // ---------- details from posts.json ----------
+// Notes are blog posts (Blog/posts.json) and guides
+// (data/knowledgebase.json, pages in KnowledgeBase/) together.
 
 function setupDetails() {
   // /Blog/<slug>/<slug>.html or /KnowledgeBase/<slug>/<slug>.html
   var parts = location.pathname.split('/').filter(Boolean);
   var slug = decodeURIComponent(parts[parts.length - 2] || '');
-  var kb = parts[parts.length - 3] === 'KnowledgeBase';
-  var listUrl = kb ? '../../data/knowledgebase.json' : '../posts.json';
-  var backHref = '../../blog.html' + (kb ? '#knowledgebase' : '');
-  var backText = kb ? 'knowledge base' : 'all notes';
+  var dir = parts[parts.length - 3] === 'KnowledgeBase' ? 'KnowledgeBase' : 'Blog';
+  var withDir = function (d) {
+    return function (list) {
+      return list.map(function (p) {
+        p.dir = d;
+        return p;
+      });
+    };
+  };
 
-  document.querySelectorAll('.bar-home, .post-nav-all').forEach(function (a) {
-    a.href = backHref;
-  });
-  document.querySelector('.bar-back').textContent = '← ' + backText;
-
-  fetch(listUrl)
-    .then(function (r) {
-      return r.json();
-    })
-    .then(function (posts) {
+  Promise.all([
+    fetch('../../Blog/posts.json')
+      .then(function (r) {
+        return r.json();
+      })
+      .then(withDir('Blog')),
+    fetch('../../data/knowledgebase.json')
+      .then(function (r) {
+        return r.json();
+      })
+      .then(withDir('KnowledgeBase'))
+      .catch(function () {
+        return [];
+      }),
+  ])
+    .then(function (lists) {
+      var posts = lists[0].concat(lists[1]);
       posts.sort(function (a, b) {
         return b.modified.localeCompare(a.modified);
       });
       var i = posts.findIndex(function (p) {
-        return p.slug === slug;
+        return p.slug === slug && p.dir === dir;
       });
       if (i === -1) return; // a draft
 
@@ -168,7 +182,7 @@ function setupDetails() {
       var older = posts[i + 1];
       var link = function (p, label, cls) {
         return (
-          '<a class="' + cls + '" href="../' + p.slug + '/' + p.slug + '.html">' +
+          '<a class="' + cls + '" href="../../' + p.dir + '/' + p.slug + '/' + p.slug + '.html">' +
           '<span class="post-nav-label">' + label + '</span>' +
           '<span class="post-nav-title">' + escapeHTML(p.title) + '</span></a>'
         );
@@ -176,7 +190,7 @@ function setupDetails() {
       nav.innerHTML =
         (newer ? link(newer, '← newer', 'post-nav-prev') : '<span></span>') +
         (older ? link(older, 'older →', 'post-nav-next') : '<span></span>') +
-        '<a class="post-nav-all" href="' + backHref + '">' + backText + '</a>';
+        '<a class="post-nav-all" href="../../blog.html">all notes</a>';
     })
     .catch(function () {});
 }
