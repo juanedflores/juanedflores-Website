@@ -3,87 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Art &amp; Technology Blog · Juan Eduardo Flores</title>
+    <title>JUANEDFLORES · teaching &amp; resources</title>
     <meta
       name="description"
-      content="Juan Eduardo Flores's Art &amp; Technology blog: notes on sound, synthesis, electronics, creative coding and video."
+      content="Teaching materials, class sites and notes by Juan Eduardo Flores: sound, synthesis, electronics, Arduino and creative coding."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/blog_home.css" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
-    <!-- set the theme before the page paints -->
-    <script>
-      (function () {
-        var t = null;
-        try {
-          t = localStorage.getItem('jef-blog-theme');
-        } catch (e) {}
-        if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', t);
-      })();
-    </script>
     <script src="js/blog_home.js" defer></script>
   </head>
 
   <body>
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
-        <span class="menu-btn-label">J·E·F</span>
-        <svg class="menu-btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 6h18M3 12h18M3 18h18" />
-        </svg>
-      </button>
-      <a class="logo" href="blog.html">ART &amp; TECHNOLOGY</a>
-      <nav class="topnav" aria-label="Site">
-        <a href="blog.html" aria-current="page">Topics</a>
-        <a href="Blog/More_About_This_Blog/More_About_This_Blog.html">About This Blog</a>
-        <a href="index.html">Artist Website</a>
-      </nav>
-      <button id="theme_toggle" type="button" aria-label="Switch to dark mode"></button>
+    <!-- TABLINE -->
+    <header class="tabline">
+      <a class="tab tab-sel" href="blog.html" aria-current="page">JUANEDFLORES</a>
+      <a class="tab" href="index.html">artist-website</a>
+      <span class="tab-fill"></span>
+      <span class="tab-right">teaching &amp; resources</span>
     </header>
 
-    <!-- LEFT SIDEBAR (slide-out drawer on small screens) -->
-    <aside id="sidebar">
-      <div class="side-nav">
-        <a href="blog.html">Topics</a>
-        <a href="Blog/More_About_This_Blog/More_About_This_Blog.html">About This Blog</a>
-        <a href="index.html">Artist Website</a>
-      </div>
-      <hr />
-      <h5>By Year</h5>
-      <ul id="year-nav"></ul>
-      <hr />
-      <h5>About</h5>
-      <p>
-        I started this blog in 2021 to keep track of what I'm learning, with a focus on Art &amp; Technology. It began as notes
-        for my future self, but I write so that anyone can follow along. Think of it as a
-        <a href="https://www.technologyreview.com/2020/09/03/1007716/digital-gardens-let-you-cultivate-your-own-little-bit-of-the-internet/"
-          >digital garden</a
-        >: always a work in progress.
-      </p>
-      <p><a class="kofi" href="https://ko-fi.com/B0B83HU7T">☕ Support me on Ko-fi</a></p>
-      <hr />
-      <h5>Links</h5>
-      <ul class="side-links">
-        <li><a href="https://phagesofficial.com">PHAGES</a></li>
-        <li><a href="https://www.blackcinderblock.com/">Black Cinder Block Store</a></li>
-        <li><a href="https://juanedflores.itch.io/">itch.io</a></li>
-      </ul>
-    </aside>
-    <div class="scrim" hidden></div>
+    <main class="buffer">
+      <!-- DASHBOARD (like alpha.nvim) -->
+      <section class="dashboard" aria-label="Menu">
+        <h1 class="logo">
+          <pre class="logo-wide" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄   ▄████  █    ████▄ █▄▄▄▄ ▄███▄     ▄▄▄▄▄
+▄▀  █    █  █ █      █  █▀   ▀  █  █  █▀   ▀ █    █   █ █  ▄▀ █▀   ▀   █     ▀▄
+    █ █   █ █▄▄█ ██   █ ██▄▄    █   █ █▀▀    █    █   █ █▀▀▌  ██▄▄   ▄  ▀▀▀▀▄
+ ▄ █  █   █ █  █ █ █  █ █▄   ▄▀ █  █  █      ███▄ ▀████ █  █  █▄   ▄▀ ▀▄▄▄▄▀
+  ▀   █▄ ▄█    █ █  █ █ ▀███▀   ███▀   █         ▀        █   ▀███▀
+       ▀▀▀    █  █   ██                 ▀                ▀
+             ▀</pre>
+          <pre class="logo-narrow" aria-hidden="true">  ▄▄▄▄▄ ▄   ██      ▄   ▄███▄   ██▄
+▄▀  █    █  █ █      █  █▀   ▀  █  █
+    █ █   █ █▄▄█ ██   █ ██▄▄    █   █
+ ▄ █  █   █ █  █ █ █  █ █▄   ▄▀ █  █
+  ▀   █▄ ▄█    █ █  █ █ ▀███▀   ███▀
+       ▀▀▀    █  █   ██
+             ▀
+▄████  █    ████▄ █▄▄▄▄ ▄███▄     ▄▄▄▄▄
+█▀   ▀ █    █   █ █  ▄▀ █▀   ▀   █     ▀▄
+█▀▀    █    █   █ █▀▀▌  ██▄▄   ▄  ▀▀▀▀▄
+█      ███▄ ▀████ █  █  █▄   ▄▀ ▀▄▄▄▄▀
+ █         ▀        █   ▀███▀
+  ▀                ▀</pre>
+          <span class="visually-hidden">JUANEDFLORES</span>
+        </h1>
+        <p class="tagline">teaching materials, class sites &amp; notes on sound, electronics and code</p>
 
-    <!-- POSTS: built by js/blog_home.js from Blog/posts.json -->
-    <main id="main">
-      <section id="topics">
-        <h1>Topics</h1>
-        <div class="tp-bar">
-          <input type="search" class="tp-search" placeholder="Search posts, e.g. Eurorack, Arduino, shaders" aria-label="Search posts" />
-          <div class="tp-filters" role="group" aria-label="Filter by category"></div>
-        </div>
-        <p class="tp-count" aria-live="polite">Loading posts…</p>
-        <div id="tp-units"></div>
-        <p class="tp-empty" hidden>No posts match. Try another word, or clear the filters.</p>
+        <ul class="buttons">
+          <li><a href="#picker" data-key="t" data-filter="teaching"><span>▤ &gt; Teaching</span><kbd>t</kbd></a></li>
+          <li><a href="#picker" data-key="b" data-filter="post"><span>✎ &gt; Notes &amp; tutorials</span><kbd>b</kbd></a></li>
+          <li><a href="#picker" data-key="/" data-filter="search"><span>⌕ &gt; Search everything</span><kbd>/</kbd></a></li>
+          <li><a href="index.html" data-key="a"><span>◆ &gt; Artist website</span><kbd>a</kbd></a></li>
+        </ul>
       </section>
+
+      <!-- PICKER (like telescope.nvim) -->
+      <section id="picker" class="picker" aria-label="Teaching and resources">
+        <div class="win prompt-win">
+          <span class="win-title">Find</span>
+          <label class="prompt">
+            <span class="prompt-caret" aria-hidden="true">❯</span>
+            <input type="search" id="search" placeholder="breadboard, Eurorack, p5.js…" autocomplete="off" aria-label="Search teaching and notes" />
+          </label>
+          <div class="modes" role="group" aria-label="Show">
+            <button data-filter="all" aria-pressed="true">:all</button>
+            <button data-filter="teaching" aria-pressed="false">:teaching</button>
+            <button data-filter="post" aria-pressed="false">:notes</button>
+          </div>
+        </div>
+
+        <div class="picker-body">
+          <div class="win results-win">
+            <span class="win-title">Results</span>
+            <ul id="results" role="listbox" aria-label="Results"></ul>
+            <p class="empty" hidden>-- no matches --</p>
+          </div>
+          <div class="win preview-win" aria-live="polite">
+            <span class="win-title">Preview</span>
+            <div id="preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <p class="eob" aria-hidden="true">~<br />~<br />~</p>
     </main>
+
+    <!-- STATUSLINE (like lualine) -->
+    <footer class="statusline">
+      <span class="sl-a" id="mode">NORMAL</span>
+      <span class="sl-b">⎇ master</span>
+      <span class="sl-c">resources</span>
+      <span class="sl-fill"></span>
+      <span class="sl-b sl-count" id="count"></span>
+      <span class="sl-a sl-pos" id="pos">Top</span>
+    </footer>
+    <div class="cmdline" id="cmdline">j/k move · enter open · / search · t teaching · b notes · esc clear</div>
   </body>
 </html>

@@ -1,0 +1,56 @@
+[
+  {
+    "title": "ART 150: Intro to New Media Arts",
+    "where": "UIC, Fall 2026",
+    "year": "2026",
+    "url": "https://juanedflores.github.io/Intro-to-New-Media-Arts/",
+    "description": "Weekly plans, slides, workshops and resources for circuits, e-textiles, Arduino and creative interfaces.",
+    "tags": ["circuits", "e-textiles", "Arduino", "creative interfaces"],
+    "cover": "resources/teaching/art150.jpg"
+  },
+  {
+    "title": "Drawing Machines Gallery",
+    "where": "ART 150, UIC, Fall 2026",
+    "year": "2026",
+    "url": "https://juanedflores.github.io/art150-drawing-machines/",
+    "description": "Eighteen vibration-motor robots, each built around a found object and given a set of written instructions. Each drawing was made live in class by following those instructions.",
+    "tags": ["robots", "drawing", "student work"],
+    "cover": "resources/teaching/drawing-machines.jpg"
+  },
+  {
+    "title": "Prototyping Methods Lab",
+    "where": "2025",
+    "year": "2025",
+    "url": "https://juanedflores.github.io/Prototyping-Methods-Lab-Website/",
+    "description": "Class site with weekly plans, the syllabus, material sourcing, electronics and Arduino guides, and an inspiration board.",
+    "tags": ["electronics", "Arduino", "fabrication"],
+    "cover": "resources/teaching/pml.jpg"
+  },
+  {
+    "title": "Mechanisms, Movement & Meaning",
+    "where": "SAIC, AT/SP Department, 2024",
+    "year": "2024",
+    "url": "https://juanedflores.github.io/Mechanisms_Movement_Meaning/",
+    "description": "Class site for kinetic art: a kinetic artist database, weekly plans, electronics, machines and movements, and Arduino.",
+    "tags": ["kinetic art", "mechanisms", "Arduino"],
+    "cover": "resources/teaching/mmm.jpg"
+  },
+  {
+    "title": "Creative Coding Workshop",
+    "where": "Cultural Approaches to Production, 2023",
+    "year": "2023",
+    "url": "https://juanedflores.github.io/Creative_Coding_Workshop/",
+    "description": "Workshop slides introducing creative coding.",
+    "tags": ["creative coding", "workshop", "slides"],
+    "cover": "resources/teaching/ccw.jpg"
+  },
+  {
+    "title": "ATS Practices: Week 9",
+    "where": "2023",
+    "year": "2023",
+    "url": "https://juanedflores.github.io/ATS_Practices_Week9/",
+    "description": "A lesson on functions, modularity and abstraction, with p5.js examples.",
+    "tags": ["p5.js", "creative coding", "slides"],
+    "cover": "resources/teaching/ats.jpg"
+  }
+]

@@ -1,21 +1,21 @@
-// Blog home (blog.html): builds the post cards from Blog/posts.json, grouped
-// by the year each post was last updated, with search and category filters.
-// To add a post, run Blog/newBlogEntry.py, which writes to posts.json.
+// Teaching & resources page (blog.html). Lists teaching materials
+// (data/teaching.json, edited by hand) and notes/tutorials (Blog/posts.json,
+// kept up to date by Blog/newBlogEntry.py) in a telescope-style picker.
+//
+// Keys, when not typing: j/k or arrows move, enter opens, / searches,
+// t shows teaching, b shows notes, a opens the artist website, g/G jump
+// to the first/last result. While typing: arrows or ctrl-n/ctrl-p move,
+// enter opens, esc leaves the search.
 
-// Filter chips, in this order. Each post in posts.json names one category.
-var CATEGORIES = [
-  { key: 'sound', label: 'Sound' },
-  { key: 'code', label: 'Code' },
-  { key: 'electronics', label: 'Electronics', fg: '#1d2433' },
-  { key: 'image', label: 'Image & Video' },
-  { key: 'process', label: 'Process' },
-];
+var CATEGORY_LABELS = {
+  sound: 'sound',
+  code: 'code',
+  electronics: 'electronics',
+  image: 'image & video',
+  process: 'process',
+};
 
-var THEME_KEY = 'jef-blog-theme';
-var MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-var SUN =
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/>' +
-  '<path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+var state = { items: [], visible: [], selected: 0, filter: 'all' };
 
 function escapeHTML(s) {
   return String(s).replace(/[&<>"']/g, function (c) {
@@ -23,185 +23,282 @@ function escapeHTML(s) {
   });
 }
 
-function formatDate(iso) {
-  var d = new Date(iso + 'T00:00:00');
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+// the title with the search term marked, like telescope's match highlight
+function markMatch(text, q) {
+  var i = q ? text.toLowerCase().indexOf(q) : -1;
+  if (i === -1) return escapeHTML(text);
+  return escapeHTML(text.slice(0, i)) + '<mark>' + escapeHTML(text.slice(i, i + q.length)) + '</mark>' + escapeHTML(text.slice(i + q.length));
 }
 
-// ---------- theme ----------
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  var btn = document.getElementById('theme_toggle');
-  var dark = theme === 'dark';
-  btn.innerHTML = dark ? SUN : MOON;
-  btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  btn.title = btn.getAttribute('aria-label');
+function fromTeaching(t) {
+  return {
+    kind: 'teaching',
+    title: t.title,
+    where: t.where,
+    year: t.year,
+    url: t.url,
+    description: t.description,
+    tags: t.tags,
+    cover: t.cover,
+  };
 }
 
-function setupTheme() {
-  applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
-  document.getElementById('theme_toggle').addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    try {
-      localStorage.setItem(THEME_KEY, next);
-    } catch (e) {}
-    applyTheme(next);
+function fromPost(p) {
+  var dir = 'Blog/' + p.slug + '/';
+  return {
+    kind: 'post',
+    title: p.title,
+    where: (CATEGORY_LABELS[p.category] || p.category) + ' · updated ' + p.modified,
+    year: p.modified.slice(0, 4),
+    url: dir + p.slug + '.html',
+    description: p.description,
+    tags: p.tags,
+    cover: dir + p.cover,
+    sortKey: p.modified,
+  };
+}
+
+// ---------- rendering ----------
+
+function render() {
+  var q = document.getElementById('search').value.trim().toLowerCase();
+  state.visible = state.items.filter(function (it) {
+    if (state.filter !== 'all' && it.kind !== state.filter) return false;
+    return !q || it.haystack.indexOf(q) !== -1;
   });
+  if (state.selected >= state.visible.length) state.selected = 0;
+
+  var html = '';
+  var lastKind = null;
+  state.visible.forEach(function (it, i) {
+    if (it.kind !== lastKind) {
+      html += '<li class="group" role="presentation">' + (it.kind === 'teaching' ? 'Teaching' : 'Notes & tutorials') + '</li>';
+      lastKind = it.kind;
+    }
+    html +=
+      '<li class="item" role="option" id="opt-' + i + '" data-index="' + i + '" aria-selected="' + (i === state.selected) + '">' +
+      '<span class="item-kind" aria-hidden="true">' + (it.kind === 'teaching' ? '▤' : '✎') + '</span>' +
+      '<a class="item-title" href="' + it.url + '" tabindex="-1">' + markMatch(it.title, q) + '</a>' +
+      '<span class="item-meta">' + it.year + '</span>' +
+      '<span class="item-desc">' + escapeHTML(it.description) + '</span>' +
+      '</li>';
+  });
+  document.getElementById('results').innerHTML = html;
+  document.querySelector('.empty').hidden = state.visible.length > 0;
+  document.getElementById('count').textContent = state.visible.length + '/' + state.items.length;
+  renderPreview();
 }
 
-// ---------- drawer (small screens) ----------
-// On desktop the yellow J·E·F block links to the artist website; on smaller
-// screens it shows a menu icon and opens the sidebar.
-
-function setupDrawer() {
-  var btn = document.querySelector('.menu-btn');
-  var scrim = document.querySelector('.scrim');
-  var narrow = window.matchMedia('(max-width: 1050px)');
-
-  function setOpen(open) {
-    document.body.classList.toggle('drawer-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    scrim.hidden = !open;
+function renderPreview() {
+  var it = state.visible[state.selected];
+  var pv = document.getElementById('preview');
+  updatePosition();
+  document.querySelectorAll('#results .item').forEach(function (el) {
+    el.setAttribute('aria-selected', el.dataset.index == state.selected ? 'true' : 'false');
+  });
+  if (!it) {
+    pv.innerHTML = '';
+    return;
   }
+  pv.innerHTML =
+    '<img class="pv-img" src="' + it.cover + '" alt="">' +
+    '<h2 class="pv-title">' + escapeHTML(it.title) + '</h2>' +
+    '<p class="pv-where">' + escapeHTML(it.where) + '</p>' +
+    '<p class="pv-desc">' + escapeHTML(it.description) + '</p>' +
+    '<ul class="pv-tags">' +
+    it.tags
+      .map(function (t) {
+        return '<li>' + escapeHTML(t) + '</li>';
+      })
+      .join('') +
+    '</ul>' +
+    '<a class="pv-open" href="' + it.url + '">open ↵</a>';
+}
 
-  btn.addEventListener('click', function () {
-    if (!narrow.matches) {
-      location.href = 'index.html';
+// "Top", "Bot", "All" or a percentage, like the statusline's position
+function updatePosition() {
+  var n = state.visible.length;
+  var pos = document.getElementById('pos');
+  if (n <= 1) pos.textContent = 'All';
+  else if (state.selected === 0) pos.textContent = 'Top';
+  else if (state.selected === n - 1) pos.textContent = 'Bot';
+  else pos.textContent = Math.round((state.selected / (n - 1)) * 100) + '%';
+}
+
+function select(i) {
+  if (!state.visible.length) return;
+  state.selected = Math.max(0, Math.min(state.visible.length - 1, i));
+  renderPreview();
+  var el = document.getElementById('opt-' + state.selected);
+  if (el) el.scrollIntoView({ block: 'nearest' });
+}
+
+function openSelected() {
+  var it = state.visible[state.selected];
+  if (it) location.href = it.url;
+}
+
+function setFilter(filter) {
+  state.filter = filter;
+  state.selected = 0;
+  document.querySelectorAll('.modes button').forEach(function (b) {
+    b.setAttribute('aria-pressed', b.dataset.filter === filter ? 'true' : 'false');
+  });
+  render();
+}
+
+function setMode(insert) {
+  var mode = document.getElementById('mode');
+  mode.textContent = insert ? 'INSERT' : 'NORMAL';
+  mode.classList.toggle('insert', insert);
+}
+
+function showPicker() {
+  document.getElementById('picker').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ---------- events ----------
+
+function setupEvents() {
+  var search = document.getElementById('search');
+  var results = document.getElementById('results');
+
+  search.addEventListener('input', function () {
+    state.selected = 0;
+    render();
+  });
+  search.addEventListener('focus', function () {
+    setMode(true);
+  });
+  search.addEventListener('blur', function () {
+    setMode(false);
+  });
+
+  document.querySelectorAll('.modes button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      setFilter(b.dataset.filter);
+    });
+  });
+
+  // hovering a result previews it; clicking opens it
+  results.addEventListener('mousemove', function (e) {
+    var item = e.target.closest('.item');
+    if (item && +item.dataset.index !== state.selected) {
+      state.selected = +item.dataset.index;
+      renderPreview();
+    }
+  });
+  results.addEventListener('click', function (e) {
+    var item = e.target.closest('.item');
+    if (!item || e.target.closest('a')) return;
+    state.selected = +item.dataset.index;
+    openSelected();
+  });
+
+  // dashboard buttons
+  document.querySelectorAll('.buttons a[data-filter]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      runKey(a.dataset.key);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.altKey) return;
+    var typing = document.activeElement === search;
+
+    if (typing) {
+      if (e.key === 'Escape') {
+        search.blur();
+      } else if (e.key === 'ArrowDown' || (e.ctrlKey && e.key === 'n')) {
+        e.preventDefault();
+        select(state.selected + 1);
+      } else if (e.key === 'ArrowUp' || (e.ctrlKey && e.key === 'p')) {
+        e.preventDefault();
+        select(state.selected - 1);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        openSelected();
+      }
       return;
     }
-    setOpen(!document.body.classList.contains('drawer-open'));
-  });
-  scrim.addEventListener('click', function () {
-    setOpen(false);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') setOpen(false);
-  });
-  // close after picking a link in the drawer (e.g. jumping to a year)
-  document.getElementById('sidebar').addEventListener('click', function (e) {
-    if (e.target.closest('a')) setOpen(false);
-  });
-  narrow.addEventListener('change', function () {
-    setOpen(false);
+
+    if (e.ctrlKey) return;
+    // let enter work normally on a focused link or button
+    if (e.key === 'Enter' && /^(A|BUTTON)$/.test(document.activeElement.tagName)) return;
+    if (runKey(e.key)) e.preventDefault();
   });
 }
 
-// ---------- posts ----------
-
-function cardHTML(post) {
-  var cat =
-    CATEGORIES.find(function (c) {
-      return c.key === post.category;
-    }) || CATEGORIES[CATEGORIES.length - 1];
-  var dir = 'Blog/' + post.slug + '/';
-  var href = dir + post.slug + '.html';
-  var search = [post.title, post.description, post.tags.join(' '), cat.label].join(' ').toLowerCase();
-  var style = '--accent: var(--cat-' + cat.key + ')' + (cat.fg ? '; --tag-fg: ' + cat.fg : '');
-  return (
-    '<div class="tp-item" data-type="' + cat.key + '" data-search="' + escapeHTML(search) + '">' +
-    '<a class="topic-card" href="' + href + '" style="' + style + '">' +
-    '<div class="topic-thumb"><img loading="lazy" src="' + dir + post.cover + '" alt="">' +
-    '<div class="topic-tags"><span class="topic-tag">' + cat.label + '</span></div></div>' +
-    '<h3 class="cardtitle">' + escapeHTML(post.title) + '</h3>' +
-    '<p class="card-desc">' + escapeHTML(post.description) + '</p>' +
-    '</a>' +
-    '<p class="tp-meta"><span>Updated ' + formatDate(post.modified) + '</span>' +
-    // Disqus fills this link in with the comment count
-    '<a href="https://juanedflores.com/' + href + '#disqus_thread">Comments</a></p>' +
-    '</div>'
-  );
-}
-
-function render(posts) {
-  posts.sort(function (a, b) {
-    return b.modified.localeCompare(a.modified);
-  });
-
-  var years = [];
-  posts.forEach(function (p) {
-    var y = p.modified.slice(0, 4);
-    if (years.indexOf(y) === -1) years.push(y);
-  });
-
-  document.getElementById('tp-units').innerHTML = years
-    .map(function (y) {
-      var items = posts.filter(function (p) {
-        return p.modified.slice(0, 4) === y;
-      });
-      return '<section class="tp-unit" id="y' + y + '"><h2>' + y + '</h2><div class="topics-grid">' + items.map(cardHTML).join('') + '</div></section>';
-    })
-    .join('');
-
-  document.getElementById('year-nav').innerHTML = years
-    .map(function (y) {
-      return '<li><a href="#y' + y + '">' + y + '</a></li>';
-    })
-    .join('');
-
-  // only offer categories that have posts
-  var present = CATEGORIES.filter(function (c) {
-    return posts.some(function (p) {
-      return p.category === c.key;
-    });
-  });
-  var filters = document.querySelector('.tp-filters');
-  filters.innerHTML =
-    '<button data-type="all" aria-pressed="true">All</button>' +
-    present
-      .map(function (c) {
-        return '<button data-type="' + c.key + '" aria-pressed="false">' + c.label + '</button>';
-      })
-      .join('');
-
-  var root = document.getElementById('topics');
-  var search = root.querySelector('.tp-search');
-  var type = 'all';
-
-  function apply() {
-    var q = search.value.trim().toLowerCase();
-    var shown = 0;
-    root.querySelectorAll('.tp-item').forEach(function (item) {
-      var ok = (type === 'all' || item.dataset.type === type) && (!q || item.dataset.search.indexOf(q) !== -1);
-      item.hidden = !ok;
-      if (ok) shown++;
-    });
-    root.querySelectorAll('.tp-unit').forEach(function (unit) {
-      unit.hidden = !unit.querySelector('.tp-item:not([hidden])');
-    });
-    root.querySelector('.tp-empty').hidden = shown > 0;
-    root.querySelector('.tp-count').textContent = shown + (shown === 1 ? ' post' : ' posts');
+// the dashboard and normal-mode keys; returns true if the key did something
+function runKey(key) {
+  var search = document.getElementById('search');
+  switch (key) {
+    case 'j':
+    case 'ArrowDown':
+      select(state.selected + 1);
+      return true;
+    case 'k':
+    case 'ArrowUp':
+      select(state.selected - 1);
+      return true;
+    case 'g':
+      select(0);
+      return true;
+    case 'G':
+      select(state.visible.length - 1);
+      return true;
+    case 'Enter':
+      openSelected();
+      return true;
+    case '/':
+      setFilter('all');
+      showPicker();
+      search.focus({ preventScroll: true });
+      return true;
+    case 't':
+      setFilter('teaching');
+      showPicker();
+      return true;
+    case 'b':
+      setFilter('post');
+      showPicker();
+      return true;
+    case 'a':
+      location.href = 'index.html';
+      return true;
+    case 'Escape':
+      search.value = '';
+      setFilter('all');
+      return true;
   }
+  return false;
+}
 
-  search.addEventListener('input', apply);
-  filters.querySelectorAll('button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      type = b.dataset.type;
-      filters.querySelectorAll('button').forEach(function (x) {
-        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
-      });
-      apply();
-    });
+// ---------- load ----------
+
+function getJSON(url) {
+  return fetch(url).then(function (r) {
+    if (!r.ok) throw new Error(url);
+    return r.json();
   });
-  apply();
-
-  // comment counts: count.js scans the page for #disqus_thread links once it loads
-  var dsq = document.createElement('script');
-  dsq.id = 'dsq-count-scr';
-  dsq.src = 'https://juanedflores-blog.disqus.com/count.js';
-  dsq.async = true;
-  document.body.appendChild(dsq);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  setupTheme();
-  setupDrawer();
-  fetch('Blog/posts.json')
-    .then(function (r) {
-      return r.json();
+  setupEvents();
+  Promise.all([getJSON('data/teaching.json'), getJSON('Blog/posts.json')])
+    .then(function (data) {
+      var teaching = data[0].map(fromTeaching);
+      var posts = data[1].map(fromPost).sort(function (a, b) {
+        return b.sortKey.localeCompare(a.sortKey);
+      });
+      state.items = teaching.concat(posts);
+      state.items.forEach(function (it) {
+        it.haystack = [it.title, it.where, it.description, it.tags.join(' ')].join(' ').toLowerCase();
+      });
+      render();
     })
-    .then(render)
     .catch(function () {
-      document.querySelector('.tp-count').textContent = 'Could not load posts.';
+      document.getElementById('cmdline').textContent = 'E484: Can’t open resources: try reloading the page';
     });
 });
