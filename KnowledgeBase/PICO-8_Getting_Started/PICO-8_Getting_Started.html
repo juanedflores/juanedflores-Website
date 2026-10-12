@@ -1,0 +1,746 @@
+<!doctype html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content="pandoc" />
+    <title>Getting Started with PICO-8 · JUANEDFLORES</title>
+    <link rel="shortcut icon" href="../../resources/favicon.ico" type="image/x-icon" />
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- UIkit: some posts use its accordions and tooltips in their markdown -->
+    <link rel="stylesheet" href="../../css/uikit.min.css" />
+    <script src="../../js/uikit.min.js"></script>
+    <script src="../../js/uikit-icons.min.js"></script>
+
+    <!-- icons for the code blocks' copy button -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+    <!-- code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+
+    <!-- site styles (after UIkit so they win) -->
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/post.css" />
+    <script src="../../js/theme.js"></script>
+    <script src="../../js/post.js" defer></script>
+
+    
+  </head>
+
+  <body>
+    <!-- TOP BAR -->
+    <header class="post-bar">
+      <a class="bar-home" href="../../blog.html"><span class="bar-name">JUANEDFLORES</span> <span class="bar-back">← all notes</span></a>
+      <span class="bar-fill"></span>
+      <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc">contents</button>
+      <button class="theme-toggle" type="button"></button>
+    </header>
+
+    <div class="post-layout">
+      <!-- TABLE OF CONTENTS: a sidebar on wide screens, a drop-down on small ones -->
+      <nav id="toc" class="toc" aria-label="Contents">
+        <p class="toc-title">Contents</p>
+        <ul>
+        <li><a href="#introduction"
+        id="toc-introduction">Introduction</a></li>
+        <li><a href="#influences"
+        id="toc-influences">Influences</a></li>
+        <li><a href="#command-line-interface-cli-terminal-console-shell"
+        id="toc-command-line-interface-cli-terminal-console-shell">Command
+        Line Interface (CLI) / Terminal / Console / Shell</a>
+        <ul>
+        <li><a href="#historical-background"
+        id="toc-historical-background">Historical Background</a></li>
+        <li><a href="#first-commands" id="toc-first-commands">First
+        Commands</a></li>
+        <li><a href="#splore" id="toc-splore">SPLORE</a></li>
+        <li><a href="#limits-for-a-design-culture"
+        id="toc-limits-for-a-design-culture">Limits for a Design
+        Culture</a></li>
+        <li><a href="#file-navigation" id="toc-file-navigation">File
+        Navigation</a></li>
+        </ul></li>
+        <li><a href="#the-code-editor" id="toc-the-code-editor">The Code
+        Editor</a></li>
+        <li><a href="#simple-functions" id="toc-simple-functions">Simple
+        Functions</a></li>
+        <li><a href="#core-functions" id="toc-core-functions">Core
+        Functions</a></li>
+        <li><a href="#making-a-simple-animation"
+        id="toc-making-a-simple-animation">Making a Simple Animation</a>
+        <ul>
+        <li><a href="#sprite-editor" id="toc-sprite-editor">Sprite
+        Editor</a></li>
+        <li><a href="#the-spr-function" id="toc-the-spr-function">The
+        SPR() function</a></li>
+        <li><a href="#making-it-move" id="toc-making-it-move">Making it
+        Move</a></li>
+        <li><a href="#wrapping-around-the-screen"
+        id="toc-wrapping-around-the-screen">Wrapping Around the
+        Screen</a></li>
+        <li><a href="#full-minimal-program"
+        id="toc-full-minimal-program">Full Minimal Program</a></li>
+        <li><a href="#adding-more-clouds-making-objects"
+        id="toc-adding-more-clouds-making-objects">Adding More Clouds
+        (Making Objects)</a></li>
+        </ul></li>
+        </ul>
+      </nav>
+
+      <article class="post">
+        <!-- HEADING -->
+        <header class="post-head">
+          <img src="./cover/cover.png" id="cover-img" class="post-cover" alt="" onerror="this.hidden = true" />
+          <p class="post-meta" id="post-meta"></p>
+          <h1 class="post-title">Getting Started with PICO-8</h1>
+          <p class="post-tags" id="post-tags"></p>
+        </header>
+
+        <!-- BODY -->
+        <div id="ArticleBody" class="post-body"><h2
+id="introduction">Introduction</h2>
+<p>PICO-8 is a popular example of a <strong>fantasy console</strong>. A
+fantasy console is a fictitious video game console played on an emulator
+(a software that imitates the architecture of a specific hardware).</p>
+<p>PICO-8 creates the experience of retro gaming using the <span
+class="tc-accent">Lua programming language</span> with very specific
+technical limitations. It can be a fun way to learn programming and game
+design.</p>
+<p>The creator of PICO-8, described the term:</p>
+<blockquote>
+<p>A fantasy console is like a regular console, but without the
+inconvenience of actual hardware. PICO-8 has everything else that makes
+a console a console: machine specifications and display format,
+development tools, design culture, distribution platform, community, and
+playership. It is similar to a retro game emulator, but for a machine
+that never existed.</p>
+<p>- Joseph White</p>
+</blockquote>
+<h2 id="influences">Influences</h2>
+<p>The PICO-8 is a computer that never existed, but it is inspired by
+real computers from the 1980s.</p>
+<div class="columns">
+<p><img src="https://i.imgur.com/EjYUBbn.png"
+style="height:150px;width:auto" /><br />
+</p><p><span class="tc-muted">Apple IIe</span></p><p><img
+src="https://i.imgur.com/sMaaeHj.png"
+style="height:150px;width:auto" /><br />
+</p><p><span class="tc-muted">Commodore 64</span></p>
+</div>
+<div class="columns">
+<p>The <strong>Apple IIe</strong> was released in January 1983. It was
+intended for home and educational use. It had a <strong>280 x
+192</strong> pixel display with 6 colors for high resolution, and 16
+colors for low resolution.</p><p>The <strong>Commodore 64</strong> has a
+<strong>320 x 200</strong> pixel display with 16 colors. It was released
+in August 1982 and became the best-selling single computer model of all
+time.</p>
+</div>
+<div class="columns">
+<p><img src="https://i.imgur.com/d4lzO0X.png"
+style="height:90px;width:auto" /><br />
+<img src="https://i.imgur.com/gkO7cC1.png"
+style="height:90px;width:auto" /><br />
+</p>
+</div>
+<p><img src="https://i.imgur.com/UFC247G.png" style="width:70%" /><br />
+<span class="tc-muted">BBC Micro</span></p>
+<!-- \hfill \break -->
+<div class="columns">
+<p>The <strong>BBC Micro</strong> was a family of computers designed by
+Acorn Computers as part of the BBC’s Computer Literacy Project in the
+early 1980s, aimed at promoting computer literacy in the UK.</p><p>In
+1982, there was a TV series called <em>The Computer Programme</em>,
+which focused on learning how to use this machine. It was broadcast on
+BBC2.</p><p>It can be switched between several display modes. Modes 0 to
+6 could display a palette of sixteen colors using the eight basic colors
+at the vertices of the RGB color cube and eight flashing colors made by
+alternating the basic color and its inverse.</p><p>Mode 0 has a
+resolution of <strong>640 x 256</strong> pixels.</p><p><img
+src="https://i.imgur.com/rnkAIjy.png" style="width:100px" /><br />
+</p>
+</div>
+<p><img src="https://i.imgur.com/Jnn3tGh.png" style="width:67%" /><br />
+</p>
+<p><span class="tc-muted">BBC Micro running on an emulator.</span></p>
+<p><img src="https://i.imgur.com/LTuaPOl.png" style="width:67%" /><br />
+</p>
+<p><span class="tc-muted">PICO-8’s Command Line Interface.</span></p>
+<h2 id="command-line-interface-cli-terminal-console-shell">Command Line
+Interface (CLI) / Terminal / Console / Shell</h2>
+<p>Now that you can see the inspiration, let’s get familiar with the
+command line interface because it is the first thing you see when you
+start PICO-8.</p>
+<p>It displays the logo, some version information, and a prompt to enter
+<u>commands</u>.</p>
+<p>The <strong>&gt;</strong> symbol followed by the blinking red cursor
+indicates that the system is ready to accept <u>user input</u>.</p>
+<h3 id="historical-background">Historical Background</h3>
+<p><img src="https://i.imgur.com/OrdaN0l.png"
+style="width:100%" /><br />
+<span class="tc-muted">Desktop interface of the Magic Cap operating
+system. It used the “desktop metaphor”, which uses imagery that
+represent a real physical desktop.</span></p>
+<p> </p>
+<p>Before Graphical User Interfaces (GUIs) that rely on the use of a
+mouse to click graphic icons that resemble real-world objects to open
+and close windows, there was the command line interface (CLI).</p>
+<blockquote>
+<p>According to a wikibook Operating System Design: “A <u>command line
+interface or CLI</u> is a method of interacting with a computer by
+giving it lines of textual commands.</p>
+</blockquote>
+<p><strong>CLI</strong>, <strong>terminal</strong>,
+<strong>console</strong>, and even <strong>shell</strong> are all terms
+that are often used interchangeably to indicate a text based system for
+navigating an operating system. It could get confusing, but they all
+refer to similar concepts. It won’t hurt to take at the history of the
+terms to get an idea of how and why we use them.</p>
+<hr />
+<p>A <u>Terminal</u> is a program that emulates a physical terminal,
+which historically was an electromechanical device that connected to a
+larger computer to interact with its functions.</p>
+<p>On a terminal, you can type commands, press enter, and see the
+results.</p>
+<p>It comes from a history that predates screens where a printer was
+used to print the results of our commands. See:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Z3_(computer)">Z3
+(1941)</a></li>
+<li><a
+href="https://en.wikipedia.org/wiki/Teleprinter">Teleprinter</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Teletype_Model_33">Teletype
+Model 33 (1963)</a></li>
+<li><hr /></li>
+</ul>
+<p>A <u>Console</u> was initially the switches and indicators available
+literally on the console panel of a computer.</p>
+<p><img src="https://i.imgur.com/mkMpdku.png" style="width:50%" /><br />
+<span class="tc-muted">The front panel of the PDP-11/20, which ran the
+1st edition of Unix in 1972.</span></p>
+<p>Later the term was used for a special teletype/terminal attached to
+the computer. The operator could use the console to perform privileged
+operations.</p>
+<hr />
+<p>In the world of Unix, a <u>Shell</u> is a command-line interpreter
+that provides a user interface for access to an operating system’s
+services. There are many different Unix shells. Popular shells for
+interactive use include <u>Bash</u>, <u>Zsh</u>, and <u>Fish</u>.</p>
+<p>In Unix based systems like Linux or MacOS, you may see this command
+prompt:</p>
+<div class="cmdline"><b>$</b></div>
+<p>In Windows, you might see what is seen in PICO-8, the
+<strong>&gt;</strong> symbol, prompting the user to enter a command. It
+is based on the Microsoft Disk Operating System (MS-DOS) command line
+interface.</p>
+<div class="cmdline"><b>&gt;</b></div>
+<h3 id="first-commands">First Commands</h3>
+<p>In the startup screen PICO-8 advises you of the <strong>HELP</strong>
+command. It says: “Type <strong>HELP</strong> for help”. By typing help
+and pressing <strong>ENTER</strong>, you get in return a list of
+commands that you can use in PICO-8.</p>
+<div class="cmdline">&gt; <b>HELP</b></div>
+<p><img src="https://i.imgur.com/EY2cHO6.png" style="width:80%" /><br />
+</p>
+<p>The convention of having a help command is common. You can even write
+<strong>HELP</strong> followed by another command or function for
+additional information about it.</p>
+<div class="blank">
+<div class="cmdline">&gt; <b>HELP <span class="tc-gray"><b>&lt;command&gt;</b></span></b></div>
+</div>
+<p>The list of commands can be overwhelming. It can be difficult to know
+where to start and it all looks so bare and technical. The next command
+<span class="tc-pico-pink">SPLORE</span> is a lot more fun.</p>
+<div class="cmdline">&gt; <b>HELP SPLORE</b></div>
+<p><img src="https://i.imgur.com/vwdvfVm.png" style="width:60%" /><br />
+</p>
+<h3 id="splore">SPLORE</h3>
+<p>Let’s type the command that is in pink text: <span
+class="tc-pico-pink">SPLORE</span>. Remember that the computer does not
+receive the typed command until you press the <strong>ENTER</strong>
+key.</p>
+<div class="cmdline">&gt; <b>SPLORE</b></div>
+<div class="info">
+<p><span class="tc-accent"><strong>NOTE</strong></span></p>
+<p> </p>
+<p>In PICO-8, everything is uppercase. If you try typing uppercase
+letters by pressing Shift, you will find that you will get random
+symbols instead. Just type in lowercase letters when entering commands
+and when you start to write code later on.</p>
+</div>
+<p><u>SPLORE</u> is a graphical interface for exploring PICO-8
+cartridges that others have written and published. Here you can also
+publish your own games. Think of it as a way to explore and browse
+through a library of games that the public contributes to.</p>
+<div class="columns">
+<p><img src="https://i.imgur.com/S8YRq2w.png"
+style="height:250px;width:auto" /><br />
+</p><p><img src="https://i.imgur.com/ynqgZuF.png"
+style="height:250px;width:auto" /><br />
+</p>
+</div>
+<p><span class="tc-muted">BUBBLEGUM SPIN by BEE_RANDON. Being played
+after navigating SPLORE</span></p>
+<p>Navigate around using the arrow keys on your keyboard, and use the
+<strong>Z</strong> key to select an option and to run a cart. The
+<strong>ESC</strong> key is also very useful for many purposes. It is
+typically used to exit or to pause the game.</p>
+<hr />
+<h3 id="limits-for-a-design-culture">Limits for a Design Culture</h3>
+<p>This is an opportunity to introduce one quirk of PICO-8 games: they
+only use up to six different buttons for input, comprising the four
+arrow keys and two additional buttons.</p>
+<p><img src="https://i.imgur.com/emvmmoT.png" style="width:40%" /><br />
+</p>
+<p>By default, the <strong>Z</strong> key is the [O] and the
+<strong>X</strong> key is the [X] button. You could also use C/V or N/M
+respectively. These buttons are configurable, allowing you to change
+them if desired.</p>
+<div class="info">
+<div class="cmdline">&gt; <b>KEYCONFIG</b></div>
+<p> </p>
+<p>This command is used to change the key assignments for the six
+buttons, for each of the two players. Be cautious when using this
+command, as it will modify the key bindings for all PICO-8 games until
+you reset them.</p>
+<p> </p>
+<p>If that happens, you can reset to default by entering keyconfig and
+then pressing the <strong>DELETE</strong> key on your keyboard for each
+input.</p>
+<p><img src="https://i.imgur.com/4cwFqXF.png" style="width:50%" /><br />
+</p>
+</div>
+<p>While getting to have fun in SPLORE, you might notice that the games
+are limited to a 16 color palette and a small resolution of <strong>128
+x 128 pixels</strong>. This is part of the design culture of PICO-8,
+which embraces limitations to inspire creativity.</p>
+<p><img src="https://i.imgur.com/HTZrefn.png" style="width:50%" /><br />
+</p>
+<p> </p>
+<p><span class="tc-muted">The PICO-8 is limited to 16 colors (with some
+trickery you can get 16 more!)</span></p>
+<p> </p>
+<p><img src="https://i.imgur.com/ZBqDcAr.png" style="width:50%" /><br />
+</p>
+<p><span class="tc-muted">The display resolution of 128 x 128 pixels.
+Note how 0 is at the top left corner, and how it increases the X by
+going right, and increased Y by going down.</span></p>
+<p>Other limitations worth mentioning:</p>
+<ul>
+<li>4-channel sound</li>
+<li>8192 tokens (code size, the number of characters you are allowed to
+use)</li>
+</ul>
+<h3 id="file-navigation">File Navigation</h3>
+<p>In the command line, we don’t have a GUI to click on folders or
+files, so we need to learn how to get around our file system using text
+commands.</p>
+<p>What we know as folders in GUIs are called
+<strong>directories</strong> in command line interfaces.</p>
+<p>To view the files and directories in the current directory, we can
+use the <strong>LS</strong> command.</p>
+<div class="info">
+<div class="cmdline">&gt; <b>LS</b></div>
+<p> </p>
+<p><strong>LS</strong> stands for “list”. It lists all files and
+directories in the current directory. “List all contents”</p>
+</div>
+<p>Currently, we don’t have any directories, so nothing is listed under
+what is our <u>home directory</u>. This directory is represented by the
+lone forward slash <code>/</code>.</p>
+<p><img src="https://i.imgur.com/5S3Wsi5.png" style="width:70%" /><br />
+</p>
+<p>Let’s try this command next:</p>
+<div class="cmdline">&gt; <b>INSTALL_DEMOS</b></div>
+<p>This will install some demo cartridges into our file system. Try
+typing <strong>LS</strong> again to see the newly created directory.</p>
+<p><img src="https://i.imgur.com/yYmgR4b.png" style="width:70%" /><br />
+</p>
+<p>At the bottom of the screen, we can see:</p>
+<div class="cmdline"><span class="tc-pico-cyan"><b>DIRECTORY: /</b></span></div>
+<div class="cmdline"><span class="tc-pico-magenta"><b>DEMOS</b></span></div>
+<p>A <span class="tc-pico-pink"><strong>DEMOS</strong></span> directory
+has appeared under our home directory (<code>/</code>). Directories are
+in a <span class="tc-pico-pink"><strong>pink</strong></span> color,
+while files are in a <span
+class="tc-muted"><strong>lightgray</strong></span> color. To enter the
+DEMOS directory, we can use the <strong>CD</strong> command.</p>
+<div class="info">
+<div class="cmdline">&gt; <b>CD <span class="tc-gray">&lt;directory_name&gt;</span></b></div>
+<p> </p>
+<p>CD stands for “change directory.” It allows us to navigate into a
+different directory.</p>
+</div>
+<div class="cmdline">&gt; <b>CD DEMOS</b></div>
+<p><img src="https://i.imgur.com/Ti9UTpC.png" style="width:80%" /><br />
+</p>
+<p>Now, if we type <strong>LS</strong> again, we can can list the
+contents in the <strong>DEMOS</strong> directory, which should be the
+newly installed demo cartridges.</p>
+<p><img src="https://i.imgur.com/mLmMQDI.png" style="width:80%" /><br />
+</p>
+<div class="info">
+<p><span class="tc-accent"><strong>NOTE</strong></span></p>
+<p> </p>
+<p>PICO-8 games are saved with the <strong>.P8</strong> extension, and
+are called <em>cartridges</em>, just like old video game cartridges.</p>
+</div>
+<div class="columns">
+<p><img src="https://i.imgur.com/EWiIcOi.png"
+style="height:200px;width:auto" /><br />
+</p><p><span class="tc-muted">Imagined cartridge for
+PICO-8.</span></p><p><img src="https://i.imgur.com/hhWBq1l.png"
+style="height:200px;width:auto" /><br />
+</p><p><span class="tc-muted">Cartridge for the Nintendo Entertainment
+System (NES)</span></p>
+</div>
+<p>To run a cartridge, we can use the <strong>LOAD</strong> command
+followed by the name of the cartridge.</p>
+<div class="info">
+<div class="cmdline">&gt; <b>LOAD <span class="tc-gray">&lt;cartridge_name&gt;</span></b></div>
+<p> </p>
+<p>Loads the specified cartridge.</p>
+</div>
+<div class="box">
+<p><strong>TIP</strong></p>
+<p>A tip when typing file or directory names: you can use the TAB key to
+auto-complete names. Just type the first few letters and press TAB, and
+it will fill in the rest for you if there is a unique match. Try typing:
+<strong>LOAD AP</strong> and press <strong>TAB</strong> to see it
+autocomplete.</p>
+</div>
+<div class="cmdline">&gt; <b>LOAD API.P8</b></div>
+<p><img src="https://i.imgur.com/yW7pUTc.png" style="width:80%" /><br />
+</p>
+<p>Lastly, use the <strong>RUN</strong> command to run the
+cartridge.</p>
+<div class="info">
+<div class="cmdline">&gt; <b>RUN</b></div>
+<p> </p>
+<p>Runs the currently loaded cartridge.</p>
+</div>
+<p><img src="https://i.imgur.com/z8Chors.png" style="width:60%" /><br />
+</p>
+<p><span class="tc-pico-red">API.P8</span> is now running! Pressing
+<strong>ESC</strong> will bring you back to the command line
+interface.</p>
+<div class="box">
+<p><strong>TIP</strong></p>
+<p>You can press <strong>Ctrl + L</strong> (or <strong>Cmd + L</strong>
+on MacOS) to clear the terminal screen!</p>
+</div>
+<div class="box">
+<p><strong>TIP</strong></p>
+<p>Instead of typing <strong>RUN</strong> each time, you could just
+press <strong>Ctrl + R</strong> (<strong>Cmd + R</strong>) to run the
+currently loaded cartridge or restart it.</p>
+</div>
+<h2 id="the-code-editor">The Code Editor</h2>
+<p>To access the code editor, press the <strong>ESC</strong> key while
+in the command line interface.</p>
+<p><img src="https://i.imgur.com/SpdntJL.png" style="width:60%" /><br />
+</p>
+<p>You may notice how we have a mouse! Yes, this is a graphical user
+interface (GUI) for writing code. On the top right are icons to navigate
+through different types of editors, but for now, press
+<strong>ESC</strong> again to return to the command line interface.</p>
+<hr />
+<h2 id="simple-functions">Simple Functions</h2>
+<p>Before writing a game, you can get acquainted with some simple
+functions in the console.</p>
+<hr />
+<p><strong>PRINT</strong></p>
+<p>Print (draw) some text.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Print &quot;HELLO&quot; to the console</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>PRINT<span class="op">(</span><span class="st">&quot;HELLO&quot;</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/su0WADl.png" style="width:50%" /><br />
+</p>
+<p><strong>RECTFILL</strong></p>
+<p>Draw a rectangle with a filled color.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Draw a rectangle at:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- x = (80, 80)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- y = (120, 100)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- with a fill color of 12</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>RECTFILL<span class="op">(</span><span class="dv">80</span><span class="op">,</span><span class="dv">80</span><span class="op">,</span><span class="dv">120</span><span class="op">,</span><span class="dv">100</span><span class="op">,</span><span class="dv">12</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/tYCbXLl.png" style="width:50%" /><br />
+</p>
+<h2 id="core-functions">Core Functions</h2>
+<p>There are three core functions that PICO-8 uses to run a program.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _init<span class="op">()</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- This function runs once when the program starts</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _update<span class="op">()</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- This function runs 30 times per second</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- This function also runs 30 times per second</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<h2 id="making-a-simple-animation">Making a Simple Animation</h2>
+<p>As a first exercise let’s create a floating cloud animation inspired
+by Cory Arcangel’s <a
+href="https://en.wikipedia.org/wiki/Super_Mario_Clouds">Super Mario
+Clouds</a> artwork, made by modifying a Super Mario Bros. cartridge to
+only display the cloud sprites.</p>
+<p><img src="https://i.imgur.com/cD1M3hp.png"
+style="width:100%" /><br />
+</p>
+<h3 id="sprite-editor">Sprite Editor</h3>
+<p>To navigate to the sprite editor, go to the editor and click on the
+icon that looks like a little character with two eyes.</p>
+<p><img src="https://i.imgur.com/8sHNuNN.png" style="width:80%" /><br />
+</p>
+<p>Here, you can draw a sprite within this 8x8 pixel canvas.</p>
+<p><img src="https://i.imgur.com/eBJ4EqC.png" style="width:60%" /><br />
+</p>
+<p>Note how I draw it in the top left-most tile, which is assigned the
+number “000”.</p>
+<p><img src="https://i.imgur.com/L4slxvK.png" style="width:60%" /><br />
+</p>
+<p>Return to the terminal screen by pressing <strong>ESC</strong>
+again.</p>
+<h3 id="the-spr-function">The SPR() function</h3>
+<p>You can draw a sprite onto the screen by using the
+<strong>SPR()</strong> function.</p>
+<p>The first parameter is <em>n</em>, which is the assigned
+<strong>number of the sprite</strong>. In our case, we drew our sprite
+in the top left-most box, which is assigned the value of 0.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- spr(sprite_number)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw sprite 0,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span></code></pre></div>
+<p>The second and third parameters are X and Y coordinates for where it
+will be drawn, referring to the sprite’s top-left pixel.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- spr(sprite_number, x, y)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw sprite 0, at (x=20, y=20)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/WgBXIPA.png" style="width:60%" /><br />
+</p>
+<p>There are even more parameters! They are optional. You could specify
+how many tiles wide or tall to draw from the sprite sheet.</p>
+<p>For example, if you had more drawn sprites in the sprite editor:</p>
+<p><img src="https://i.imgur.com/eWfWkN7.png" style="width:90%" /><br />
+</p>
+<p>You could draw more than one using the sprite command if that is
+useful to you.</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- spr(sprite_number, x, y, w, h)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw from sprite 0 at (20, 20)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- with tile width of 1 and height of 2</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="https://i.imgur.com/n97sdbS.png" style="width:90%" /><br />
+</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw from sprite 0 at (20, 20)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- with tile width of 2 and height of 1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">1</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="https://i.imgur.com/tvhUJS4.png" style="width:90%" /><br />
+</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw from sprite 0 at (20, 20)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- with tile width of 2 and height of 2</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="https://i.imgur.com/W5dhbZJ.png" style="width:90%" /><br />
+</p>
+<p>Here is a drawing with the different <code>w</code> and
+<code>h</code> values and what they would draw:</p>
+<p><img src="https://i.imgur.com/iQw6UhK.png" style="width:90%" /><br />
+</p>
+<p>The last two optional parameters are booleans (true or false). They
+are <code>flip_x</code> and <code>flip_y</code>, used to flip the sprite
+vertically or horizontally, as desired.</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw 2x2 tiles at (20, 20), flip it vertically (flip x).</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/wC13M6F.png" style="width:90%" /><br />
+</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw 2x2 tiles at (20, 20), flip it horizontally (flip y).</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">true</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/hhh86zT.png" style="width:90%" /><br />
+</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- draw 2x2 tiles at (20, 20), flip it vertically.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">true</span><span class="op">)</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/u32knM5.png" style="width:90%" /><br />
+</p>
+<h3 id="making-it-move">Making it Move</h3>
+<p>Let’s draw our cloud sprite and make it move across the screen!</p>
+<p>First let’s choose an initial X and Y position for our cloud, plug it
+into the <code>spr()</code> function, and write that inside the
+<code>_draw()</code> function.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<h4 id="variables">Variables:</h4>
+<p>We can use variables to store the X and Y position of our cloud. In
+order to make the cloud move horizontally, we will need to change its X
+position over time, this is where variables come in handy.</p>
+<p>Let’s create a variable for the cloud’s x position:
+<code>cloud_x</code>.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">cloud_x</span> <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="va">cloud_x</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<h4 id="incrementation">Incrementation:</h4>
+<p>To make the cloud move, we can increment the cloud_x variable within
+the <code>_update()</code> function. This function runs 30 times per
+second, so by increasing <code>cloud_x</code> by a small amount each
+time, the cloud will appear to move across the screen from left to
+right.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">cloud_x</span> <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="va">cloud_x</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- increment by 0.1 each time draw loop happens</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="va">cloud_x</span> <span class="op">=</span> <span class="va">cloud_x</span> <span class="op">+</span> <span class="dv">0.1</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/pBS7XyG.png" style="width:70%" /><br />
+</p>
+<p>The sprite appears to move, but it leaves a trail behind it. This is
+because the screen is not being cleared before each new frame is drawn.
+By cleared, we mean filling the screen with a solid color before drawing
+the new frame.</p>
+<h4 id="clearing-the-screen-cls-function">Clearing the Screen; CLS()
+Function:</h4>
+<p>To clear the screen, we can use the <strong>CLS()</strong> function
+at the beginning of the <code>_draw()</code> function. This function
+fills the screen with a solid color (default is black) before drawing
+anything else.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cls<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- clear the screen by drawing sa olid black color</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    cls<span class="op">(</span><span class="dv">0</span><span class="op">)</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="va">cloud_x</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- increment by 0.1 each time draw loop happens</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">cloud_x</span> <span class="op">=</span> <span class="va">cloud_x</span> <span class="op">+</span> <span class="dv">0.1</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="info">
+<p><span class="tc-accent"><strong>NOTE</strong></span></p>
+<p> </p>
+<p><code>cls(0)</code> is the equivalent of using:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>rectfill<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">127</span><span class="op">,</span><span class="dv">127</span><span class="op">,</span><span class="dv">0</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p><img src="https://i.imgur.com/bkvaBND.png" style="width:70%" /><br />
+</p>
+<p>This looks like a moving cloud! I drew the cloud sprite with a blue
+background, though..</p>
+<p>Instead of using the default clearing the screen with a black solid
+color, let’s use the same blue:</p>
+<p><img src="https://i.imgur.com/HTZrefn.png" style="width:50%" /><br />
+</p>
+<p>Looking at my color palette with their assigned numbers, I know that
+the blue I used is assigned the value of 12.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- clear the screen by drawing a solid black color</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    cls<span class="op">(</span><span class="dv">12</span><span class="op">)</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="va">cloud_x</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- increment by 0.1 each time draw loop happens</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="va">cloud_x</span> <span class="op">=</span> <span class="va">cloud_x</span> <span class="op">+</span> <span class="dv">0.1</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p><img src="https://i.imgur.com/axZJ7Wm.png"
+style="width:100%" /><br />
+</p>
+<p>That looks like a sky! But something happened with my black outline.
+This is because black is used as the default transparency color. If you
+really want black to be opaque, you can add this line in
+<code>_init()</code>:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _init<span class="op">()</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  palt<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>Or you could use a different color. I’ll just use the dark blue color
+instead.</p>
+<p><img src="https://i.imgur.com/KgEayf2.png"
+style="width:100%" /><br />
+</p>
+<h3 id="wrapping-around-the-screen">Wrapping Around the Screen</h3>
+<p>When the cloud completely exits the frame, we are left with just a
+blank blue screen. We should reset it to the left side so that it
+becomes visible again.</p>
+<p>To do this, we can use an <strong>if statement</strong>.</p>
+<div class="box">
+<p>“<strong>if</strong> the cloud is out of frame on the right, then
+reset it to a position on the left side”</p>
+</div>
+<p>We can write the code in the <code>_update()</code> function.</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _update<span class="op">()</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">cloud_x</span> <span class="op">&gt;</span> <span class="dv">127</span> <span class="cf">then</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">cloud_x</span> <span class="op">=</span> <span class="op">-</span><span class="dv">8</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>If cloud_x becomes higher than 127, it means it has completely left
+the frame; therefore, that is when the reset should happen.</p>
+<p>The reset position should be a negative value that is the width of
+the sprite size, so -8.</p>
+<h3 id="full-minimal-program">Full Minimal Program</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">cloud_x</span> <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _update<span class="op">()</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- reset cloud to the left side when out of frame</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">cloud_x</span> <span class="op">&gt;</span> <span class="dv">127</span> <span class="cf">then</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">cloud_x</span> <span class="op">=</span> <span class="op">-</span><span class="dv">8</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> _draw<span class="op">()</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- clear the screen by drawing a solid black color</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    cls<span class="op">(</span><span class="dv">12</span><span class="op">)</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- draw cloud sprite at (20, 20)</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    spr<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="va">cloud_x</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- increment by 0.1 each time the draw loop happens</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">cloud_x</span> <span class="op">=</span> <span class="va">cloud_x</span> <span class="op">+</span> <span class="dv">0.1</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<h3 id="adding-more-clouds-making-objects">Adding More Clouds (Making
+Objects)</h3>
+<div class="box">
+<p><strong>TIP</strong></p>
+<p>To take a screenshot of your screen, press <strong>Ctrl +
+6</strong>.</p>
+</div>
+<p><img src="https://i.imgur.com/4neWxUc.png"
+style="width:100%" /><br />
+</p></div>
+
+        <!-- previous / next, filled in from Blog/posts.json -->
+        <nav class="post-nav" id="post-nav" aria-label="More notes">
+          <a class="post-nav-all" href="../../blog.html">← all notes</a>
+        </nav>
+      </article>
+    </div>
+
+    <!-- copy buttons on code blocks -->
+    <script src="../../js/highlightjs-badge.js"></script>
+  </body>
+</html>

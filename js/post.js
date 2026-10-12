@@ -106,11 +106,20 @@ function setupToc() {
 // ---------- details from posts.json ----------
 
 function setupDetails() {
-  // /Blog/<slug>/<slug>.html
+  // /Blog/<slug>/<slug>.html or /KnowledgeBase/<slug>/<slug>.html
   var parts = location.pathname.split('/').filter(Boolean);
   var slug = decodeURIComponent(parts[parts.length - 2] || '');
+  var kb = parts[parts.length - 3] === 'KnowledgeBase';
+  var listUrl = kb ? '../../data/knowledgebase.json' : '../posts.json';
+  var backHref = '../../blog.html' + (kb ? '#knowledgebase' : '');
+  var backText = kb ? 'knowledge base' : 'all notes';
 
-  fetch('../posts.json')
+  document.querySelectorAll('.bar-home, .post-nav-all').forEach(function (a) {
+    a.href = backHref;
+  });
+  document.querySelector('.bar-back').textContent = '← ' + backText;
+
+  fetch(listUrl)
     .then(function (r) {
       return r.json();
     })
@@ -136,6 +145,17 @@ function setupDetails() {
         })
         .join(' ');
 
+      // guides come with a PDF version
+      if (post.pdf) {
+        var dl = document.createElement('a');
+        dl.className = 'post-download';
+        dl.href = './' + post.pdf;
+        dl.setAttribute('download', '');
+        dl.innerHTML = 'Download PDF ↓ <small>' + escapeHTML(post.pdfSize || '') + '</small>';
+        var tags = document.getElementById('post-tags');
+        tags.parentNode.insertBefore(dl, tags.nextSibling);
+      }
+
       // covers can be .png or .gif
       var cover = document.getElementById('cover-img');
       if (post.cover && cover.getAttribute('src') !== './' + post.cover) {
@@ -156,7 +176,7 @@ function setupDetails() {
       nav.innerHTML =
         (newer ? link(newer, '← newer', 'post-nav-prev') : '<span></span>') +
         (older ? link(older, 'older →', 'post-nav-next') : '<span></span>') +
-        '<a class="post-nav-all" href="../../blog.html">all notes</a>';
+        '<a class="post-nav-all" href="' + backHref + '">' + backText + '</a>';
     })
     .catch(function () {});
 }

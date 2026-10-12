@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Getting Started with PICO-8",
+    "slug": "PICO-8_Getting_Started",
+    "category": "code",
+    "modified": "2026-09-25",
+    "description": "A beginner's guide to the PICO-8 fantasy console: where it comes from, the command line, SPLORE, the code and sprite editors, and making a first animation with clouds drifting across the screen.",
+    "tags": ["PICO-8", "Lua", "game design", "pixel art"],
+    "cover": "cover/cover.jpg",
+    "pdf": "PICO-8_Getting_Started.pdf",
+    "pdfSize": "7 MB"
+  }
+]

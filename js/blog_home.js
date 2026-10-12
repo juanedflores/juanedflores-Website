@@ -1,7 +1,9 @@
 // Teaching & resources page (blog.html). Builds the cards from
-// data/teaching.json (edited by hand) and Blog/posts.json (kept up to date
-// by Blog/newBlogEntry.py), with search and filters.
-// Keyboard extras: / searches, t shows teaching, b shows notes, esc clears.
+// data/teaching.json (edited by hand), data/knowledgebase.json (guides built
+// by KnowledgeBase/build.sh) and Blog/posts.json (kept up to date by
+// Blog/newBlogEntry.py), with search and filters.
+// Keyboard extras: / searches, t shows teaching, k the knowledge base,
+// b notes, esc clears.
 
 var CATEGORY_LABELS = {
   sound: 'sound',
@@ -21,14 +23,22 @@ function escapeHTML(s) {
 
 function cardHTML(it) {
   var search = [it.title, it.meta, it.description, it.tags.join(' ')].join(' ').toLowerCase();
-  return (
-    '<a class="card" href="' + it.url + '" data-search="' + escapeHTML(search) + '">' +
+  var inner =
     '<img loading="lazy" src="' + it.cover + '" alt="">' +
     '<div class="card-body">' +
     '<p class="card-meta">' + escapeHTML(it.meta) + '</p>' +
     '<h3>' + escapeHTML(it.title) + '</h3>' +
     '<p>' + escapeHTML(it.description) + '</p>' +
-    '</div></a>'
+    '</div>';
+  if (!it.pdf) {
+    return '<a class="card" href="' + it.url + '" data-search="' + escapeHTML(search) + '">' + inner + '</a>';
+  }
+  // guides: the card links to the page, with its own PDF download link
+  return (
+    '<div class="card" data-search="' + escapeHTML(search) + '">' +
+    '<a class="card-link" href="' + it.url + '">' + inner + '</a>' +
+    '<a class="card-pdf" href="' + it.pdf + '" download>Download PDF ↓ <small>' + escapeHTML(it.pdfSize || '') + '</small></a>' +
+    '</div>'
   );
 }
 
@@ -45,6 +55,20 @@ function fromPost(p) {
     description: p.description,
     tags: p.tags,
     cover: dir + p.cover,
+  };
+}
+
+function fromGuide(g) {
+  var dir = 'KnowledgeBase/' + g.slug + '/';
+  return {
+    title: g.title,
+    meta: 'guide · ' + (CATEGORY_LABELS[g.category] || g.category) + ' · ' + g.modified.slice(0, 4),
+    url: dir + g.slug + '.html',
+    description: g.description,
+    tags: g.tags,
+    cover: dir + g.cover,
+    pdf: dir + g.pdf,
+    pdfSize: g.pdfSize,
   };
 }
 
@@ -100,6 +124,8 @@ function setupEvents() {
       search.focus();
     } else if (e.key === 't') {
       setFilter('teaching');
+    } else if (e.key === 'k') {
+      setFilter('kb');
     } else if (e.key === 'b') {
       setFilter('post');
     } else if (e.key === 'Escape') {
@@ -265,15 +291,27 @@ function getJSON(url) {
 
 document.addEventListener('DOMContentLoaded', function () {
   setupEvents();
-  Promise.all([getJSON('data/teaching.json'), getJSON('Blog/posts.json')])
+  Promise.all([getJSON('data/teaching.json'), getJSON('Blog/posts.json'), getJSON('data/knowledgebase.json')])
     .then(function (data) {
       var posts = data[1].slice().sort(function (a, b) {
         return b.modified.localeCompare(a.modified);
       });
       document.querySelector('#teaching .grid').innerHTML = data[0].map(fromTeaching).map(cardHTML).join('');
       document.querySelector('#notes .grid').innerHTML = posts.map(fromPost).map(cardHTML).join('');
+      document.querySelector('#knowledgebase .grid').innerHTML = data[2].map(fromGuide).map(cardHTML).join('');
       apply();
       setupFeatured(posts);
+      // the sections fill in after load, so jump to #knowledgebase etc. now,
+      // and again once images and fonts above it have finished loading
+      var target = location.hash && document.getElementById(location.hash.slice(1));
+      if (target) {
+        target.scrollIntoView();
+        if (document.readyState !== 'complete') {
+          window.addEventListener('load', function () {
+            target.scrollIntoView();
+          });
+        }
+      }
     })
     .catch(function () {
       var empty = document.querySelector('.empty');

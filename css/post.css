@@ -511,6 +511,121 @@ h1.post-title {
   font: inherit;
 }
 
+/* KnowledgeBase guides (KnowledgeBase/web.lua turns the PDF-only parts
+   of the markdown into these) */
+
+/* text that flows into two columns, like the PDF */
+.post-body .columns {
+  columns: 2 240px;
+  column-gap: 32px;
+  margin: 0 0 1.2em;
+}
+.post-body .columns > * {
+  break-inside: avoid;
+}
+.post-body .columns img {
+  margin-top: 0;
+}
+/* the PDF ends image lines with "\" (a line break); the web doesn't need it */
+.post-body img + br {
+  display: none;
+}
+.post-body p:has(> img:only-child),
+.post-body p:has(> img + br:last-child) {
+  margin-bottom: 0.4em;
+}
+
+/* note and tip boxes */
+.post-body .info,
+.post-body .box,
+.post-body .warning,
+.post-body .error {
+  margin: 0 0 1.4em;
+  padding: 14px 18px 2px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: var(--panel);
+}
+.post-body .box {
+  border-left-color: var(--heading);
+}
+.post-body .warning,
+.post-body .error {
+  border-left-color: #ff004d;
+}
+.post-body .info > p:first-child,
+.post-body .box > p:first-child {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+
+/* \commandline: a line typed at the PICO-8 prompt */
+.post-body .cmdline {
+  margin: 0 0 1.2em;
+  padding: 8px 14px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+.post-body .info .cmdline,
+.post-body .blank .cmdline {
+  margin-bottom: 0.6em;
+}
+.post-body .cmdline .tc-gray {
+  color: #9a9a9a;
+}
+.post-body .cmdline .tc-pico-cyan {
+  color: #29adff;
+}
+.post-body .cmdline .tc-pico-magenta {
+  color: #ff77a8;
+}
+
+/* colors from the PDF, mapped to the site's palette */
+.post-body .tc-accent {
+  color: var(--accent);
+}
+.post-body .tc-muted {
+  color: var(--muted);
+}
+.post-body .tc-pico-pink {
+  color: #ff77a8;
+}
+.post-body .tc-pico-red {
+  color: #ff004d;
+}
+:root[data-theme='day'] .post-body .tc-pico-pink {
+  color: #d6336c;
+}
+:root[data-theme='day'] .post-body .tc-pico-red {
+  color: #d1003f;
+}
+
+/* download button in the heading */
+.post-download {
+  display: inline-block;
+  margin: 0 0 28px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: var(--highlight);
+  color: var(--on-highlight) !important;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none !important;
+}
+.post-download:hover {
+  filter: brightness(1.08);
+}
+.post-download small {
+  font-weight: 400;
+  opacity: 0.75;
+}
+
 /* ---------- previous / next ---------- */
 
 .post-nav {
