@@ -1,0 +1,613 @@
+/* Blog posts (pandoc/blog_template.html). Colors, type and the night/day
+   toggle come from theme.css. UIkit's stylesheet loads first (some posts
+   use its accordions), so a few rules here undo its defaults. Code blocks
+   use Vim's classic "blue" colors in both night and day. */
+
+:root {
+  --bar-h: 52px;
+  --toc-w: 240px;
+  --measure: 70ch;
+
+  /* code: Vim "blue" highlight groups */
+  --code-bg: #00005f;
+  --code-fg: #ffd700; /* Normal */
+  --code-comment: #878787; /* Comment */
+  --code-string: #5fffff; /* String, Constant */
+  --code-keyword: #ffffff; /* Statement */
+  --code-type: #ffa500; /* Type */
+  --code-special: #d787d7; /* Special */
+  --code-preproc: #00ff00; /* PreProc */
+  --code-ident: #bcbcbc; /* Identifier, Function */
+}
+
+html {
+  scroll-padding-top: calc(var(--bar-h) + 16px);
+}
+body {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* ---------- top bar ---------- */
+
+.post-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--bar-h);
+  padding: 0 24px;
+  background: var(--bg-glass);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+.bar-home {
+  color: var(--text) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.bar-name {
+  color: var(--heading);
+  font-weight: 700;
+}
+.bar-back {
+  margin-left: 10px;
+  color: var(--muted);
+}
+.bar-home:hover .bar-back {
+  color: var(--accent);
+}
+.bar-fill {
+  flex: 1;
+}
+.toc-toggle {
+  display: none; /* the contents are a sidebar on wide screens */
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.toc-toggle:hover,
+.toc-toggle[aria-expanded='true'] {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ---------- layout ---------- */
+
+.post-layout {
+  display: grid;
+  grid-template-columns: var(--toc-w) minmax(0, 1fr);
+  gap: 56px;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+}
+.no-toc .post-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.post {
+  min-width: 0;
+  max-width: var(--measure);
+}
+.no-toc .post {
+  margin: 0 auto;
+}
+
+/* ---------- contents ---------- */
+
+.toc {
+  position: sticky;
+  top: calc(var(--bar-h) + 24px);
+  align-self: start;
+  max-height: calc(100vh - var(--bar-h) - 48px);
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.toc[hidden] {
+  display: none;
+}
+.toc-title {
+  margin: 0 0 10px;
+  color: var(--heading);
+  font-weight: 700;
+}
+.toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.toc ul ul {
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+}
+.toc li {
+  margin: 0;
+}
+.toc a {
+  display: block;
+  padding: 3px 0 3px 8px;
+  border-left: 2px solid transparent;
+  color: var(--muted);
+}
+.toc a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+.toc a[aria-current='true'] {
+  border-left-color: var(--heading);
+  color: var(--heading);
+}
+
+/* ---------- heading ---------- */
+
+.post-cover {
+  display: block;
+  width: 100%;
+  max-height: 440px;
+  margin: 0 0 28px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--img-bg);
+}
+.post-cover[hidden] {
+  display: none;
+}
+.post-meta {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+h1.post-title {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1.2;
+}
+.post-tags {
+  margin: 0 0 32px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+.post-tags:empty {
+  display: none;
+}
+.post-head {
+  padding-bottom: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- article body ---------- */
+
+.post-body {
+  color: var(--text);
+  font-size: 1rem;
+}
+.post-body > :first-child {
+  margin-top: 0;
+}
+.post-body p,
+.post-body ul,
+.post-body ol,
+.post-body dl,
+.post-body table,
+.post-body blockquote,
+.post-body figure,
+.post-body pre {
+  margin: 0 0 1.2em;
+}
+.post-body li {
+  margin: 0.25em 0;
+}
+.post-body li > p {
+  margin: 0;
+}
+
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+  margin: 2em 0 0.6em;
+  color: var(--heading);
+  font-family: var(--mono);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.post-body h1 {
+  font-size: 1.5rem;
+}
+.post-body h2 {
+  font-size: 1.25rem;
+}
+.post-body h3 {
+  font-size: 1.08rem;
+}
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.post-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.post-body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.post-body em {
+  color: inherit; /* UIkit colors <em> pink */
+}
+
+.post-body img,
+.post-body video,
+.post-body iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.4em auto 0.6em;
+  border-radius: 6px;
+}
+.post-body iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+.post-body figure {
+  text-align: center;
+}
+.post-body .caption,
+.post-body figcaption {
+  display: block;
+  margin: 0 0 1.6em;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.post-body blockquote {
+  padding: 2px 0 2px 18px;
+  border-left: 3px solid var(--heading);
+  color: var(--muted);
+  font-size: 1rem;
+  font-style: normal;
+}
+
+.post-body hr {
+  height: 1px;
+  margin: 2.4em 0;
+  border: none;
+  background: var(--line);
+}
+
+.post-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.post-body th,
+.post-body td {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-align: left;
+}
+.post-body th {
+  background: var(--panel);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+/* footnotes */
+.post-body .footnotes,
+.post-body #footnotes {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ---------- code ---------- */
+
+.post-body code {
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.88em;
+  white-space: break-spaces;
+}
+:root[data-theme='day'] .post-body code {
+  background: #eceaf7;
+  color: #000087;
+}
+
+.post-body pre {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--code-bg);
+}
+.post-body pre code,
+:root[data-theme='day'] .post-body pre code,
+.post-body pre code.hljs {
+  display: block;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border-radius: 0;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  white-space: pre;
+}
+.post-body div.sourceCode {
+  margin: 0 0 1.2em;
+  background: none;
+}
+/* pandoc's line anchors */
+.post-body pre code a {
+  text-decoration: none;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--code-comment);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-name {
+  color: var(--code-keyword);
+  font-weight: 600;
+}
+.hljs-string,
+.hljs-number,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-addition {
+  color: var(--code-string);
+}
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-built_in,
+.hljs-builtin-name {
+  color: var(--code-type);
+}
+.hljs-meta,
+.hljs-meta-keyword {
+  color: var(--code-preproc);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params,
+.hljs-title,
+.hljs-function {
+  color: var(--code-ident);
+}
+.hljs-tag,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-subst,
+.hljs-deletion {
+  color: var(--code-special);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* copy button (js/highlightjs-badge.js injects its own styles after these,
+   hence the extra specificity) */
+.post-body .code-badge-pre .code-badge {
+  border-radius: 0 7px 0 7px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+}
+.post-body .code-badge .code-badge-language {
+  color: var(--code-fg);
+}
+.post-body .code-badge .code-badge-copy-icon {
+  font-size: 1em;
+}
+
+/* ---------- things inside particular posts ---------- */
+
+/* UIkit accordions (Daisy Seed, More About This Blog) */
+.post-body .uk-accordion > li {
+  margin: 0 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.post-body .uk-accordion-title {
+  display: block;
+  padding: 10px 16px;
+  color: var(--heading);
+  font-family: var(--mono);
+  font-size: 1rem;
+  text-decoration: none;
+}
+/* UIkit's +/- icon is dark; lighten it at night */
+:root[data-theme='night'] .post-body .uk-accordion-title::before {
+  filter: invert(1);
+}
+.post-body .uk-accordion-content {
+  margin: 0;
+  padding: 0 16px 12px;
+}
+
+/* RNBO patches (Daisy Seed) */
+.post-body #rnbo-root {
+  max-width: 420px;
+  margin: 1.4em auto;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+.post-body .ezdac-button {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  border: none;
+  background: transparent url('../resources/ezdac_off.svg') no-repeat center / contain;
+  cursor: pointer;
+}
+.post-body .param-label {
+  display: block;
+  padding-top: 10px;
+  color: var(--text);
+  font-weight: 600;
+}
+.post-body #rnbo-root input {
+  width: 100%;
+  accent-color: var(--heading);
+}
+.post-body #rnbo-root input[type='text'],
+.post-body #rnbo-root input:not([type]) {
+  margin-top: 4px;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+/* ---------- previous / next ---------- */
+
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.post-nav a {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  text-decoration: none !important;
+}
+.post-nav a:hover {
+  border-color: var(--heading);
+}
+.post-nav-next {
+  text-align: right;
+}
+.post-nav-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+.post-nav-title {
+  font-weight: 600;
+  line-height: 1.35;
+}
+.post-nav .post-nav-all {
+  grid-column: 1 / -1;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 960px) {
+  .post-layout {
+    display: block;
+    padding: 24px 18px 64px;
+  }
+  .post {
+    margin: 0 auto;
+  }
+  .toc-toggle {
+    display: inline-block;
+  }
+  .toc-toggle[hidden] {
+    display: none;
+  }
+  /* contents drop down under the top bar */
+  .toc {
+    position: fixed;
+    top: var(--bar-h);
+    right: 0;
+    left: 0;
+    z-index: 9;
+    display: none;
+    max-height: 70vh;
+    padding: 16px 20px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    font-size: 0.9rem;
+  }
+  .toc-open .toc {
+    display: block;
+  }
+  h1.post-title {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .post-bar {
+    padding: 0 14px;
+  }
+  .bar-back {
+    display: none;
+  }
+  .post-nav {
+    grid-template-columns: 1fr;
+  }
+  .post-nav-next {
+    text-align: left;
+  }
+}

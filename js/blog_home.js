@@ -2,7 +2,6 @@
 // data/teaching.json (edited by hand) and Blog/posts.json (kept up to date
 // by Blog/newBlogEntry.py), with search and filters.
 // Keyboard extras: / searches, t shows teaching, b shows notes, esc clears.
-// The night/day toggle remembers the visitor's choice (see the <head> script).
 
 var CATEGORY_LABELS = {
   sound: 'sound',
@@ -257,26 +256,6 @@ function setupFeatured(posts) {
   if (auto) requestAnimationFrame(tick);
 }
 
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  var btn = document.getElementById('theme_toggle');
-  var night = theme === 'night';
-  // the button names the mode it switches to
-  btn.textContent = night ? '☀ day' : '☾ night';
-  btn.setAttribute('aria-label', night ? 'Switch to day mode' : 'Switch to night mode');
-}
-
-function setupTheme() {
-  applyTheme(document.documentElement.getAttribute('data-theme') || 'night');
-  document.getElementById('theme_toggle').addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'night' ? 'day' : 'night';
-    try {
-      localStorage.setItem('jef-theme', next);
-    } catch (e) {}
-    applyTheme(next);
-  });
-}
-
 function getJSON(url) {
   return fetch(url).then(function (r) {
     if (!r.ok) throw new Error(url);
@@ -285,7 +264,6 @@ function getJSON(url) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  setupTheme();
   setupEvents();
   Promise.all([getJSON('data/teaching.json'), getJSON('Blog/posts.json')])
     .then(function (data) {

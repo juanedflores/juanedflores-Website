@@ -3,95 +3,7 @@
    accent: a few colors, monospace for labels and headings, a readable
    sans for everything you read. */
 
-/* ---------- tokens ----------
-   Night is Vim's classic "blue" colorscheme. Day inverts it: navy ink on
-   warm paper, with the same gold as a highlighter. The page follows the
-   visitor's device setting until they pick one (data-theme on <html>). */
-
-:root,
-:root[data-theme='night'] {
-  --bg: #000087; /* Normal bg */
-  --bg-glass: rgba(0, 0, 135, 0.96);
-  --panel: #0c0c9c; /* cards, a step lighter than the page */
-  --panel-hover: #1414a8;
-  --img-bg: #00005f;
-  --line: rgba(95, 255, 255, 0.22); /* cyan, faint */
-  --heading: #ffd700; /* Normal fg */
-  --accent: #5fffff; /* String */
-  --text: #ecebf5;
-  --muted: #b4b6d8;
-
-  color-scheme: dark;
-}
-
-:root[data-theme='day'] {
-  --bg: #faf8f1;
-  --bg-glass: rgba(250, 248, 241, 0.96);
-  --panel: #ffffff;
-  --panel-hover: #fffbe3;
-  --img-bg: #ece9df;
-  --line: rgba(0, 0, 135, 0.16);
-  --heading: #000087;
-  --accent: #0057b8;
-  --text: #1b1b3a;
-  --muted: #55576e;
-
-  color-scheme: light;
-}
-
-:root {
-  /* the same in both: gold highlight with navy on it */
-  --highlight: #ffd700;
-  --on-highlight: #000087;
-
-  --mono: 'IBM Plex Mono', 'BlexMono Nerd Font Mono', ui-monospace, Menlo, monospace;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-}
-
-/* ---------- base ---------- */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 17px;
-  line-height: 1.55;
-}
-
-a {
-  color: var(--accent);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-::selection {
-  background: var(--highlight);
-  color: var(--on-highlight);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
+/* Colors, type and base styles are in theme.css. */
 
 .wrap {
   width: 100%;
@@ -156,21 +68,6 @@ a:hover {
 .artist-link {
   font-family: var(--mono);
   font-size: 0.9rem;
-}
-
-.theme-toggle {
-  padding: 2px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-.theme-toggle:hover {
-  border-color: var(--accent);
-  color: var(--text);
 }
 
 /* a little space at the end of the page */

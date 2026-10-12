@@ -14,19 +14,10 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/blog_home.css" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
-    <!-- night or day, before the page paints: the visitor's choice, else their device setting -->
-    <script>
-      (function () {
-        var t = null;
-        try {
-          t = localStorage.getItem('jef-theme');
-        } catch (e) {}
-        if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
-        document.documentElement.setAttribute('data-theme', t);
-      })();
-    </script>
+    <script src="js/theme.js"></script>
     <script src="js/blog_home.js" defer></script>
   </head>
 

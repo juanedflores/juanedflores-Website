@@ -4,6 +4,9 @@ PANDOCFLAGSHTML =                                           \
   --from=markdown+markdown_in_html_blocks+bracketed_spans   \
   --template=../pandoc/blog_template.html
 
+# use mermaid-filter for diagrams when it's installed
+MERMAID := $(if $(shell command -v mermaid-filter),-F mermaid-filter,)
+
 # a wildcard that searches recursively
 rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
@@ -15,7 +18,7 @@ all: $(HTML)
 
 %.html: %.md
 	@echo $@
-	pandoc $< -o $@ -F "mermaid-filter" $(PANDOCFLAGSHTML)
+	pandoc $< -o $@ $(MERMAID) $(PANDOCFLAGSHTML)
 	python3 newBlogEntry.py $(@D)
 
 clean:
