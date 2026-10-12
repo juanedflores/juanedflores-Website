@@ -20,7 +20,8 @@
       "DSP",
       "Eurorack"
     ],
-    "cover": "cover/cover.png"
+    "cover": "cover/cover.png",
+    "featured": 1
   },
   {
     "title": "Recreating the EMU Modular System in VCV Rack using Max MSP RNBO",
@@ -32,7 +33,8 @@
       "Analog Synthesis",
       "RNBO"
     ],
-    "cover": "cover/cover.png"
+    "cover": "cover/cover.png",
+    "featured": 2
   },
   {
     "title": "Workflow for this Blog",
@@ -94,7 +96,8 @@
       "Color Theory",
       "Arduino"
     ],
-    "cover": "cover/cover.png"
+    "cover": "cover/cover.png",
+    "featured": 4
   },
   {
     "title": "Linking Old and New Analog Video Synthesis",
@@ -107,6 +110,7 @@
       "Shaders",
       "Realtime"
     ],
-    "cover": "cover/cover.gif"
+    "cover": "cover/cover.gif",
+    "featured": 3
   }
 ]

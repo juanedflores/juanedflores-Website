@@ -178,6 +178,192 @@ main.wrap {
   padding-bottom: 64px;
 }
 
+/* ---------- featured walkthrough ---------- */
+
+.featured {
+  padding: 32px 0 36px;
+}
+.featured[hidden] {
+  display: none;
+}
+.featured-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.featured-head h2 {
+  margin: 0;
+  color: var(--heading);
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.featured-nav {
+  display: flex;
+  gap: 8px;
+}
+.featured-nav button {
+  width: 38px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.featured-nav button:hover {
+  border-color: var(--accent);
+}
+
+/* slides sit on top of each other; the current one fades in */
+.slides {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  touch-action: pan-y;
+}
+.slide {
+  display: grid;
+  grid-area: 1 / 1;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s;
+}
+.slide.is-current {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* the image fills its half however tall the text is */
+.slide-img {
+  position: relative;
+  display: block;
+  min-height: 380px;
+  overflow: hidden;
+  background: var(--img-bg);
+}
+.slide-img img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 6s ease-out;
+}
+.slide.is-current .slide-img img {
+  transform: scale(1);
+}
+/* small pixel-art covers (Game Boy Camera) stay crisp when enlarged */
+.slide-img img.pixel {
+  image-rendering: pixelated;
+}
+
+.slide-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 36px;
+  border-left: 1px solid var(--line);
+}
+.slide-step {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+.slide-step b {
+  color: var(--heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.slide-body h3 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.slide-desc {
+  /* four lines at most, so every slide is the same height */
+  display: -webkit-box;
+  margin: 0 0 16px;
+  overflow: hidden;
+  color: var(--muted);
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.slide-tags {
+  margin: 0 0 20px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+.slide-read {
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: var(--highlight);
+  color: var(--on-highlight) !important;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+}
+.slide-read:hover {
+  filter: brightness(1.08);
+}
+
+/* numbered steps, each with a bar that fills while its slide is up */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.steps button {
+  width: 100%;
+  padding: 8px 0 0;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+}
+.steps button span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.steps button::before {
+  content: '';
+  display: block;
+  height: 3px;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  background: linear-gradient(var(--heading), var(--heading)) 0 0 / var(--fill, 0%) 100% no-repeat, var(--line);
+}
+.steps button[aria-current='true'] {
+  color: var(--text);
+}
+.steps button:hover {
+  color: var(--text);
+}
+
 /* ---------- search + filters ---------- */
 
 .toolbar {
@@ -380,6 +566,29 @@ main.wrap {
   }
 }
 
+@media (max-width: 860px) {
+  .slide {
+    grid-template-columns: 1fr;
+    /* slides share the tallest one's height; leave the slack at the bottom */
+    align-content: start;
+  }
+  .slide-img {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+  .slide-body {
+    padding: 20px 20px 24px;
+    border-top: 1px solid var(--line);
+    border-left: none;
+  }
+  .slide-body h3 {
+    font-size: 1.25rem;
+  }
+  .steps button span {
+    display: none; /* just the bars on small screens */
+  }
+}
+
 @media (max-width: 520px) {
   .grid {
     grid-template-columns: 1fr;
@@ -388,7 +597,10 @@ main.wrap {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .card,
+  .slide,
+  .slide-img img {
     transition: none;
+    transform: none;
   }
 }

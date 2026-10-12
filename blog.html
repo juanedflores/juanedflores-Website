@@ -70,6 +70,19 @@
     </header>
 
     <main class="wrap">
+      <!-- FEATURED: a walkthrough of the posts marked "featured" in Blog/posts.json -->
+      <section class="featured" aria-roledescription="carousel" aria-label="Featured posts" hidden>
+        <div class="featured-head">
+          <h2>Featured</h2>
+          <div class="featured-nav">
+            <button class="fx-prev" type="button" aria-label="Previous">←</button>
+            <button class="fx-next" type="button" aria-label="Next">→</button>
+          </div>
+        </div>
+        <div class="slides"></div>
+        <ol class="steps" aria-label="Choose a slide"></ol>
+      </section>
+
       <div class="toolbar">
         <label class="search">
           <span class="search-caret" aria-hidden="true">/</span>

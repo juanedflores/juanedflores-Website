@@ -106,8 +106,155 @@ function setupEvents() {
     } else if (e.key === 'Escape') {
       search.value = '';
       setFilter('all');
+    } else if (e.key === 'ArrowRight' && featured) {
+      featured.go(featured.index + 1, true);
+    } else if (e.key === 'ArrowLeft' && featured) {
+      featured.go(featured.index - 1, true);
     }
   });
+}
+
+// ---------- featured walkthrough ----------
+// Posts with "featured": n in posts.json, in that order. Advances every
+// SLIDE_MS, pauses while hovered or focused, and stops for good once the
+// visitor steps through it themselves (or prefers reduced motion).
+
+var SLIDE_MS = 7000;
+var featured = null;
+
+function setupFeatured(posts) {
+  var picks = posts
+    .filter(function (p) {
+      return p.featured;
+    })
+    .sort(function (a, b) {
+      return a.featured - b.featured;
+    });
+  var root = document.querySelector('.featured');
+  if (!picks.length) return;
+
+  var n = picks.length;
+  var pad = function (i) {
+    return String(i).padStart(2, '0');
+  };
+
+  root.querySelector('.slides').innerHTML = picks
+    .map(function (p, i) {
+      var it = fromPost(p);
+      return (
+        '<article class="slide" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' of ' + n + '">' +
+        '<a class="slide-img" href="' + it.url + '" tabindex="-1"><img src="' + it.cover + '" alt=""></a>' +
+        '<div class="slide-body">' +
+        '<p class="slide-step"><b>' + pad(i + 1) + '</b> / ' + pad(n) + ' · ' + escapeHTML(it.meta) + '</p>' +
+        '<h3>' + escapeHTML(it.title) + '</h3>' +
+        '<p class="slide-desc">' + escapeHTML(it.description) + '</p>' +
+        '<p class="slide-tags">' +
+        it.tags
+          .map(function (t) {
+            return '#' + escapeHTML(t.replace(/\s+/g, '-'));
+          })
+          .join(' ') +
+        '</p>' +
+        '<a class="slide-read" href="' + it.url + '">Read →</a>' +
+        '</div></article>'
+      );
+    })
+    .join('');
+
+  root.querySelector('.steps').innerHTML = picks
+    .map(function (p, i) {
+      return '<li><button type="button" aria-label="Show slide ' + (i + 1) + ': ' + escapeHTML(p.title) + '"><span>' + pad(i + 1) + ' ' + escapeHTML(p.title) + '</span></button></li>';
+    })
+    .join('');
+
+  // keep small pixel-art covers crisp when they're scaled up
+  root.querySelectorAll('.slide-img img').forEach(function (img) {
+    img.addEventListener('load', function () {
+      if (img.naturalWidth < 600) img.classList.add('pixel');
+    });
+  });
+
+  var slides = root.querySelectorAll('.slide');
+  var steps = root.querySelectorAll('.steps button');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var auto = !reduced && n > 1;
+  var paused = false;
+  var elapsed = 0;
+  var last = null;
+
+  featured = {
+    index: 0,
+    go: function (i, byVisitor) {
+      if (byVisitor) auto = false;
+      featured.index = (i + n) % n;
+      elapsed = 0;
+      slides.forEach(function (s, j) {
+        var on = j === featured.index;
+        s.classList.toggle('is-current', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+        s.querySelectorAll('a').forEach(function (a) {
+          if (!a.classList.contains('slide-img')) a.tabIndex = on ? 0 : -1;
+        });
+      });
+      steps.forEach(function (b, j) {
+        b.setAttribute('aria-current', j === featured.index ? 'true' : 'false');
+        // finished steps stay filled, like a walkthrough's progress
+        b.style.setProperty('--fill', j < featured.index ? '100%' : j === featured.index && !auto ? '100%' : '0%');
+      });
+    },
+  };
+
+  steps.forEach(function (b, j) {
+    b.addEventListener('click', function () {
+      featured.go(j, true);
+    });
+  });
+  root.querySelector('.fx-prev').addEventListener('click', function () {
+    featured.go(featured.index - 1, true);
+  });
+  root.querySelector('.fx-next').addEventListener('click', function () {
+    featured.go(featured.index + 1, true);
+  });
+
+  // swipe on touch screens
+  var startX = null;
+  var slidesEl = root.querySelector('.slides');
+  slidesEl.addEventListener('touchstart', function (e) {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+  slidesEl.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) featured.go(featured.index + (dx < 0 ? 1 : -1), true);
+    startX = null;
+  });
+
+  root.addEventListener('mouseenter', function () {
+    paused = true;
+  });
+  root.addEventListener('mouseleave', function () {
+    paused = false;
+  });
+  root.addEventListener('focusin', function () {
+    paused = true;
+  });
+  root.addEventListener('focusout', function () {
+    paused = false;
+  });
+
+  function tick(now) {
+    if (last !== null && auto && !paused && !document.hidden) {
+      elapsed += now - last;
+      steps[featured.index].style.setProperty('--fill', Math.min(100, (elapsed / SLIDE_MS) * 100) + '%');
+      if (elapsed >= SLIDE_MS) featured.go(featured.index + 1);
+    }
+    last = now;
+    if (auto) requestAnimationFrame(tick);
+  }
+
+  root.hidden = false;
+  featured.go(0);
+  if (auto) requestAnimationFrame(tick);
 }
 
 function applyTheme(theme) {
@@ -148,6 +295,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('#teaching .grid').innerHTML = data[0].map(fromTeaching).map(cardHTML).join('');
       document.querySelector('#notes .grid').innerHTML = posts.map(fromPost).map(cardHTML).join('');
       apply();
+      setupFeatured(posts);
     })
     .catch(function () {
       var empty = document.querySelector('.empty');
