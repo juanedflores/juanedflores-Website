@@ -14,71 +14,88 @@
     <link rel="stylesheet" href="css/site.css" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
     <script src="js/intro.js" defer></script>
+    <script src="js/works.js" defer></script>
   </head>
 
   <body>
-    <!-- the demo reel, full screen -->
-    <section class="intro" aria-label="Demo reel">
-      <video class="reel" autoplay muted loop playsinline poster="videos/Voltaje_720p-poster-00001.jpg" aria-label="Demo reel">
-        <source src="videos/Voltaje_720p-transcode.webm" type="video/webm" />
-        <source src="videos/Voltaje_720p-transcode.mp4" type="video/mp4" />
-      </video>
-      <div class="intro-ui">
-        <p class="intro-name">Juan Eduardo Flores</p>
-        <a class="scroll-cue" href="#works">works <span aria-hidden="true">↓</span></a>
-        <button class="sound" type="button" aria-pressed="false">sound off</button>
-      </div>
-    </section>
+    <!-- the reel, then the page: header, works and footer exactly a window
+         tall. The header holds to the bottom of the reel until it arrives. -->
+    <div class="home">
+      <!-- the demo reel, full screen -->
+      <section class="intro" aria-label="Demo reel">
+        <video class="reel" autoplay muted loop playsinline poster="videos/Voltaje_720p-poster-00001.jpg" aria-label="Demo reel">
+          <source src="videos/Voltaje_720p-transcode.webm" type="video/webm" />
+          <source src="videos/Voltaje_720p-transcode.mp4" type="video/mp4" />
+        </video>
+      </section>
 
-    <!-- THE PAGE -->
-    <header class="site-header">
-      <a class="site-name" href="index.html">Juan Eduardo Flores</a>
-      <nav class="site-nav" aria-label="Site">
-        <a href="#works">Works</a>
-        <a href="about.html">About</a>
-        <a href="blog.html">Resources</a>
-      </nav>
-    </header>
+      <header class="site-header">
+        <!-- data-ride: starts on the reel, rides up into the header (js/intro.js) -->
+        <a class="site-name" href="index.html" data-ride>Juan Eduardo Flores</a>
+        <nav class="site-nav" aria-label="Site">
+          <a href="#works" aria-current="page" data-ride>Works</a>
+          <a href="about.html" data-ride>About</a>
+        </nav>
+      </header>
 
-    <main class="page" id="works">
-      <h1 class="section-title">Works</h1>
+      <main class="page" id="works">
+        <h1 class="visually-hidden">Works</h1>
+        <!-- Index opens a list of every work over the left of the grid, with
+             a preview of the one under the pointer on the right; the pages
+             show the works four at a time once there are more than fit one
+             screen (js/works.js) -->
+        <div class="section-title works-bar">
+          <button class="index-toggle" type="button" aria-expanded="false" aria-controls="index-panel" hidden>Index</button>
+          <nav class="pages" aria-label="Pages of works">
+            <span class="page-at" aria-live="polite">1 / 1</span>
+            <button class="page-turn" type="button" data-turn="-1" aria-label="Previous page" disabled>←</button>
+            <button class="page-turn" type="button" data-turn="1" aria-label="Next page" disabled>→</button>
+          </nav>
+        </div>
 
-      <ul class="works">
-        <li>
-          <a class="work" href="works/everyday-once-in-a-lifetime.html">
-            <img src="images/thesis-2023/3189-sm.jpg" alt="Two videos side by side on a wall-mounted TV" />
-            <span class="work-title">Everyday Once in a Lifetime</span>
-            <span class="work-meta">2023 · Video</span>
-          </a>
-        </li>
-        <li>
-          <a class="work" href="works/backpack.html">
-            <img src="images/thesis-2023/3243-sm.jpg" alt="A screen glowing through the open zipper of a black backpack" />
-            <span class="work-title">Backpack (from the zipper series)</span>
-            <span class="work-meta">2021 · Backpack, monitor, and zipper</span>
-          </a>
-        </li>
-        <li>
-          <a class="work" href="works/untitled-2023.html">
-            <img src="images/thesis-2023/3262-sm.jpg" alt="Light through the opening of a zipper across a black curtain" />
-            <span class="work-title">Untitled</span>
-            <span class="work-meta">2023</span>
-          </a>
-        </li>
-        <li>
-          <a class="work" href="works/walking-poems.html">
-            <img src="images/thesis-2023/3241-sm.jpg" alt="A vertical screen, a framed photograph and two mounted sheets of paper" />
-            <span class="work-title">Walking Poems: SAIC Gallery</span>
-            <span class="work-meta">2023 · Video, color print, water soluble paper</span>
-          </a>
-        </li>
-      </ul>
-    </main>
+        <div class="shelf">
+          <ul class="works">
+            <li data-blurb="A collection of videos sent by the artist's mother of the inside of her purse are synced to fireball events from the American Meteor Society YouTube channel.">
+              <a class="work" href="works/everyday-once-in-a-lifetime.html">
+                <img src="images/thesis-2023/3189-sm.jpg" alt="Two videos side by side on a wall-mounted TV" />
+                <span class="work-title">Everyday Once in a Lifetime</span>
+                <span class="work-meta">2023 · Video</span>
+              </a>
+            </li>
+            <li data-blurb="The video is of a live feed from the El Paso, Texas – Ciudad Juárez, Mexico International Border Bridge.">
+              <a class="work" href="works/backpack.html">
+                <img src="images/thesis-2023/3243-sm.jpg" alt="A screen glowing through the open zipper of a black backpack" />
+                <span class="work-title">Backpack (from the zipper series)</span>
+                <span class="work-meta">2021 · Backpack, monitor, and zipper</span>
+              </a>
+            </li>
+            <li>
+              <a class="work" href="works/untitled-2023.html">
+                <img src="images/thesis-2023/3262-sm.jpg" alt="Light through the opening of a zipper across a black curtain" />
+                <span class="work-title">Untitled</span>
+                <span class="work-meta">2023</span>
+              </a>
+            </li>
+            <li data-blurb="Instructions for a walk are performed and transformed during the process.">
+              <a class="work" href="works/walking-poems.html">
+                <img src="images/thesis-2023/3241-sm.jpg" alt="A vertical screen, a framed photograph and two mounted sheets of paper" />
+                <span class="work-title">Walking Poems: SAIC Gallery</span>
+                <span class="work-meta">2023 · Video, color print, water soluble paper</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </main>
 
-    <footer class="site-footer">
-      <span>© Juan Eduardo Flores</span>
-      <a href="mailto:juanedflores@gmail.com">juanedflores@gmail.com</a>
-      <a href="https://www.instagram.com/juanedflores">Instagram</a>
-    </footer>
+      <footer class="site-footer">
+        <span>© <span class="this-year">2026</span> Juan Eduardo Flores</span>
+        <a href="mailto:juanedflores@gmail.com">Email me</a>
+        <a href="https://www.instagram.com/juanedflores">Instagram</a>
+        <script>
+          // the year as it is, not as it was when this was written
+          document.querySelector('.this-year').textContent = new Date().getFullYear();
+        </script>
+      </footer>
+    </div>
   </body>
 </html>

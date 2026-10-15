@@ -25,7 +25,6 @@
       <nav class="site-nav" aria-label="Site">
         <a href="../index.html#works">Works</a>
         <a href="../about.html">About</a>
-        <a href="../blog.html">Resources</a>
       </nav>
     </header>
 
@@ -125,9 +124,13 @@
     </div>
 
     <footer class="site-footer">
-      <span>© Juan Eduardo Flores</span>
-      <a href="mailto:juanedflores@gmail.com">juanedflores@gmail.com</a>
+      <span>© <span class="this-year">2026</span> Juan Eduardo Flores</span>
+      <a href="mailto:juanedflores@gmail.com">Email me</a>
       <a href="https://www.instagram.com/juanedflores">Instagram</a>
+      <script>
+        // the year as it is, not as it was when this was written
+        document.querySelector('.this-year').textContent = new Date().getFullYear();
+      </script>
     </footer>
   </body>
 </html>

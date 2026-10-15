@@ -13,6 +13,8 @@
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
+  --reel-pad: 28px; /* gap between the reel's bottom edge and the name on it */
+
 }
 
 *,
@@ -61,44 +63,54 @@ img {
   object-fit: cover;
 }
 
-/* name, scroll cue and sound toggle over the reel */
-.intro-ui {
+/* darkens the bottom of the reel, where the name and links sit in white */
+.intro::after {
+  content: '';
   position: absolute;
   inset: auto 0 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 12px 28px;
-  padding: 28px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.45));
-  font-family: var(--mono);
-}
-.intro-name {
-  margin: 0 auto 0 0;
-  font-weight: 600;
-  font-size: clamp(1.05rem, 2.4vw, 1.5rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.scroll-cue,
-.sound {
-  padding: 0;
-  border: none;
-  background: none;
-  color: rgba(255, 255, 255, 0.85);
-  font: inherit;
-  font-size: 0.85rem;
-  text-decoration: none;
-  cursor: pointer;
-}
-.scroll-cue:hover,
-.sound:hover {
-  color: #fff;
-  text-decoration: underline;
+  height: 200px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+  pointer-events: none;
 }
 
 
 /* ---------- page ---------- */
+
+/* home: the page ends exactly where the header reaches the top, so a fast
+   scroll would hit the end and spring past it (macOS's rubber band); the
+   header and works should stop dead in their place instead */
+html:has(.home) {
+  overscroll-behavior-y: none;
+}
+
+/* home: the reel, then the page exactly one window tall: header, all the
+   works and the footer show at once, with the photos taking whatever height
+   is left (see "home: the works fit the window" below). Once js/intro.js
+   removes the reel, the page is all there is. */
+.home {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100svh;
+}
+.home:has(> .intro) {
+  height: 200vh;
+  height: 200svh;
+}
+.home > * {
+  width: 100%;
+}
+.home > .intro {
+  flex: none;
+}
+/* until the header comes up below the reel, it holds to the bottom of the
+   window, over the reel: sticky, so the browser does it in step with the
+   scrolling */
+.home > .site-header {
+  position: sticky;
+  bottom: var(--reel-pad);
+  z-index: 1;
+}
 
 .site-header {
   display: flex;
@@ -113,10 +125,34 @@ img {
 .site-name {
   font-family: var(--mono);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
+}
+/* home: js/intro.js lifts the name, Works and About onto the reel and
+   carries them across its bottom edge, a border that cuts through the
+   letters: white above it, ink below. The white is a copy of the letters
+   laid over them and cut off at the edge (--cut is its height in each one). */
+.home [data-ride] {
+  position: relative;
+  z-index: 1;
+  white-space: pre;
+}
+.home [data-ride]::after {
+  content: attr(data-shown);
+  position: absolute;
+  inset: 0;
+  color: #fff;
+  clip-path: inset(0 0 calc(100% - var(--cut, 0px)) 0);
+  pointer-events: none;
+}
+.home [data-ride].on-reel:hover::after {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.home [data-ride].on-reel::before {
+  background: #fff;
 }
 .site-nav {
   display: flex;
@@ -125,12 +161,24 @@ img {
   font-size: 0.9rem;
 }
 .site-nav a {
+  position: relative;
   text-decoration: none;
 }
-.site-nav a:hover,
-.site-nav a[aria-current='page'] {
+.site-nav a:hover {
   text-decoration: underline;
   text-underline-offset: 5px;
+}
+/* the page you're on: a solid line under it, heavier than hover's */
+.site-nav a[aria-current='page'] {
+  text-decoration: none;
+}
+.site-nav a[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 -5px;
+  height: 2px;
+  background: currentColor;
+  pointer-events: none;
 }
 
 .page {
@@ -146,6 +194,70 @@ img {
   font-size: 0.9rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+/* there for screen readers and outlines, not on screen */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* home: Index on the left, the page of works you're on and arrows to turn
+   it on the right */
+.works-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.index-toggle {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.index-toggle:hover,
+.index-toggle[aria-expanded='true'] {
+  color: var(--ink);
+}
+.index-toggle[aria-expanded='true'] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+.pages {
+  margin-left: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.page-at {
+  margin-right: 6px;
+}
+.page-turn {
+  padding: 0 4px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.page-turn:hover:not(:disabled) {
+  color: var(--ink);
+}
+.page-turn:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .works {
@@ -201,6 +313,197 @@ img {
 .site-footer a:hover {
   color: var(--ink);
   text-decoration: underline;
+}
+
+/* ---------- home: the works fit the window ---------- */
+
+.home > .page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+.home .section-title {
+  margin-bottom: 20px;
+}
+.home .shelf {
+  --gap-x: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.home .works {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 28px var(--gap-x);
+}
+
+/* the index: every work by title over the left column of the grid, and the
+   one under the pointer previewed over the right */
+.index-panel,
+.index-preview {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: calc((100% - var(--gap-x)) / 2);
+  background: var(--paper);
+}
+.index-panel[hidden],
+.index-preview[hidden] {
+  display: none;
+}
+.index-panel {
+  left: 0;
+  overflow-y: auto;
+  border-top: 1px solid var(--ink);
+  animation: index-open 0.28s ease-out;
+}
+@keyframes index-open {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.index-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.index-list .index-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.index-list .index-title:hover,
+.index-list .index-title:focus-visible,
+.index-list .index-title.previewing {
+  color: var(--ink);
+}
+.index-list .index-year {
+  flex: none;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.82rem;
+}
+.index-preview {
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+.index-preview img {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.index-preview .work-title {
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+.index-preview .index-blurb {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.index-preview .index-blurb[hidden] {
+  display: none;
+}
+.index-go {
+  display: none;
+}
+/* on a phone: opened under its title in the list */
+.index-preview.inline {
+  position: static;
+  display: block;
+  width: auto;
+  padding: 2px 0 16px;
+  border-bottom: 1px solid var(--line);
+}
+.index-preview.inline img {
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+.index-preview.inline .index-blurb {
+  -webkit-line-clamp: unset;
+}
+.index-preview.inline .index-go {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.home .works li {
+  min-height: 0;
+}
+.home .work {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.home .work img {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+  margin-bottom: 10px;
+}
+.home .work-meta {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.home .work-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+.home .site-footer {
+  padding-top: 20px;
+  padding-bottom: 24px;
+}
+
+/* a window too short to fit everything just scrolls, like any page */
+@media (max-height: 520px) {
+  .home,
+  .home:has(> .intro) {
+    height: auto;
+  }
+  .home .works {
+    grid-template-rows: none;
+  }
+  .home .work img {
+    flex: none;
+    aspect-ratio: 3 / 2;
+  }
 }
 
 /* ---------- work page ---------- */
@@ -412,8 +715,46 @@ img {
   .work-body {
     grid-template-columns: 1fr;
   }
-  .intro-ui {
-    padding: 20px;
+  :root {
+    --reel-pad: 18px;
+  }
+  .home > .page {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+  .home .section-title {
+    margin-bottom: 14px;
+  }
+  .home .shelf {
+    --gap-x: 14px;
+  }
+  .home .works {
+    gap: 20px var(--gap-x);
+  }
+  .index-panel {
+    width: 100%;
+  }
+  .index-list .index-title {
+    padding: 12px 0;
+    font-size: 1.05rem;
+  }
+  .index-list .index-title.previewing {
+    border-bottom-color: transparent;
+  }
+  .index-preview.inline .work-title {
+    display: none;
+  }
+  .index-preview.inline .index-blurb {
+    font-size: 0.92rem;
+  }
+  .home .work img {
+    margin-bottom: 8px;
+  }
+  .home .work-title {
+    min-height: 2.7em; /* two lines, so the photos line up */
+    font-size: 0.95rem;
+  }
+  .home .work-meta {
+    font-size: 0.75rem;
   }
 }
-
