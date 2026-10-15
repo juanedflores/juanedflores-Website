@@ -1,9 +1,12 @@
 // Home page: the bar above the works.
 // Index opens a list of every work by title over the left column of the grid;
 // pointing at one (or tabbing to it) previews it over the right column: its
-// picture, title, year and materials, and the line about it from the list
-// (data-blurb). Index again, or Esc, closes it. The list and previews are
-// read off the works themselves, so a new work shows up here on its own.
+// picture, title, year and materials laid out like a thumbnail in the grid,
+// and the line about it from the list (data-blurb) below. It opens on the
+// work at the top right of the page, and the work previewed last stays there
+// when the index closes, the others fading back in around it. Index again,
+// or Esc, closes it. The list and previews are read off the works themselves,
+// so a new work shows up here on its own.
 // On a phone the list takes the whole width and a tapped title opens its
 // preview right under it; with no pointer to hover, the first tap on a title
 // previews it and the second opens it.
@@ -35,7 +38,8 @@
       year: (meta.match(/\d{4}/) || [''])[0],
       src: img.getAttribute('src'),
       alt: img.getAttribute('alt'),
-      blurb: li.getAttribute('data-blurb') || ''
+      blurb: li.getAttribute('data-blurb') || '',
+      li: li
     };
   });
 
@@ -51,7 +55,8 @@
   preview.className = 'index-preview';
   preview.hidden = true;
   preview.innerHTML =
-    '<img alt="" /><span class="work-title"></span><span class="work-meta"></span><p class="index-blurb"></p>' +
+    '<span class="preview-card"><img alt="" /><span class="work-title"></span><span class="work-meta"></span></span>' +
+    '<p class="index-blurb"></p>' +
     '<span class="index-go">View work →</span>';
 
   // a phone: the preview opens under its title; no hover: tap to preview
@@ -107,6 +112,10 @@
       a.classList.toggle('previewing', j === i);
     });
     preview.hidden = false;
+    // fade the words in again (see .fresh in site.css)
+    preview.classList.remove('fresh');
+    void preview.offsetWidth;
+    preview.classList.add('fresh');
     // on a phone, bring the opened one into view within the list
     if (preview.classList.contains('inline')) {
       var row = titles.children[i].getBoundingClientRect();
@@ -126,10 +135,50 @@
     if (showing >= 0) place(showing);
   });
 
+  // Closing on a preview over the grid: that work keeps the place it was
+  // shown in, the top right of the page, trading places with the one there.
+  function keep(i) {
+    var at = Math.min(items.length - 1, page * PER_PAGE + 1);
+    var li = works[i].li;
+    var from = items.indexOf(li);
+    if (from === at) return;
+    var other = items[at];
+    var mark = document.createElement('li');
+    li.replaceWith(mark);
+    other.replaceWith(li);
+    mark.replaceWith(other);
+    items[at] = li;
+    items[from] = other;
+    turn(page);
+  }
+
+  // back to the grid: the works the index covered fade back in, one after
+  // another; the one at the top right was showing all along
+  function reveal() {
+    var top = Math.min(items.length - 1, page * PER_PAGE + 1);
+    var n = 0;
+    items.forEach(function (li, i) {
+      if (li.hidden || i === top) return;
+      li.classList.remove('arriving');
+      void li.offsetWidth;
+      li.style.animationDelay = n++ * 70 + 'ms';
+      li.classList.add('arriving');
+      li.addEventListener('animationend', function done() {
+        li.classList.remove('arriving');
+        li.style.animationDelay = '';
+        li.removeEventListener('animationend', done);
+      });
+    });
+  }
+
   function open(on) {
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
     panel.hidden = !on;
     if (!on) {
+      if (showing >= 0 && !preview.classList.contains('inline')) {
+        keep(showing);
+        reveal();
+      }
       preview.hidden = true;
       showing = -1;
       Array.prototype.forEach.call(titles.querySelectorAll('.index-title'), function (a) {
@@ -140,6 +189,11 @@
 
   toggle.addEventListener('click', function () {
     open(panel.hidden);
+    // it opens on the work at the top right of the page, which it covers
+    if (!panel.hidden && !narrow.matches) {
+      var there = items[Math.min(items.length - 1, page * PER_PAGE + 1)];
+      show(works.findIndex(function (work) { return work.li === there; }));
+    }
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !panel.hidden) {

@@ -1,5 +1,11 @@
 // Work pages: click a photo to see it large; click, Esc or "close" to go back.
-document.addEventListener('DOMContentLoaded', function () {
+// Runs once the page is parsed, or straight away when js/passage.js brings
+// the page in from the home page.
+(document.readyState === 'loading' ? function (start) {
+  document.addEventListener('DOMContentLoaded', start);
+} : function (start) {
+  start();
+})(function () {
   var box = document.querySelector('.lightbox');
   if (!box) return;
   var img = box.querySelector('img');
