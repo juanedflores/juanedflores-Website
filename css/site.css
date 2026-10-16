@@ -277,6 +277,13 @@ img {
   /* centred, not on the baseline: the larger arrows would sit high */
   align-items: center;
   gap: 14px;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+/* the index lists every work, so there are no pages to turn while it's open;
+   they keep their place so the bar doesn't shift */
+.pages.away {
+  opacity: 0;
+  visibility: hidden;
 }
 .page-at {
   margin-right: 6px;

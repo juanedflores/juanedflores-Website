@@ -12,7 +12,8 @@
 // previews it and the second opens it.
 // The page index on the right shows the works four at a time once there are
 // more than fit one screen, turned with its arrows or the ← and → keys; until
-// then it reads 1 / 1.
+// then it reads 1 / 1. While the index is open it steps aside, since the
+// index already shows every work.
 
 (function () {
   var PER_PAGE = 4;
@@ -179,6 +180,7 @@
     leaving = null;
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
     panel.hidden = !on;
+    pages.classList.toggle('away', on);
     if (!on) {
       if (showing >= 0 && !preview.classList.contains('inline')) {
         keep(showing);
@@ -268,6 +270,8 @@
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
     // only once the works are the page, not while the reel is up
     if (document.querySelector('.intro')) return;
+    // nor behind the index, which shows every work at once
+    if (pages.classList.contains('away')) return;
     if (e.key === 'ArrowLeft') turn(page - 1);
     else if (e.key === 'ArrowRight') turn(page + 1);
   });
