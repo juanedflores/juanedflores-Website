@@ -173,6 +173,7 @@
 
   function open(on) {
     clearTimeout(leaving); // a close still waiting from before doesn't count
+    leaving = null;
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
     panel.hidden = !on;
     if (!on) {
@@ -196,25 +197,36 @@
       show(works.findIndex(function (work) { return work.li === there; }));
     }
   });
-  // With a mouse, leaving the list (other than onto the preview, which can
-  // be clicked too, or onto Index itself) goes back to the grid, after a
-  // moment's grace in case the pointer only slipped off.
+  // With a mouse, leaving the index goes back to the grid, after a moment's
+  // grace in case the pointer only slipped off. "The index" is one region,
+  // from the top of the Index button down to the bottom of the list, and
+  // across to the preview when one is showing: the gaps between them are in
+  // it too, so moving between them slowly never closes it.
   var leaving = null;
-  function away(e) {
+  function inside(x, y) {
+    var top = toggle.getBoundingClientRect().top;
+    var list = panel.getBoundingClientRect();
+    var right = preview.hidden || preview.classList.contains('inline') ? list.right : preview.getBoundingClientRect().right;
+    return x >= list.left && x <= right && y >= top && y <= list.bottom;
+  }
+  function watch(x, y) {
     if (tapping() || panel.hidden) return;
-    var to = e.relatedTarget;
-    if (to && (panel.contains(to) || preview.contains(to) || toggle.contains(to))) return;
-    clearTimeout(leaving);
-    leaving = setTimeout(function () {
-      if (!panel.hidden) open(false);
-    }, 250);
+    if (inside(x, y)) {
+      clearTimeout(leaving);
+      leaving = null;
+    } else if (leaving === null) {
+      leaving = setTimeout(function () {
+        leaving = null;
+        if (!panel.hidden) open(false);
+      }, 250);
+    }
   }
-  function stay() {
-    clearTimeout(leaving);
-  }
-  [panel, preview, toggle].forEach(function (el) {
-    el.addEventListener('mouseleave', away);
-    el.addEventListener('mouseenter', stay);
+  document.addEventListener('mousemove', function (e) {
+    watch(e.clientX, e.clientY);
+  }, { passive: true });
+  // the pointer leaving the window altogether
+  document.addEventListener('mouseout', function (e) {
+    if (!e.relatedTarget) watch(-1, -1);
   });
 
   document.addEventListener('keydown', function (e) {
