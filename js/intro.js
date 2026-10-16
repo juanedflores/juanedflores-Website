@@ -37,16 +37,28 @@
     return { el: el, shown: shown, text: text, rolled: 0, noisy: false };
   });
 
-  // Works: glide down to the header rather than jump past it to the list
+  // Works: glide down past the reel, rather than jump past the header to the
+  // list. By the reel's height, not to the header: the header is held at the
+  // bottom of the window, so the browser thinks it's already in view.
   works.addEventListener('click', function (e) {
     if (!intro.isConnected) return;
     e.preventDefault();
-    header.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    window.scrollTo({ top: intro.offsetTop + intro.offsetHeight, behavior: reduced ? 'auto' : 'smooth' });
   });
+
+  // Muted, so browsers let it play on its own; and where they still won't
+  // (an iPhone in Low Power Mode), a touch on the reel starts it.
+  reel.muted = true;
+  reel.playsInline = true;
+  function start() {
+    reel.play().catch(function () {});
+  }
+  intro.addEventListener('touchend', start, { passive: true });
+  intro.addEventListener('click', start);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) reel.play().catch(function () {});
+      if (entries[0].isIntersecting) start();
       else reel.pause();
     }).observe(intro);
   }

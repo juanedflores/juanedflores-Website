@@ -25,8 +25,10 @@
       <!-- the demo reel, full screen -->
       <section class="intro" aria-label="Demo reel">
         <video class="reel" autoplay muted loop playsinline poster="videos/Voltaje_720p-poster-00001.jpg" aria-label="Demo reel">
-          <source src="videos/Voltaje_720p-transcode.webm" type="video/webm" />
+          <!-- MP4 first: every browser plays it, and iPhones pick the first
+               source they can, autoplaying H.264 where they may stall on WebM -->
           <source src="videos/Voltaje_720p-transcode.mp4" type="video/mp4" />
+          <source src="videos/Voltaje_720p-transcode.webm" type="video/webm" />
         </video>
       </section>
 
@@ -49,8 +51,8 @@
           <button class="index-toggle" type="button" aria-expanded="false" aria-controls="index-panel" hidden>Index</button>
           <nav class="pages" aria-label="Pages of works">
             <span class="page-at" aria-live="polite">1 / 1</span>
-            <button class="page-turn" type="button" data-turn="-1" aria-label="Previous page" disabled>←</button>
-            <button class="page-turn" type="button" data-turn="1" aria-label="Next page" disabled>→</button>
+            <button class="page-turn" type="button" data-turn="-1" aria-label="Previous page" disabled><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M17 6H1.5M6.5 1 1.5 6l5 5" /></svg></button>
+            <button class="page-turn" type="button" data-turn="1" aria-label="Next page" disabled><svg viewBox="0 0 18 12" aria-hidden="true"><path d="M1 6h15.5M11.5 1l5 5-5 5" /></svg></button>
           </nav>
         </div>
 
