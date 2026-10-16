@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- point A to point B, by a winding road (images/mark-ab.svg), light on dark tabs -->
+  <style>path { stroke: #141414; } circle { fill: #141414; } @media (prefers-color-scheme: dark) { path { stroke: #f0f0f0; } circle { fill: #f0f0f0; } }</style>
+  <path d="M22 80 C 60 84, 64 62, 40 56 C 16 50, 40 22, 80 20" fill="none" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="22" cy="80" r="12"/>
+  <circle cx="80" cy="20" r="12"/>
+</svg>

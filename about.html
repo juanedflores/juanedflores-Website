@@ -27,11 +27,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/site.css" />
-    <link
-      rel="shortcut icon"
-      href="resources/favicon.ico"
-      type="image/x-icon"
-    />
+    <!-- the mark: point A to point B, by a winding road -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="resources/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <script src="js/egg.js" defer></script>
   </head>
 
   <body class="about-page">
@@ -89,17 +89,26 @@
           </ul>
           <h2>Artist statement</h2>
           <p>
-            I am interested in what a message keeps, and what it lets go, on its
-            journey from one place to another. Drawing on information theory, I
-            listen for the noise in every passage and ask how little is needed
-            to carry something across.
+            Working with motion and sound, I explore the tension between control
+            and entropy. My process begins with travel: the passage from <span data-point="a">point A</span>
+            to <span data-point="b">point B</span>, and what a message keeps, and what it lets go, along the
+            way. I stress-test systems and look for poetic ways to store, process,
+            and transform data, listening for the noise in every passage. Through
+            labor, automation, and the everyday, I ask how little is needed to
+            carry something across.
           </p>
-          <ul class="about-links cv-links">
-            <li><a href="cv.html">CV</a></li>
-            <li>
-              <a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a>
-            </li>
-          </ul>
+          <!-- the CV, and under it the mark (A to B, by a winding road) -->
+          <div class="statement-end">
+            <ul class="about-links cv-links">
+              <li><a href="cv.html">CV</a></li>
+              <li>
+                <a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a>
+              </li>
+            </ul>
+            <button class="mark-toggle" type="button" aria-pressed="false" aria-label="Send points from point A to point B">
+              <img class="mark" src="images/mark-ab.svg" width="28" height="28" alt="" />
+            </button>
+          </div>
         </section>
       </div>
     </main>

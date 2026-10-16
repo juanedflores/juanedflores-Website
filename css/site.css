@@ -831,6 +831,107 @@ img {
   height: auto;
   margin-bottom: 28px;
 }
+/* under the statement: the CV, and the mark at the far end of the line */
+.statement-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+}
+.statement-end .about-links {
+  margin: 0;
+}
+.statement-end .mark {
+  display: block;
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+/* the mark is also a button: an easter egg (js/egg.js) */
+.mark-toggle {
+  display: block;
+  line-height: 0;
+  flex: none;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.mark-toggle:hover,
+.mark-toggle[aria-pressed='true'] {
+  transform: rotate(-8deg);
+}
+/* the words lifted out of the statement leave their place in it */
+[data-point].lifted {
+  visibility: hidden;
+}
+/* body > : as wide as the words, whatever widths the page gives its parts */
+/* the two points, like the ends of the road in the mark: a dot, and its
+   letter beside it */
+body > .point-chip {
+  position: fixed;
+  z-index: 51;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* a dot is small to catch hold of: a wider reach round it, unseen */
+body > .point-chip::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+}
+body > .point-chip::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  line-height: 1;
+  /* legible over text or the photo, without a box */
+  text-shadow:
+    0 0 2px var(--paper),
+    0 0 4px var(--paper),
+    0 0 6px var(--paper);
+}
+.point-chip.dragging {
+  cursor: grabbing;
+}
+/* each letter of the bio and statement on its own, for the points to knock (js/egg.js) */
+.soup-w {
+  white-space: nowrap;
+}
+/* left as plain text, so the spacing between letters doesn't change; a box
+   of its own, to be moved and turned, only once a point has knocked it */
+.soup-l.knocked {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .soup-l {
+    transition: none;
+  }
+}
+.egg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 /* the statement after the bio and its links */
 .about .about-links + h2 {
   margin-top: 36px;
@@ -853,15 +954,18 @@ img {
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    padding-top: 24px;
-    padding-bottom: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
   .about-page .about-links + h2 {
-    margin-top: 28px;
+    margin-top: 22px;
   }
   .about-page .about {
     flex: 1;
     min-height: 0;
+    /* a wider column for the words, so the statement and CV fit beside the
+       portrait */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
     grid-template-rows: minmax(0, 1fr);
   }
   .about-page .about > section:first-child {
