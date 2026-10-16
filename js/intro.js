@@ -35,7 +35,9 @@
   // Browsers (Safari on a phone especially, and dev tools that reload the
   // page) can still put it back where it was a moment after it loads. Until
   // someone actually scrolls, touches or presses a key, or the first moments
-  // have passed, any such jump is undone, and it can't take the reel away.
+  // have passed, such a jump can't take the reel away. It's moved back to the
+  // top once, when the page shows, and never chased: chasing it fights the
+  // browser, and the page flickers between the two.
   var settled = false;
   function settle() {
     settled = true;
@@ -73,13 +75,19 @@
     window.scrollTo({ top: intro.offsetTop + intro.offsetHeight, behavior: reduced ? 'auto' : 'smooth' });
   });
 
-  // Muted, so browsers let it play on its own; and where they still won't
-  // (an iPhone in Low Power Mode), a touch on the reel starts it.
+  // Muted, so browsers let it play on its own. Where they still won't (an
+  // iPhone in Low Power Mode, or with Auto-Play Video Previews off), the reel
+  // says so (.blocked, in site.css) and a touch on it starts it.
   reel.muted = true;
   reel.playsInline = true;
   function start() {
-    reel.play().catch(function () {});
+    reel.play().catch(function (err) {
+      if (err && err.name === 'NotAllowedError') intro.classList.add('blocked');
+    });
   }
+  reel.addEventListener('playing', function () {
+    intro.classList.remove('blocked');
+  });
   intro.addEventListener('touchend', start, { passive: true });
   intro.addEventListener('click', start);
 
@@ -105,12 +113,7 @@
   var running = false;
 
   function tick(now) {
-    if (!settled && intro.isConnected && window.scrollY > 0) {
-      running = false;
-      window.scrollTo(0, 0);
-      return;
-    }
-    if (intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
+    if (settled && intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
     var edge = intro.isConnected ? intro.getBoundingClientRect().bottom : -Infinity;
 
     var noisy = false;

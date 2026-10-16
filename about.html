@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>About · Juan Eduardo Flores</title>
-    <meta name="description" content="Juan Eduardo Flores is an artist working with sound, motion, and code." />
+    <meta
+      name="description"
+      content="Juan Eduardo Flores is an artist working with sound, motion, and code."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,7 +15,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/site.css" />
-    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="resources/favicon.ico"
+      type="image/x-icon"
+    />
   </head>
 
   <body class="about-page">
@@ -42,44 +49,69 @@
           <h2>Bio</h2>
           <!-- DRAFT: updated from the old site's bio; check before publishing -->
           <p>
-            Juan Eduardo Flores is a multidisciplinary artist and educator born in Del Rio, Texas, and raised on the southeast side
-            of San Antonio. He received his BA in Art from Connecticut College and his MFA in Art and Technology Studies from the
-            School of the Art Institute of Chicago in 2023. As the recipient of the Mortimer Hays-Brandeis Fellowship, he spent over
-            a year in Mexico City concentrating on sound art. His start was in the Blue Star Contemporary Art Museum's MOSAIC
-            program, making murals out of handmade mosaic tiles with other high school students. He teaches new media art at the
+            Juan Eduardo Flores was born in Del Rio, Texas, and raised on the
+            southeast side of San Antonio. He received his BA in Art from
+            Connecticut College as a fellow of the Ammerman Center for Arts
+            &amp; Technology, and his MFA in Art and Technology Studies from the
+            School of the Art Institute of Chicago in 2023. As the recipient of
+            the Mortimer Hays-Brandeis Fellowship, he spent over a year in
+            Mexico City concentrating on sound art. His start was in the Blue
+            Star Contemporary Art Museum's MOSAIC program, making murals out of
+            handmade mosaic tiles with other high school students.
+          </p>
+          <p>
+            He currently teaches in the School of Art & Art History at the
             University of Illinois Chicago.
           </p>
           <ul class="about-links">
             <li><a href="mailto:juanedflores@gmail.com">Email</a></li>
-            <li><a href="https://www.instagram.com/juanedflores">Instagram</a></li>
+            <li>
+              <a href="https://www.instagram.com/juanedflores">Instagram</a>
+            </li>
             <li><a href="https://github.com/juanedflores">GitHub</a></li>
-            <li><a href="https://www.linkedin.com/in/juan-flores-56647576/">LinkedIn</a></li>
+            <li>
+              <a href="https://www.linkedin.com/in/juan-flores-56647576/"
+                >LinkedIn</a
+              >
+            </li>
           </ul>
           <h2>Artist statement</h2>
           <p>
-            Juan Flores is an artist working with sound, motion, and code. He is interested in what a message keeps, and what it
-            lets go, on its journey from one place to another. Drawing on information theory, he listens for the noise in every
-            passage and asks how little is needed to carry something across.
+            I am interested in what a message keeps, and what it lets go, on its
+            journey from one place to another. Drawing on information theory, I
+            listen for the noise in every passage and ask how little is needed
+            to carry something across.
           </p>
           <ul class="about-links cv-links">
             <li><a href="cv.html">CV</a></li>
-            <li><a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a></li>
+            <li>
+              <a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a>
+            </li>
           </ul>
         </section>
       </div>
     </main>
 
     <footer class="site-footer">
-      <span>Last updated <time class="updated" datetime="2026-10-15">October 15, 2026</time></span>
+      <span
+        >Last updated
+        <time class="updated" datetime="2026-10-15"
+          >October 15, 2026</time
+        ></span
+      >
       <script>
         // when the site was last published, as the server tells it; a browser
         // that isn't told gives the time now, so then the date above stays
         (function () {
           var at = new Date(document.lastModified);
           if (isNaN(at) || Date.now() - at < 60000) return;
-          var el = document.querySelector('.updated');
+          var el = document.querySelector(".updated");
           el.dateTime = at.toISOString().slice(0, 10);
-          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+          el.textContent = at.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
         })();
       </script>
     </footer>
