@@ -31,10 +31,21 @@
     return;
   }
   window.scrollTo(0, 0);
-  // and again once everything has loaded, in case the browser puts the
-  // page back where it was late (Safari on a phone can)
+
+  // Browsers (Safari on a phone especially, and dev tools that reload the
+  // page) can still put it back where it was a moment after it loads. Until
+  // someone actually scrolls, touches or presses a key, or the first moments
+  // have passed, any such jump is undone, and it can't take the reel away.
+  var settled = false;
+  function settle() {
+    settled = true;
+  }
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (type) {
+    window.addEventListener(type, settle, { passive: true, once: true });
+  });
+  setTimeout(settle, 1500);
   window.addEventListener('pageshow', function () {
-    if (intro.isConnected) window.scrollTo(0, 0);
+    if (intro.isConnected && !settled) window.scrollTo(0, 0);
   });
 
   // what the passage leaves in place of a letter; the spaces drop it outright
@@ -94,6 +105,11 @@
   var running = false;
 
   function tick(now) {
+    if (!settled && intro.isConnected && window.scrollY > 0) {
+      running = false;
+      window.scrollTo(0, 0);
+      return;
+    }
     if (intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
     var edge = intro.isConnected ? intro.getBoundingClientRect().bottom : -Infinity;
 
