@@ -95,7 +95,9 @@
   shelf.appendChild(preview);
 
   var showing = -1;
-  function show(i) {
+  // `kept`: it opens over this same work in the grid, whose title and
+  // meta are already showing there, so only the line about it is new
+  function show(i, kept) {
     place(i);
     if (i === showing) return;
     showing = i;
@@ -114,6 +116,7 @@
     preview.hidden = false;
     // fade the words in again (see .fresh in site.css)
     preview.classList.remove('fresh');
+    preview.classList.toggle('kept', !!kept);
     void preview.offsetWidth;
     preview.classList.add('fresh');
     // on a phone, bring the opened one into view within the list
@@ -194,7 +197,7 @@
     // it opens on the work at the top right of the page, which it covers
     if (!panel.hidden && !narrow.matches) {
       var there = items[Math.min(items.length - 1, page * PER_PAGE + 1)];
-      show(works.findIndex(function (work) { return work.li === there; }));
+      show(works.findIndex(function (work) { return work.li === there; }), true);
     }
   });
   // With a mouse, leaving the index goes back to the grid, after a moment's

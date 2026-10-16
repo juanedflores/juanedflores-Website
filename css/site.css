@@ -503,6 +503,12 @@ img {
 .index-preview.fresh .index-go {
   animation-delay: 0.12s;
 }
+/* opening over the very work in the grid: its title and meta stay put, only
+   the line about it comes in */
+.index-preview.fresh.kept .work-title,
+.index-preview.fresh.kept .work-meta {
+  animation: none;
+}
 @keyframes index-fade {
   from {
     opacity: 0;
