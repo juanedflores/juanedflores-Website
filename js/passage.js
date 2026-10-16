@@ -68,7 +68,15 @@
         var hero = page.querySelector('.hero');
         var ready = hero ? new Image() : null;
         if (ready) {
-          ready.src = new URL(hero.getAttribute('src'), url).href;
+          // the same size the page will pick for this screen
+          var at = function (src) { return new URL(src, url).href; };
+          if (hero.getAttribute('srcset')) {
+            ready.sizes = hero.getAttribute('sizes') || '';
+            ready.srcset = hero.getAttribute('srcset').replace(/(^|,\s*)(\S+)/g, function (m, sep, src) {
+              return sep + at(src);
+            });
+          }
+          ready.src = at(hero.getAttribute('src'));
           return (ready.decode ? ready.decode() : Promise.resolve()).catch(function () {}).then(function () {
             return page;
           });

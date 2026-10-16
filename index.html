@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Juan Eduardo Flores</title>
     <meta name="description" content="Juan Eduardo Flores is an artist working with sound, motion, and code." />
+    <!-- how a link to this page looks when it's shared -->
+    <link rel="canonical" href="https://juanedflores.com/" />
+    <meta property="og:site_name" content="Juan Eduardo Flores" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Juan Eduardo Flores" />
+    <meta property="og:description" content="Juan Eduardo Flores is an artist working with sound, motion, and code." />
+    <meta property="og:url" content="https://juanedflores.com/" />
+    <meta property="og:image" content="https://juanedflores.com/images/share/home.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Still from Juan Eduardo Flores's demo reel: light through the open zipper of a black backpack" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,7 +38,9 @@
       <section class="intro" aria-label="Demo reel">
         <video class="reel" autoplay muted loop playsinline poster="videos/Voltaje_720p-poster-00001.jpg" aria-label="Demo reel">
           <!-- MP4 first: every browser plays it, and iPhones pick the first
-               source they can, autoplaying H.264 where they may stall on WebM -->
+               source they can, autoplaying H.264 where they may stall on WebM.
+               On a phone-sized screen, a lighter 540p copy (1.3MB, not 4.6MB). -->
+          <source src="videos/Voltaje_540p.mp4" type="video/mp4" media="(max-width: 760px)" />
           <source src="videos/Voltaje_720p-transcode.mp4" type="video/mp4" />
           <source src="videos/Voltaje_720p-transcode.webm" type="video/webm" />
         </video>
