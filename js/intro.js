@@ -32,24 +32,6 @@
   }
   window.scrollTo(0, 0);
 
-  // Browsers (Safari on a phone especially, and dev tools that reload the
-  // page) can still put it back where it was a moment after it loads. Until
-  // someone actually scrolls, touches or presses a key, or the first moments
-  // have passed, such a jump can't take the reel away. It's moved back to the
-  // top once, when the page shows, and never chased: chasing it fights the
-  // browser, and the page flickers between the two.
-  var settled = false;
-  function settle() {
-    settled = true;
-  }
-  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (type) {
-    window.addEventListener(type, settle, { passive: true, once: true });
-  });
-  setTimeout(settle, 1500);
-  window.addEventListener('pageshow', function () {
-    if (intro.isConnected && !settled) window.scrollTo(0, 0);
-  });
-
   // what the passage leaves in place of a letter; the spaces drop it outright
   var NOISE = '#%&*+=-_/\\|<>~^:;01    ';
 
@@ -113,7 +95,7 @@
   var running = false;
 
   function tick(now) {
-    if (settled && intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
+    if (intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
     var edge = intro.isConnected ? intro.getBoundingClientRect().bottom : -Infinity;
 
     var noisy = false;
