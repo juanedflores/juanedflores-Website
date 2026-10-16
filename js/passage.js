@@ -1,7 +1,8 @@
 // Home page: opening a work carries its picture across. The thumbnail
 // clicked (in the grid, or the preview in the index) grows into the photo at
 // the top of the work's page while the rest of the page passes through a
-// fade, and Back (or Works, or the name) carries it home again.
+// fade, and Back (or Works, or the name) carries it home again. Once it has
+// arrived, the page drifts down to the work's title.
 // Browsers only morph across pages within one page, so this does the
 // crossing itself: it fetches the work's page, swaps it in inside a view
 // transition and puts its address in the location bar. Without view
@@ -93,12 +94,43 @@
         crossing.finished.then(function () {
           name(document.querySelector('.hero'), false);
           busy = false;
+          descend();
         });
       })
       .catch(function () {
         // anything off: just go there
         location.href = url.href;
       });
+  }
+
+  // Arrived: drift down until the work's title is near the top of the window,
+  // slowly, easing in and out. Any touch, wheel or key stops it where it is.
+  var DESCENT = 1400; // ms
+  function descend() {
+    var title = document.querySelector('.work-head h1');
+    if (!title) return;
+    var from = window.scrollY;
+    var to = Math.min(
+      from + title.getBoundingClientRect().top - 24,
+      document.documentElement.scrollHeight - window.innerHeight
+    );
+    if (to - from < 4) return;
+    var t0 = null;
+    var stopped = false;
+    var stop = function () {
+      stopped = true;
+    };
+    ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (type) {
+      window.addEventListener(type, stop, { passive: true, once: true });
+    });
+    requestAnimationFrame(function step(now) {
+      if (stopped || home === null) return;
+      if (t0 === null) t0 = now;
+      var x = Math.min(1, (now - t0) / DESCENT);
+      var eased = x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+      window.scrollTo(0, from + (to - from) * eased);
+      if (x < 1) requestAnimationFrame(step);
+    });
   }
 
   // and back home

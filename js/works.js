@@ -5,8 +5,8 @@
 // and the line about it from the list (data-blurb) below. It opens on the
 // work at the top right of the page, and the work previewed last stays there
 // when the index closes, the others fading back in around it. Index again,
-// or Esc, closes it. The list and previews are read off the works themselves,
-// so a new work shows up here on its own.
+// Esc, or (with a mouse) leaving the list closes it. The list and previews
+// are read off the works themselves, so a new work shows up here on its own.
 // On a phone the list takes the whole width and a tapped title opens its
 // preview right under it; with no pointer to hover, the first tap on a title
 // previews it and the second opens it.
@@ -172,6 +172,7 @@
   }
 
   function open(on) {
+    clearTimeout(leaving); // a close still waiting from before doesn't count
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
     panel.hidden = !on;
     if (!on) {
@@ -195,6 +196,27 @@
       show(works.findIndex(function (work) { return work.li === there; }));
     }
   });
+  // With a mouse, leaving the list (other than onto the preview, which can
+  // be clicked too, or onto Index itself) goes back to the grid, after a
+  // moment's grace in case the pointer only slipped off.
+  var leaving = null;
+  function away(e) {
+    if (tapping() || panel.hidden) return;
+    var to = e.relatedTarget;
+    if (to && (panel.contains(to) || preview.contains(to) || toggle.contains(to))) return;
+    clearTimeout(leaving);
+    leaving = setTimeout(function () {
+      if (!panel.hidden) open(false);
+    }, 250);
+  }
+  function stay() {
+    clearTimeout(leaving);
+  }
+  [panel, preview, toggle].forEach(function (el) {
+    el.addEventListener('mouseleave', away);
+    el.addEventListener('mouseenter', stay);
+  });
+
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !panel.hidden) {
       open(false);
