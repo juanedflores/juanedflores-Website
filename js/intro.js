@@ -14,12 +14,23 @@
   var works = header.querySelector('.site-nav a[href="#works"]');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // coming back with the browser's back button isn't a reload
+  // The page starts at the reel; it's not put back where it was scrolled to.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   var visit = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
-  if (visit && visit.type === 'back_forward') {
+  var reload = visit && visit.type === 'reload';
+
+  // Sent to #works (the Works link on another page): straight to the works,
+  // and the address loses the #works so a reload shows the reel again.
+  var sent = location.hash === '#works';
+  if (sent) history.replaceState(history.state, '', location.pathname + location.search);
+
+  // coming back with the browser's back button isn't a reload either
+  if ((visit && visit.type === 'back_forward') || (sent && !reload)) {
     intro.remove();
+    window.scrollTo(0, 0);
     return;
   }
+  window.scrollTo(0, 0);
 
   // what the passage leaves in place of a letter; the spaces drop it outright
   var NOISE = '#%&*+=-_/\\|<>~^:;01    ';

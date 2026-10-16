@@ -772,6 +772,45 @@ html:has(.home) {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   gap: 40px 64px;
 }
+/* arriving: the portrait, then each part after it, both columns at once,
+   the right one a beat behind */
+.about > section > * {
+  animation: about-in 0.6s ease-out both;
+}
+.about > section > :nth-child(2) { animation-delay: 0.09s; }
+.about > section > :nth-child(3) { animation-delay: 0.18s; }
+.about > section > :nth-child(4) { animation-delay: 0.27s; }
+.about > section > :nth-child(5) { animation-delay: 0.36s; }
+.about > section > :nth-child(6) { animation-delay: 0.45s; }
+.about > section + section > :nth-child(1) { animation-delay: 0.14s; }
+.about > section + section > :nth-child(2) { animation-delay: 0.23s; }
+.about > section + section > :nth-child(3) { animation-delay: 0.32s; }
+@keyframes about-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about > section > * {
+    animation: none;
+  }
+}
+.about .portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 28px;
+  border: 6px solid var(--ink);
+}
+/* the CV, just under the portrait */
+.about .portrait + .cv-links {
+  margin: -14px 0 28px;
+}
 .about h2 {
   margin: 0 0 12px;
   color: var(--muted);
@@ -790,6 +829,111 @@ html:has(.home) {
   list-style: none;
   font-family: var(--mono);
   font-size: 0.9rem;
+}
+
+/* ---------- CV ---------- */
+
+.cv-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-bottom: 40px;
+}
+.cv-head h1 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.25;
+}
+.cv-head .on-paper {
+  display: none;
+}
+.cv-download {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  text-underline-offset: 4px;
+}
+.cv section {
+  max-width: 820px;
+  margin-bottom: 36px;
+}
+.cv h2 {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cv-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cv-list li {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 16px;
+  padding: 5px 0;
+}
+.cv-year {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.9;
+}
+
+/* printed (and so the PDF): just the CV, on white */
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+  html,
+  body {
+    background: #fff;
+    font-size: 10.5pt;
+  }
+  .cv-page .site-header,
+  .cv-page .site-footer,
+  .cv-download {
+    display: none;
+  }
+  /* on paper: the name, with CV under it */
+  .cv-head .on-paper {
+    display: block;
+  }
+  .cv-head .cv-label {
+    display: block;
+    margin-top: 4pt;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+  }
+  .cv-page .page {
+    max-width: none;
+    padding: 0;
+  }
+  .cv section {
+    max-width: none;
+    margin-bottom: 18pt;
+  }
+  .cv h2 {
+    break-after: avoid;
+  }
+  /* a printed page is phone-narrow; keep the years beside the entries */
+  .cv .cv-list li {
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    gap: 12pt;
+    padding: 2pt 0;
+    break-inside: avoid;
+  }
 }
 
 /* ---------- small screens ---------- */
@@ -838,6 +982,10 @@ html:has(.home) {
   }
   .about {
     gap: 28px;
+  }
+  .cv-list li {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
   :root {
     --reel-pad: 18px;

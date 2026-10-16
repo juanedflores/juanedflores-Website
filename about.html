@@ -25,10 +25,21 @@
     </header>
 
     <main class="page">
-      <h1 class="section-title">About</h1>
+      <h1 class="visually-hidden">About</h1>
 
       <div class="about">
         <section>
+          <img
+            class="portrait"
+            src="images/about/juan-flores.jpg"
+            width="1600"
+            height="1200"
+            alt="Juan Eduardo Flores holding a cardboard and paper sculpture in front of shelves of parts and prototypes"
+          />
+          <ul class="about-links cv-links">
+            <li><a href="cv.html">CV</a></li>
+            <li><a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a></li>
+          </ul>
           <h2>Bio</h2>
           <!-- DRAFT: updated from the old site's bio; check before publishing -->
           <p>
@@ -60,8 +71,6 @@
 
     <footer class="site-footer">
       <span>© <span class="this-year">2026</span> Juan Eduardo Flores</span>
-      <a href="mailto:juanedflores@gmail.com">Email</a>
-      <a href="https://www.instagram.com/juanedflores">Instagram</a>
       <script>
         // the year as it is, not as it was when this was written
         document.querySelector('.this-year').textContent = new Date().getFullYear();
