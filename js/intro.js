@@ -31,6 +31,11 @@
     return;
   }
   window.scrollTo(0, 0);
+  // and again once everything has loaded, in case the browser puts the
+  // page back where it was late (Safari on a phone can)
+  window.addEventListener('pageshow', function () {
+    if (intro.isConnected) window.scrollTo(0, 0);
+  });
 
   // what the passage leaves in place of a letter; the spaces drop it outright
   var NOISE = '#%&*+=-_/\\|<>~^:;01    ';

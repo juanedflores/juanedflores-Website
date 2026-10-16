@@ -785,6 +785,9 @@ html:has(.home) {
 .about > section + section > :nth-child(1) { animation-delay: 0.14s; }
 .about > section + section > :nth-child(2) { animation-delay: 0.23s; }
 .about > section + section > :nth-child(3) { animation-delay: 0.32s; }
+.about > section + section > :nth-child(4) { animation-delay: 0.41s; }
+.about > section + section > :nth-child(5) { animation-delay: 0.5s; }
+.about > section + section > :nth-child(6) { animation-delay: 0.59s; }
 @keyframes about-in {
   from {
     opacity: 0;
@@ -805,11 +808,55 @@ html:has(.home) {
   width: 100%;
   height: auto;
   margin-bottom: 28px;
-  border: 6px solid var(--ink);
 }
-/* the CV, just under the portrait */
-.about .portrait + .cv-links {
-  margin: -14px 0 28px;
+/* the statement after the bio and its links */
+.about .about-links + h2 {
+  margin-top: 36px;
+}
+
+/* On a screen big enough, About is one window, like the works: the portrait
+   takes the height the left column has, the words sit beside it. */
+@media (min-width: 761px) and (min-height: 621px) {
+  .about-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .about-page > * {
+    width: 100%;
+  }
+  .about-page > .page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+  .about-page .about {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .about-page .about > section:first-child {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .about-page .portrait {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    object-fit: cover;
+    /* cropped to the column, keep Juan in the middle of it */
+    object-position: 58% 50%;
+    margin-bottom: 0;
+  }
+  /* a short window still shows all the words, scrolling just this column */
+  .about-page .about > section + section {
+    overflow-y: auto;
+  }
 }
 .about h2 {
   margin: 0 0 12px;

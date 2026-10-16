@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon" />
   </head>
 
-  <body>
+  <body class="about-page">
     <header class="site-header">
       <a class="site-name" href="index.html#works">Juan Eduardo Flores</a>
       <nav class="site-nav" aria-label="Site">
@@ -36,10 +36,9 @@
             height="1200"
             alt="Juan Eduardo Flores holding a cardboard and paper sculpture in front of shelves of parts and prototypes"
           />
-          <ul class="about-links cv-links">
-            <li><a href="cv.html">CV</a></li>
-            <li><a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a></li>
-          </ul>
+        </section>
+
+        <section>
           <h2>Bio</h2>
           <!-- DRAFT: updated from the old site's bio; check before publishing -->
           <p>
@@ -56,24 +55,32 @@
             <li><a href="https://github.com/juanedflores">GitHub</a></li>
             <li><a href="https://www.linkedin.com/in/juan-flores-56647576/">LinkedIn</a></li>
           </ul>
-        </section>
-
-        <section>
           <h2>Artist statement</h2>
           <p>
             Juan Flores is an artist working with sound, motion, and code. He is interested in what a message keeps, and what it
             lets go, on its journey from one place to another. Drawing on information theory, he listens for the noise in every
             passage and asks how little is needed to carry something across.
           </p>
+          <ul class="about-links cv-links">
+            <li><a href="cv.html">CV</a></li>
+            <li><a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a></li>
+          </ul>
         </section>
       </div>
     </main>
 
     <footer class="site-footer">
-      <span>© <span class="this-year">2026</span> Juan Eduardo Flores</span>
+      <span>Last updated <time class="updated" datetime="2026-10-15">October 15, 2026</time></span>
       <script>
-        // the year as it is, not as it was when this was written
-        document.querySelector('.this-year').textContent = new Date().getFullYear();
+        // when the site was last published, as the server tells it; a browser
+        // that isn't told gives the time now, so then the date above stays
+        (function () {
+          var at = new Date(document.lastModified);
+          if (isNaN(at) || Date.now() - at < 60000) return;
+          var el = document.querySelector('.updated');
+          el.dateTime = at.toISOString().slice(0, 10);
+          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        })();
       </script>
     </footer>
   </body>
