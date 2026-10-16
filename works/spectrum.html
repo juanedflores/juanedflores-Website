@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spectrum, 2017 · Juan Eduardo Flores</title>
+    <meta name="description" content="Spectrum (2017), a sound installation of 23 speakers around a bicycle wheel, mixing local radio, sine tones and white noise, by Juan Eduardo Flores." />
+    <!-- how a link to this page looks when it's shared -->
+    <link rel="canonical" href="https://juanedflores.com/works/spectrum.html" />
+    <meta property="og:site_name" content="Juan Eduardo Flores" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Spectrum, 2017 · Juan Eduardo Flores" />
+    <meta property="og:description" content="Spectrum (2017), a sound installation of 23 speakers around a bicycle wheel, mixing local radio, sine tones and white noise, by Juan Eduardo Flores." />
+    <meta property="og:url" content="https://juanedflores.com/works/spectrum.html" />
+    <meta property="og:image" content="https://juanedflores.com/images/share/spectrum.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A bicycle wheel lined with small speakers, standing on a pole in a room with peeling walls, cables running to a box on the floor" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/site.css" />
+    <!-- the mark: point A to point B, by a winding road -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../resources/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <script src="../js/work.js" defer></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">Juan Eduardo Flores</a>
+      <nav class="site-nav" aria-label="Site">
+        <a href="../index.html#works" aria-current="page">Works</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <header class="work-head">
+        <h1><i>Spectrum</i></h1>
+        <p class="work-meta">2017 · Sound installation</p>
+      </header>
+
+      <button class="hero-btn" type="button"><img class="hero" src="../images/spectrum/wheel-md.jpg" srcset="../images/spectrum/wheel-sm.jpg 1000w, ../images/spectrum/wheel-md.jpg 1600w, ../images/spectrum/wheel.jpg 2400w" sizes="(max-width: 760px) calc(100vw - 36px), min(1136px, calc(100vw - 64px))" data-full="../images/spectrum/wheel.jpg" alt="A bicycle wheel lined with small speakers, standing on a pole in a room with peeling walls, cables running to a box on the floor" /></button>
+
+      <div class="work-body">
+        <div class="prose">
+          <p>
+            <i>Spectrum</i> is a sound installation that mixes a range of sounds from several local radio stations, generated sine tones, and white noise.
+            The sounds are emitted by 23 speakers placed around a bicycle wheel and hooked up to several FM receivers. Each tuned to a certain
+            frequency, they pick up and play specific sounds of the area coming from local radio stations. FM transmitters are used to insert
+            generated sine tones coming from a Max/MSP patch. Several activations of the installation were performed to rotate the wheel
+            similarly to a musical instrument.
+          </p>
+          <p>Materials: 23 speakers, bicycle wheel, audio interface with 8 stereo outputs, 4 FM transmitters and receivers, computer running Max7/MSP.</p>
+          <p><a href="https://vimeo.com/228955732">Video on Vimeo →</a></p>
+          <p><a href="https://www.youtube.com/watch?v=0Hc7zFyUvXA">Documentation of the residency by Espectro Electromagnético →</a></p>
+          <p class="exhibited">
+            Exhibited in <i>Espectro del Espectro</i>, Espectro Electromagnético Sound Artist Residency, Mexico City, 2017
+          </p>
+        </div>
+        <div class="piece-photos">
+          <button type="button"><img src="../images/spectrum/speakers-sm.jpg" data-full="../images/spectrum/speakers.jpg" alt="Close up of the speakers around the rim and a receiver on the spokes" /></button>
+          <button type="button"><img src="../images/spectrum/dark-sm.jpg" data-full="../images/spectrum/dark.jpg" alt="The wheel in the dark, lit from one side" /></button>
+          <button class="wide" type="button"><img src="../images/spectrum/hand-sm.jpg" data-full="../images/spectrum/hand.jpg" alt="A hand turning the wheel, speakers and FM receivers fixed to its spokes" /></button>
+          <button type="button"><img src="../images/spectrum/setup-sm.jpg" data-full="../images/spectrum/setup.jpg" alt="In black and white, two people on the floor working at a laptop beside the wheel" /></button>
+          <button type="button"><img src="../images/spectrum/projection-sm.jpg" data-full="../images/spectrum/projection.jpg" alt="The wheel in silhouette in front of a projected film" /></button>
+        </div>
+      </div>
+    </main>
+
+    <div class="lightbox" hidden>
+      <button class="lightbox-close" type="button">close ×</button>
+      <img alt="" />
+    </div>
+
+    <footer class="site-footer">
+      <span>Last updated <time class="updated" datetime="2026-10-16">October 16, 2026</time></span>
+      <script>
+        // when the site was last published, as the server tells it; a browser
+        // that isn't told gives the time now, so then the date above stays
+        (function () {
+          var at = new Date(document.lastModified);
+          if (isNaN(at) || Date.now() - at < 60000) return;
+          var el = document.querySelector('.updated');
+          el.dateTime = at.toISOString().slice(0, 10);
+          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        })();
+      </script>
+    </footer>
+  </body>
+</html>

@@ -687,6 +687,7 @@ img {
   font-weight: 600;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.15;
+  text-wrap: balance;
 }
 .work-head .work-meta {
   margin-bottom: 20px;
@@ -739,6 +740,19 @@ img {
 }
 .piece-photos .wide {
   grid-column: 1 / -1;
+}
+/* a photo shown whole, at its own shape, instead of cropped to the grid's */
+.piece-photos .whole img {
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+/* a video among the photos plays in place, with its own controls */
+.piece-photos video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
 }
 .piece-photos img {
   display: block;
@@ -1214,6 +1228,9 @@ body > .point-chip::after {
   }
   .about .portrait {
     margin-bottom: 0;
+  }
+  .about .portrait + h2 {
+    margin-top: 20px;
   }
   .cv-list li {
     grid-template-columns: 1fr;

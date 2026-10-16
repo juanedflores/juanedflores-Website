@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Untitled, 2023 · Juan Eduardo Flores</title>
+    <meta name="description" content="Untitled (2023), an interactive piece: a webcam, and a monitor filled with a grid of eyes, by Juan Eduardo Flores." />
+    <!-- how a link to this page looks when it's shared -->
+    <link rel="canonical" href="https://juanedflores.com/works/untitled-2023-eyes.html" />
+    <meta property="og:site_name" content="Juan Eduardo Flores" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Untitled, 2023 · Juan Eduardo Flores" />
+    <meta property="og:description" content="Untitled (2023), an interactive piece: a webcam, and a monitor filled with a grid of eyes, by Juan Eduardo Flores." />
+    <meta property="og:url" content="https://juanedflores.com/works/untitled-2023-eyes.html" />
+    <meta property="og:image" content="https://juanedflores.com/images/share/untitled-2023-eyes.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A visitor looking at a vertical monitor filled with a grid of cropped eyes, a webcam on the plinth below" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/site.css" />
+    <!-- the mark: point A to point B, by a winding road -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../resources/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <script src="../js/work.js" defer></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">Juan Eduardo Flores</a>
+      <nav class="site-nav" aria-label="Site">
+        <a href="../index.html#works" aria-current="page">Works</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <header class="work-head">
+        <h1><i>Untitled</i></h1>
+        <!-- materials from the wall label, where the piece is called These Eyes -->
+        <p class="work-meta">2023 · Browser, webcam, OpenCV, StyleGAN, fakeface REST API</p>
+      </header>
+
+      <button class="hero-btn" type="button"><img class="hero" src="../images/untitled-2023-eyes/visitor-md.jpg" srcset="../images/untitled-2023-eyes/visitor-sm.jpg 1000w, ../images/untitled-2023-eyes/visitor-md.jpg 1600w, ../images/untitled-2023-eyes/visitor.jpg 2400w" sizes="(max-width: 760px) calc(100vw - 36px), min(1136px, calc(100vw - 64px))" data-full="../images/untitled-2023-eyes/visitor.jpg" alt="A visitor in a cap and backpack looking at a vertical monitor filled with a grid of cropped eyes, a webcam on the plinth below" /></button>
+
+      <div class="work-body">
+        <div class="prose">
+          <p>This piece is interactive.</p>
+          <!-- DRAFT: a line about the piece, where it was shown, and photo credit -->
+        </div>
+        <div class="piece-photos">
+          <button type="button"><img src="../images/untitled-2023-eyes/eyes-sm.jpg" data-full="../images/untitled-2023-eyes/eyes.jpg" alt="The monitor up close: a grid of hundreds of cropped eyes, and a few mouths" /></button>
+          <button type="button"><img src="../images/untitled-2023-eyes/webcam-sm.jpg" data-full="../images/untitled-2023-eyes/webcam.jpg" alt="The webcam on a small computer on the plinth, under the monitor" /></button>
+          <button class="wide" type="button"><img src="../images/untitled-2023-eyes/gallery-sm.jpg" data-full="../images/untitled-2023-eyes/gallery.jpg" alt="The piece across the gallery, visitors looking at the works around it" /></button>
+          <button type="button"><img src="../images/untitled-2023-eyes/corner-sm.jpg" data-full="../images/untitled-2023-eyes/corner.jpg" alt="The monitor and plinth in a corner of white walls" /></button>
+          <button type="button"><img src="../images/untitled-2023-eyes/room-sm.jpg" data-full="../images/untitled-2023-eyes/room.jpg" alt="The piece at the far end of the space, past prints laid on the floor" /></button>
+        </div>
+      </div>
+    </main>
+
+    <div class="lightbox" hidden>
+      <button class="lightbox-close" type="button">close ×</button>
+      <img alt="" />
+    </div>
+
+    <footer class="site-footer">
+      <span>Last updated <time class="updated" datetime="2026-10-16">October 16, 2026</time></span>
+      <script>
+        // when the site was last published, as the server tells it; a browser
+        // that isn't told gives the time now, so then the date above stays
+        (function () {
+          var at = new Date(document.lastModified);
+          if (isNaN(at) || Date.now() - at < 60000) return;
+          var el = document.querySelector('.updated');
+          el.dateTime = at.toISOString().slice(0, 10);
+          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        })();
+      </script>
+    </footer>
+  </body>
+</html>

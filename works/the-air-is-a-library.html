@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Air Is a Library, in progress · Juan Eduardo Flores</title>
+    <meta name="description" content="The Air Is a Library (in progress, 2026), a voice cut into a feather and read back into sound, by Juan Eduardo Flores." />
+    <!-- how a link to this page looks when it's shared -->
+    <link rel="canonical" href="https://juanedflores.com/works/the-air-is-a-library.html" />
+    <meta property="og:site_name" content="Juan Eduardo Flores" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="The Air Is a Library, in progress · Juan Eduardo Flores" />
+    <meta property="og:description" content="The Air Is a Library (in progress, 2026), a voice cut into a feather and read back into sound, by Juan Eduardo Flores." />
+    <meta property="og:url" content="https://juanedflores.com/works/the-air-is-a-library.html" />
+    <meta property="og:image" content="https://juanedflores.com/images/share/the-air-is-a-library.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A simulated scan of a feather lying on dark glass, its vane cut so that the upper edge traces one vibration of a voice" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/site.css" />
+    <!-- the mark: point A to point B, by a winding road -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../resources/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <script src="../js/work.js" defer></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">Juan Eduardo Flores</a>
+      <nav class="site-nav" aria-label="Site">
+        <a href="../index.html#works" aria-current="page">Works</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <header class="work-head">
+        <h1><i>The Air Is a Library</i></h1>
+        <p class="work-meta">2026 · In progress</p>
+      </header>
+
+      <button class="hero-btn" type="button"><img class="hero" src="../images/the-air-is-a-library/scan-md.jpg" srcset="../images/the-air-is-a-library/scan-sm.jpg 1000w, ../images/the-air-is-a-library/scan-md.jpg 1600w, ../images/the-air-is-a-library/scan.jpg 2400w" sizes="(max-width: 760px) calc(100vw - 36px), min(1136px, calc(100vw - 64px))" data-full="../images/the-air-is-a-library/scan.jpg" alt="A simulated scan of a feather lying on dark glass, its vane cut so that the upper edge traces one vibration of a voice" /></button>
+
+      <div class="work-body">
+        <div class="prose">
+          <!-- DRAFT: from the essay The Air Is a Library and the note The Desire to Record Data onto a Feather -->
+          <p><i>I don’t want what I say to be heavy and I don’t want it to fly away. A feather is just enough.</i></p>
+          <p>
+            Every recording medium is a bet about what a material can remember. This work tests an unlikely one: can a feather hold a voice?
+          </p>
+          <p>
+            A recorded <i>ahhh</i> is reduced to a single vibration, about 400 samples long. Each sample becomes the width of a cut in the vane,
+            made by hand with calipers and a scalpel along the feather’s 200&nbsp;mm. The feather keeps the voice’s timbre but not its time: one
+            vibration, which only an apparatus can make sound again.
+          </p>
+          <p>
+            The installation in development places the feather on a flatbed scanner with its lid open. The scanner’s light bar passes slowly
+            under the vane, software measures the cut edge, and the voice is heard only while it is being read.
+          </p>
+          <p class="credit">Images: a simulated scan and analysis from the research</p>
+        </div>
+        <div class="piece-photos">
+          <button class="wide whole" type="button"><img src="../images/the-air-is-a-library/reading-sm.jpg" data-full="../images/the-air-is-a-library/reading.jpg" alt="The reading software on a simulated scan: the shaft and measured edge marked over the feather, and below, the waveform read from the image laid over the intended cut" /></button>
+          <button class="wide whole" type="button"><img src="../images/the-air-is-a-library/round-trip-sm.jpg" data-full="../images/the-air-is-a-library/round-trip.jpg" alt="Four charts: one pitch cycle selected from the voice, the 400 cuts along the vane, the waveform read back against the original, and their harmonics" /></button>
+        </div>
+      </div>
+    </main>
+
+    <div class="lightbox" hidden>
+      <button class="lightbox-close" type="button">close ×</button>
+      <img alt="" />
+    </div>
+
+    <footer class="site-footer">
+      <span>Last updated <time class="updated" datetime="2026-10-16">October 16, 2026</time></span>
+      <script>
+        // when the site was last published, as the server tells it; a browser
+        // that isn't told gives the time now, so then the date above stays
+        (function () {
+          var at = new Date(document.lastModified);
+          if (isNaN(at) || Date.now() - at < 60000) return;
+          var el = document.querySelector('.updated');
+          el.dateTime = at.toISOString().slice(0, 10);
+          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        })();
+      </script>
+    </footer>
+  </body>
+</html>

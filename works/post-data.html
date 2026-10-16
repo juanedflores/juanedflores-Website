@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post-Data, 2019 · Juan Eduardo Flores</title>
+    <meta name="description" content="Post-Data (2019), an interactive projection where posts tagged #luminariasa were altered and disrupted in real time, by Juan Eduardo Flores with Isaac Medina as PHAGES." />
+    <!-- how a link to this page looks when it's shared -->
+    <link rel="canonical" href="https://juanedflores.com/works/post-data.html" />
+    <meta property="og:site_name" content="Juan Eduardo Flores" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Post-Data, 2019 · Juan Eduardo Flores" />
+    <meta property="og:description" content="Post-Data (2019), an interactive projection where posts tagged #luminariasa were altered and disrupted in real time, by Juan Eduardo Flores with Isaac Medina as PHAGES." />
+    <meta property="og:url" content="https://juanedflores.com/works/post-data.html" />
+    <meta property="og:image" content="https://juanedflores.com/images/share/post-data.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A person in silhouette, seated in front of a wall-sized projection of torn and layered images and text" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/site.css" />
+    <!-- the mark: point A to point B, by a winding road -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../resources/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <script src="../js/work.js" defer></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="../index.html">Juan Eduardo Flores</a>
+      <nav class="site-nav" aria-label="Site">
+        <a href="../index.html#works" aria-current="page">Works</a>
+        <a href="../about.html">About</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <header class="work-head">
+        <h1><i>Post-Data</i></h1>
+        <p class="work-meta">2019 · Interactive projection</p>
+      </header>
+
+      <button class="hero-btn" type="button"><img class="hero" src="../images/post-data/viewer-md.jpg" srcset="../images/post-data/viewer-sm.jpg 1000w, ../images/post-data/viewer-md.jpg 1600w, ../images/post-data/viewer.jpg 2400w" sizes="(max-width: 760px) calc(100vw - 36px), min(1136px, calc(100vw - 64px))" data-full="../images/post-data/viewer.jpg" alt="A person in silhouette, seated in front of a wall-sized projection of torn and layered images and text" /></button>
+
+      <div class="work-body">
+        <div class="prose">
+          <p>
+            Presented as part of Luminaria Contemporary Arts Festival, <i>Post-Tw.In.Yo.Go.Fa.</i> (<i>Post-Data</i>) is the name of the dystopian
+            digital realm that imagines life after the fall of five internet beasts (Twitter, Instagram, YouTube, Google, and Facebook). By using
+            the hashtag #luminariasa, people engaged with the artwork and were able to see their posts altered and disrupted on the screen in real time.
+          </p>
+          <p>
+            Made in collaboration with <a href="https://isaacmedina.bandcamp.com/">Isaac Medina</a>, under the alias of our collective
+            <a href="https://phagesofficial.com">PHAGES</a>.
+          </p>
+          <p>
+            The visuals were made with a program written in Java using the Processing 2 library. It is open source, on
+            <a href="https://github.com/juanedflores/Post-Data">GitHub</a>.
+          </p>
+          <p><a href="https://vimeo.com/372649404">Video on Vimeo →</a></p>
+          <p><a href="https://vimeo.com/371300746">More footage on Vimeo →</a></p>
+          <p class="exhibited">Exhibited at Luminaria Contemporary Arts Festival, Hemisfair Park, San Antonio, 2019</p>
+        </div>
+        <div class="piece-photos">
+          <button type="button"><img src="../images/post-data/screen-1-sm.jpg" data-full="../images/post-data/screen-1.jpg" alt="The software: a grid of small panels on the left, the layered collage it builds on the right" /></button>
+          <button type="button"><img src="../images/post-data/screen-2-sm.jpg" data-full="../images/post-data/screen-2.jpg" alt="The software composing a collage in pale blue, faces and text cut into it" /></button>
+          <button class="wide" type="button"><img src="../images/post-data/projection-sm.jpg" data-full="../images/post-data/projection.jpg" alt="A frame of the visuals: fragments of text, screenshots and glyphs scattered over black" /></button>
+          <button type="button"><img src="../images/post-data/screen-3-sm.jpg" data-full="../images/post-data/screen-3.jpg" alt="The software building another collage out of shredded colour and text" /></button>
+        </div>
+      </div>
+    </main>
+
+    <div class="lightbox" hidden>
+      <button class="lightbox-close" type="button">close ×</button>
+      <img alt="" />
+    </div>
+
+    <footer class="site-footer">
+      <span>Last updated <time class="updated" datetime="2026-10-16">October 16, 2026</time></span>
+      <script>
+        // when the site was last published, as the server tells it; a browser
+        // that isn't told gives the time now, so then the date above stays
+        (function () {
+          var at = new Date(document.lastModified);
+          if (isNaN(at) || Date.now() - at < 60000) return;
+          var el = document.querySelector('.updated');
+          el.dateTime = at.toISOString().slice(0, 10);
+          el.textContent = at.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        })();
+      </script>
+    </footer>
+  </body>
+</html>
