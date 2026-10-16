@@ -528,9 +528,30 @@ img {
 .home .works li.arriving {
   animation: index-fade 0.45s ease-out both;
 }
+/* a turned page slides in from the side it was turned towards */
+.home .works.turn-next > li {
+  animation: page-in-next 0.3s ease-out both;
+}
+.home .works.turn-prev > li {
+  animation: page-in-prev 0.3s ease-out both;
+}
+@keyframes page-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+@keyframes page-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .index-preview.fresh *,
-  .home .works li.arriving {
+  .home .works li.arriving,
+  .home .works.turn-next > li,
+  .home .works.turn-prev > li {
     animation: none;
   }
 }

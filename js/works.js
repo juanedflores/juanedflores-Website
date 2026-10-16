@@ -12,7 +12,8 @@
 // previews it and the second opens it.
 // The page index on the right shows the works four at a time once there are
 // more than fit one screen, turned with its arrows or the ← and → keys; until
-// then it reads 1 / 1. While the index is open it steps aside, since the
+// then it reads 1 / 1. On a touch screen a sideways swipe across the works
+// turns the page too. While the index is open it steps aside, since the
 // index already shows every work.
 
 (function () {
@@ -250,6 +251,7 @@
   var page = 0;
 
   function turn(to) {
+    var from = page;
     page = Math.max(0, Math.min(count - 1, to));
     items.forEach(function (li, i) {
       li.hidden = Math.floor(i / PER_PAGE) !== page;
@@ -257,7 +259,19 @@
     at.textContent = page + 1 + ' / ' + count;
     turns[0].disabled = page === 0;
     turns[1].disabled = page === count - 1;
+    // the new page slides in from the side it was turned towards
+    if (page !== from) {
+      list.classList.remove('turn-next', 'turn-prev');
+      void list.offsetWidth; // so turning again straight away replays the slide
+      list.classList.add(page > from ? 'turn-next' : 'turn-prev');
+      // then off again, so it can't stand in for the index's own fade-in
+      clearTimeout(sliding);
+      sliding = setTimeout(function () {
+        list.classList.remove('turn-next', 'turn-prev');
+      }, 400);
+    }
   }
+  var sliding = null;
 
   Array.prototype.forEach.call(turns, function (button) {
     button.addEventListener('click', function () {
@@ -275,6 +289,35 @@
     if (e.key === 'ArrowLeft') turn(page - 1);
     else if (e.key === 'ArrowRight') turn(page + 1);
   });
+
+  // on a touch screen, a sideways swipe across the works turns the page:
+  // to the left for the next, to the right for the one before. A swipe that
+  // is more down than across is left to scroll the page.
+  var startX = null;
+  var startY = 0;
+  var swiped = 0;
+  shelf.addEventListener('touchstart', function (e) {
+    startX = null;
+    if (count < 2 || e.touches.length > 1 || pages.classList.contains('away')) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  shelf.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    startX = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    swiped = Date.now();
+    turn(page + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  // a swipe that began on a work turns the page; it doesn't open the work
+  shelf.addEventListener('click', function (e) {
+    if (Date.now() - swiped < 500) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
 
   turn(0);
 })();
