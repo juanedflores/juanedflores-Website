@@ -105,10 +105,14 @@ img {
 /* ---------- page ---------- */
 
 /* home: the page ends exactly where the header reaches the top, so a fast
-   scroll would hit the end and spring past it (macOS's rubber band); the
-   header and works should stop dead in their place instead */
-html:has(.home) {
-  overscroll-behavior-y: none;
+   trackpad scroll would hit the end and spring past it (macOS's rubber
+   band); the header and works should stop dead in their place instead.
+   Not on touch screens: there, Safari makes a finger-dragged scroll catch
+   and pause with this set. */
+@media (hover: hover) {
+  html:has(.home) {
+    overscroll-behavior-y: none;
+  }
 }
 
 /* home: the reel, then the page exactly one window tall: header, all the
@@ -130,21 +134,6 @@ html:has(.home) {
   height: calc(100svh + 100lvh);
 }
 
-/* on a touch screen, a swipe that ends near the reel or near the works
-   settles there; one that ends further off stays where it stopped. (Always
-   settling, "mandatory", made a short swipe stop and then jump the rest of
-   the way.) */
-@media (hover: none) and (pointer: coarse) {
-  html:has(.intro) {
-    scroll-snap-type: y proximity;
-  }
-  .home > .intro {
-    scroll-snap-align: start;
-  }
-  .home > .site-footer {
-    scroll-snap-align: end;
-  }
-}
 .home > * {
   width: 100%;
 }
@@ -599,9 +588,6 @@ html:has(.home) {
   .home,
   .home:has(> .intro) {
     height: auto;
-  }
-  html:has(.intro) {
-    scroll-snap-type: none;
   }
   .home .works {
     grid-template-rows: none;

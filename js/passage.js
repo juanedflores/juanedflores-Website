@@ -80,9 +80,6 @@
         name(origin, true);
         var crossing = document.startViewTransition(function () {
           name(origin, false);
-          // opening a work means the reel has had its turn
-          var reel = document.querySelector('.home > .intro');
-          if (reel) reel.remove();
           if (push) history.pushState({ work: true }, '', url.href);
           home = document.body;
           document.title = page.title;

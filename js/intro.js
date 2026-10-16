@@ -5,7 +5,8 @@
 // letters (white above, ink below) and breaks them into noise in the passage.
 // Nothing here moves them; the browser does, in step with the scrolling.
 // Once the reel has scrolled away entirely it's gone for good, leaving the
-// works as a page of their own; only a reload brings it back.
+// works as a page of their own; only a reload brings it back. On a phone it
+// stays, to scroll back up to, unless Works is tapped on it.
 
 (function () {
   var intro = document.querySelector('.intro');
@@ -13,6 +14,8 @@
   var header = document.querySelector('.site-header');
   var works = header.querySelector('.site-nav a[href="#works"]');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var phone = window.matchMedia('(hover: none) and (pointer: coarse)');
+  var chosen = false; // Works was clicked on the reel
 
   // The page starts at the reel; it's not put back where it was scrolled to.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -54,6 +57,7 @@
   works.addEventListener('click', function (e) {
     if (!intro.isConnected) return;
     e.preventDefault();
+    chosen = true;
     window.scrollTo({ top: intro.offsetTop + intro.offsetHeight, behavior: reduced ? 'auto' : 'smooth' });
   });
 
@@ -73,11 +77,17 @@
   intro.addEventListener('touchend', start, { passive: true });
   intro.addEventListener('click', start);
 
+  // Paused while it's well out of sight, and started again a little before
+  // it comes back into view, so it isn't starting up under a finger
+  // mid-scroll.
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) start();
-      else reel.pause();
-    }).observe(intro);
+    new IntersectionObserver(
+      function (entries) {
+        if (entries[0].isIntersecting) start();
+        else reel.pause();
+      },
+      { rootMargin: '50% 0px' }
+    ).observe(intro);
   }
 
   function garble(text, amount) {
@@ -95,7 +105,8 @@
   var running = false;
 
   function tick(now) {
-    if (intro.isConnected && intro.getBoundingClientRect().bottom <= 1) dismiss();
+    // scrolled past, the reel goes; on a phone only if Works sent it
+    if (intro.isConnected && (chosen || !phone.matches) && intro.getBoundingClientRect().bottom <= 1) dismiss();
     var edge = intro.isConnected ? intro.getBoundingClientRect().bottom : -Infinity;
 
     var noisy = false;
