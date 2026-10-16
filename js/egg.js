@@ -20,7 +20,12 @@
 
 (function () {
   var toggle = document.querySelector('.mark-toggle');
-  var words = { a: document.querySelector('[data-point="a"]'), b: document.querySelector('[data-point="b"]') };
+  // the words, found afresh each time: the statement is rewritten when its
+  // language changes
+  function pick() {
+    return { a: document.querySelector('[data-point="a"]'), b: document.querySelector('[data-point="b"]') };
+  }
+  var words = pick();
   if (!toggle || !words.a || !words.b) return;
 
   var BURST = 10; // points in an opening burst
@@ -836,6 +841,7 @@
     canvas.setAttribute('aria-hidden', 'true');
     document.body.appendChild(canvas);
     ctx = canvas.getContext('2d');
+    words = pick();
     chips = { a: chip('a'), b: chip('b') };
     stir();
     flock = [];

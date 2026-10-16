@@ -810,6 +810,7 @@ img {
 .about > section + section > :nth-child(4) { animation-delay: 0.41s; }
 .about > section + section > :nth-child(5) { animation-delay: 0.5s; }
 .about > section + section > :nth-child(6) { animation-delay: 0.59s; }
+.about > section + section > :nth-child(n + 7) { animation-delay: 0.68s; }
 @keyframes about-in {
   from {
     opacity: 0;
@@ -836,7 +837,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 14px;
   margin-top: 8px;
 }
 .statement-end .about-links {
@@ -932,9 +933,38 @@ body > .point-chip::after {
   height: 100%;
   pointer-events: none;
 }
-/* the statement after the bio and its links */
-.about .about-links + h2 {
+/* the statement after the bio */
+.about p + h2 {
   margin-top: 36px;
+}
+/* under the links, the language the page is in */
+.about .about-links + h2 {
+  margin-top: 24px;
+}
+.lang-toggle {
+  display: flex;
+  gap: 8px 18px;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+.lang-toggle button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.lang-toggle button:hover,
+.lang-toggle button[aria-pressed='true'] {
+  color: var(--ink);
+}
+.lang-toggle button[aria-pressed='true'] {
+  text-decoration: underline;
+}
+/* the links under the portrait, under their own label */
+.about h2 + .about-links {
+  margin-top: 0;
 }
 
 /* On a screen big enough, About is one window, like the works: the portrait
@@ -955,17 +985,42 @@ body > .point-chip::after {
     flex: 1;
     min-height: 0;
     padding-top: 16px;
-    padding-bottom: 16px;
+    padding-bottom: 8px;
   }
-  .about-page .about-links + h2 {
+  .about-page .about p + h2 {
     margin-top: 22px;
+  }
+  .about-page .about .about-links + h2 {
+    margin-top: 20px;
+  }
+  .about-page .about h2 {
+    margin-bottom: 8px;
+  }
+  .about-page .about p {
+    margin: 0 0 0.75em;
+  }
+  .about-page .portrait + h2 {
+    margin-top: 20px;
+  }
+  .about-page h2 + .about-links {
+    column-gap: 18px;
+  }
+  /* the words shrink a little with a shorter window, so they still fit */
+  .about-page .about > section + section {
+    font-size: clamp(14.5px, 1.9vh, 17px);
+    line-height: 1.5;
+  }
+  .about-page .site-footer {
+    padding-top: 14px;
+    padding-bottom: 18px;
   }
   .about-page .about {
     flex: 1;
     min-height: 0;
     /* a wider column for the words, so the statement and CV fit beside the
        portrait */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr);
+    column-gap: 56px;
     grid-template-rows: minmax(0, 1fr);
   }
   .about-page .about > section:first-child {

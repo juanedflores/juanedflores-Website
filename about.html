@@ -69,12 +69,32 @@
             height="1200"
             alt="Juan Eduardo Flores holding a cardboard and paper sculpture in front of shelves of parts and prototypes"
           />
+          <h2 data-tr="links">Links</h2>
+          <ul class="about-links">
+            <li>
+              <a href="mailto:juanedflores@gmail.com" data-tr="email">Email</a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/juanedflores">Instagram</a>
+            </li>
+            <li><a href="https://github.com/juanedflores">GitHub</a></li>
+            <li>
+              <a href="https://www.linkedin.com/in/juan-flores-56647576/"
+                >LinkedIn</a
+              >
+            </li>
+          </ul>
+          <h2 data-tr="language">Language</h2>
+          <div class="lang-toggle" role="group" aria-label="Language">
+            <button type="button" lang="en" aria-pressed="true">English</button>
+            <button type="button" lang="es" aria-pressed="false">Español</button>
+          </div>
         </section>
 
         <section>
-          <h2>Bio</h2>
+          <h2 data-tr="bio">Bio</h2>
           <!-- DRAFT: updated from the old site's bio; check before publishing -->
-          <p>
+          <p data-tr="bio-1">
             Juan Eduardo Flores was born in Del Rio, Texas, and raised on the
             southeast side of San Antonio, where he got his start in high school
             making community mosaic-tile murals with other students through The
@@ -88,7 +108,7 @@
             the Art Institute of Chicago.
           </p>
 
-          <p>
+          <p data-tr="bio-2">
             He has exhibited at
             <a
               href="https://ars.electronica.art/who-owns-the-truth/en/happy-travels/"
@@ -109,25 +129,13 @@
             <a href="https://www.expochicago.com/">EXPO Chicago</a>.
           </p>
 
-          <p>
+          <p data-tr="bio-3">
             He currently teaches in the School of Art & Art History at the
             University of Illinois Chicago as an Adjunct Associate Professor.
           </p>
-          <ul class="about-links">
-            <li><a href="mailto:juanedflores@gmail.com">Email</a></li>
-            <li>
-              <a href="https://www.instagram.com/juanedflores">Instagram</a>
-            </li>
-            <li><a href="https://github.com/juanedflores">GitHub</a></li>
-            <li>
-              <a href="https://www.linkedin.com/in/juan-flores-56647576/"
-                >LinkedIn</a
-              >
-            </li>
-          </ul>
-          <h2>Artist statement</h2>
+          <h2 data-tr="statement">Artist statement</h2>
 
-          <p>
+          <p data-tr="statement-1">
             Working with motion and sound, I explore the tension between control
             and entropy. My process begins with travel: the passage from
             <span data-point="a">point A</span> to
@@ -135,13 +143,13 @@
             way, and what it leaves behind. The artifact, the record, and the
             archive matter less to me than the systems that carry them. I
             stress-test those systems, looking for unlikely ways to store,
-            process, and transform data and listening for the noise and decay.
+            process, and transform data, and listening for noise and decay.
             Through the interplay of labor, automation, and the everyday, I ask
-            how little a message needs to be received, how the barely
-            perceivable can be louder than the amplified, and how to pack
-            something heavy in a light package. If information is measured by
-            surprise, I'm looking for the moments where surprise and the mundane
-            combine together to turn into wonder.
+            how little a message needs in order to be received and remembered,
+            how the barely perceivable can be louder than the amplified, and how
+            to fit something heavy into a light package. If information is
+            measured by surprise, I look for the moments where surprise and the
+            mundane combine into wonder.
           </p>
 
           <!-- the CV, and under it the mark (A to B, by a winding road) -->
@@ -169,6 +177,103 @@
           </div>
         </section>
       </div>
+
+      <!-- the same words in Spanish, each standing in for its [data-tr] -->
+      <template id="es">
+        <h2 data-tr="links">Enlaces</h2>
+        <a data-tr="email">Correo</a>
+        <h2 data-tr="language">Idioma</h2>
+        <h2 data-tr="bio">Biografía</h2>
+        <p data-tr="bio-1">
+          Juan Eduardo Flores nació en Del Rio, Texas, y creció en el lado
+          sureste de San Antonio, donde se inició en la preparatoria creando
+          murales comunitarios de mosaico con otros estudiantes a través del
+          programa
+          <a href="https://contemporarysa.org/mosaic/">MOSAIC</a> de The
+          Contemporary at Blue Star. En 2016 obtuvo su licenciatura en Arte en
+          Connecticut College como becario del Ammerman Center for Arts &
+          Technology. Con la beca de viaje Mortimer Hays-Brandeis pasó más de un
+          año en la Ciudad de México desarrollando una práctica de arte sonoro,
+          y en 2023 obtuvo su maestría (MFA) en Art and Technology Studies en la
+          School of the Art Institute of Chicago.
+        </p>
+        <p data-tr="bio-2">
+          Ha expuesto en
+          <a
+            href="https://ars.electronica.art/who-owns-the-truth/en/happy-travels/"
+            >Ars Electronica</a
+          >
+          en Linz, Austria;
+          <a href="https://voltaje.co/el-salon/"
+            >Voltaje – Salón de Arte y Tecnología</a
+          >
+          en Bogotá, Colombia; el
+          <a href="https://ccemx.aecid.es/">Centro Cultural de España</a>
+          en la Ciudad de México, y el
+          <a
+            href="https://www.hongmuseum.cn/the-plan-of-going-home-residency-program.html"
+            >Hong Museum</a
+          >
+          en Wenzhou, China, así como con SAIC en
+          <a href="https://www.expochicago.com/">EXPO Chicago</a>.
+        </p>
+        <p data-tr="bio-3">
+          Actualmente es profesor asociado adjunto en la School of Art & Art
+          History de la University of Illinois Chicago.
+        </p>
+        <h2 data-tr="statement">Declaración de artista</h2>
+        <p data-tr="statement-1">
+          En mi trabajo con el movimiento y el sonido, exploro la tensión entre
+          el control y la entropía. Mi proceso comienza con el viaje: el
+          trayecto del <span data-point="a">punto A</span> al
+          <span data-point="b">punto B</span>, lo que un mensaje conserva en el
+          camino y lo que deja atrás. El artefacto, el registro y el archivo me
+          importan menos que los sistemas que los transportan. Llevo esos
+          sistemas al límite, buscando formas improbables de almacenar,
+          procesar y transformar datos, y escuchando el ruido y la degradación.
+          A través de la interacción entre el trabajo, la automatización y lo
+          cotidiano, me pregunto qué tan poco necesita un mensaje para ser
+          recibido y recordado, cómo lo apenas perceptible puede sonar más
+          fuerte que lo amplificado y cómo meter algo pesado en un paquete
+          ligero. Si la información se mide por la sorpresa, busco los momentos
+          en que la sorpresa y lo ordinario se combinan hasta volverse asombro.
+        </p>
+      </template>
+      <script>
+        // the page in English or Spanish; the choice is remembered
+        (function () {
+          var buttons = document.querySelectorAll(".lang-toggle button");
+          var spanish = document.getElementById("es").content;
+          var english = {};
+          function show(lang) {
+            // the points fly from the words on show: put them back first
+            var egg = document.querySelector('.mark-toggle[aria-pressed="true"]');
+            if (egg) egg.click();
+            document.querySelectorAll(".about [data-tr]").forEach(function (el) {
+              var key = el.dataset.tr;
+              if (!(key in english)) english[key] = el.innerHTML;
+              var es = spanish.querySelector('[data-tr="' + key + '"]');
+              el.innerHTML = lang === "es" ? es.innerHTML : english[key];
+              if (lang === "es") el.lang = "es";
+              else el.removeAttribute("lang");
+            });
+            buttons.forEach(function (b) {
+              b.setAttribute("aria-pressed", b.lang === lang);
+            });
+          }
+          buttons.forEach(function (b) {
+            b.addEventListener("click", function () {
+              show(b.lang);
+              try {
+                localStorage.setItem("about-lang", b.lang);
+              } catch (e) {}
+            });
+          });
+          try {
+            if (localStorage.getItem("about-lang") === "es") show("es");
+          } catch (e) {}
+        })();
+      </script>
     </main>
 
     <footer class="site-footer">
