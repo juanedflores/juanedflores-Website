@@ -837,7 +837,7 @@ html:has(.home) {
 }
 
 /* On a screen big enough, About is one window, like the works: the portrait
-   takes the height the left column has, the words sit beside it. */
+   at the top of the left column, the words beside it. */
 @media (min-width: 761px) and (min-height: 621px) {
   .about-page {
     display: flex;
@@ -853,8 +853,11 @@ html:has(.home) {
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+  .about-page .about-links + h2 {
+    margin-top: 28px;
   }
   .about-page .about {
     flex: 1;
@@ -866,13 +869,10 @@ html:has(.home) {
     flex-direction: column;
     min-height: 0;
   }
+  /* the whole photo, uncropped, at the top of its column */
   .about-page .portrait {
-    flex: 1;
-    min-height: 0;
+    flex: none;
     height: auto;
-    object-fit: cover;
-    /* cropped to the column, keep Juan in the middle of it */
-    object-position: 58% 50%;
     margin-bottom: 0;
   }
   /* a short window still shows all the words, scrolling just this column */
@@ -1049,8 +1049,12 @@ html:has(.home) {
   .credit {
     margin-top: 24px;
   }
+  /* the bio follows close under the portrait */
   .about {
-    gap: 28px;
+    gap: 20px;
+  }
+  .about .portrait {
+    margin-bottom: 0;
   }
   .cv-list li {
     grid-template-columns: 1fr;
