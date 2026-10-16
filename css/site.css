@@ -84,6 +84,12 @@ img {
 .intro.blocked {
   cursor: pointer;
 }
+/* phones draw their own play button on a video they won't start */
+@media (hover: none) and (pointer: coarse) {
+  .intro.blocked::before {
+    content: none;
+  }
+}
 
 /* darkens the bottom of the reel, where the name and links sit in white */
 .intro::after {
@@ -124,11 +130,13 @@ html:has(.home) {
   height: calc(100svh + 100lvh);
 }
 
-/* on a touch screen, a swipe settles on the reel or on the works, never
-   half way between */
+/* on a touch screen, a swipe that ends near the reel or near the works
+   settles there; one that ends further off stays where it stopped. (Always
+   settling, "mandatory", made a short swipe stop and then jump the rest of
+   the way.) */
 @media (hover: none) and (pointer: coarse) {
   html:has(.intro) {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
   .home > .intro {
     scroll-snap-align: start;
