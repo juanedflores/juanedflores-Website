@@ -64,13 +64,13 @@ img {
 }
 
 /* below the reel's edge (js/intro.js, not on a phone), the colour at the
-   foot of the picture spills onto the page like light, in a waveform: the
-   more colour, the further down. It shows as far as the reel has scrolled
+   foot of the picture spills onto the page like light, in lumps: the more
+   colour, the further down. It shows as far as the reel has scrolled
    away (its opacity, set as it goes), and hangs off the reel, so the browser
    scrolls it with it; the page sits over it. Scrolled away entirely, the
    reel blurs, eased in and out rather than tied to the scroll. */
 .home {
-  --bleed: 50px;
+  --bleed: 44px; /* only a lump reaches the header's words (36px down) */
 }
 .home > .page {
   position: relative;
@@ -79,7 +79,9 @@ img {
 .home > .intro {
   overflow: visible;
 }
+/* the blur kept inside the reel's frame, not spilling over the page */
 .home .reel {
+  clip-path: inset(0);
   transition: filter 0.6s ease-out;
 }
 .home.away .reel {
