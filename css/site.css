@@ -63,6 +63,43 @@ img {
   object-fit: cover;
 }
 
+/* below the reel's edge (js/intro.js, not on a phone), the colour at the
+   foot of the picture spills onto the page like light, in a waveform: the
+   more colour, the further down. It shows as far as the reel has scrolled
+   away (its opacity, set as it goes), and hangs off the reel, so the browser
+   scrolls it with it; the page sits over it. Scrolled away entirely, the
+   reel blurs, eased in and out rather than tied to the scroll. */
+.home {
+  --bleed: 50px;
+}
+.home > .page {
+  position: relative;
+  z-index: 1;
+}
+.home > .intro {
+  overflow: visible;
+}
+.home .reel {
+  transition: filter 0.6s ease-out;
+}
+.home.away .reel {
+  filter: blur(28px);
+}
+.bleed {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: var(--bleed);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .reel {
+    transition: none;
+  }
+}
+
 /* when the phone won't play it on its own: say so; a touch on the reel
    starts it (js/intro.js) */
 .intro.blocked::before {
@@ -355,24 +392,38 @@ img {
   font-size: 0.82rem;
 }
 
+/* the foot of every page: a dark band the width of the window, its words in
+   the column above, and beside them a line from A to B, like the mark's */
 .site-footer {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 28px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 28px 32px 48px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
+  align-items: center;
+  gap: 8px 20px;
+  padding: 28px max(32px, calc((100% - 1200px) / 2 + 32px)) 48px;
+  background: var(--ink);
+  color: rgba(250, 250, 247, 0.55);
   font-family: var(--mono);
   font-size: 0.8rem;
 }
+.site-footer time {
+  color: var(--paper);
+}
 .site-footer a {
+  color: var(--paper);
   text-decoration: none;
 }
 .site-footer a:hover {
-  color: var(--ink);
   text-decoration: underline;
+}
+/* the line: a point at each end, and dots between */
+.site-footer::after {
+  content: '';
+  flex: 1 1 80px;
+  height: 7px;
+  background:
+    radial-gradient(circle closest-side, var(--paper) 65%, transparent) left center / 7px 7px no-repeat,
+    radial-gradient(circle closest-side, var(--paper) 65%, transparent) right center / 7px 7px no-repeat,
+    repeating-linear-gradient(90deg, rgba(250, 250, 247, 0.32) 0 1px, transparent 1px 5px) center / calc(100% - 16px) 1px no-repeat;
 }
 
 /* ---------- home: the works fit the window ---------- */

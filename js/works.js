@@ -333,7 +333,8 @@
     if (count < 2 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
     // only once the works are the page, not while the reel is up
-    if (document.querySelector('.intro')) return;
+    var reel = document.querySelector('.intro');
+    if (reel && reel.getBoundingClientRect().bottom > 1) return;
     // nor behind the index, which shows every work at once
     if (pages.classList.contains('away')) return;
     if (e.key === 'ArrowLeft') turn(null, -1);
