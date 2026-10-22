@@ -827,8 +827,14 @@ img {
   max-width: 760px;
   margin-bottom: 40px;
 }
+/* the title filled in dark with light words, like the work picked in the
+   index, the box just as wide as the words */
 .work-head h1 {
-  margin: 0 0 6px;
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 0.12em 0.4em 0.18em;
+  background: var(--ink);
+  color: var(--paper);
   font-weight: 600;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   line-height: 1.15;

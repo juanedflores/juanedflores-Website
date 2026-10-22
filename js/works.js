@@ -1,6 +1,7 @@
 // Home page: the bar above the works.
 // Index opens a list of every work by title over the left column of the grid;
-// pointing at one (or tabbing to it) previews it over the right column: its
+// clicking one (or tabbing to it) previews it over the right column, and
+// clicking it again, or the preview, opens it. The preview: its
 // picture, title, year and materials laid out like a thumbnail in the grid,
 // and the line about it from the list (data-blurb) below. It opens on the
 // work at the top right of the page, and the work previewed last stays there
@@ -9,8 +10,7 @@
 // the way it came and the works fading back in. The list and previews
 // are read off the works themselves, so a new work shows up here on its own.
 // On a phone the list takes the whole width and a tapped title opens its
-// preview right under it; with no pointer to hover, the first tap on a title
-// previews it and the second opens it.
+// preview right under it.
 // The page index on the right shows the works four at a time once there are
 // more than fit one screen, turned with its arrows or the ← and → keys; until
 // then it reads 1 / 1. On a touch screen a sideways swipe across the works
@@ -64,7 +64,8 @@
     '<p class="index-blurb"></p>' +
     '<span class="index-go">View work →</span>';
 
-  // a phone: the preview opens under its title; no hover: tap to preview
+  // a phone: the preview opens under its title; no hover: no closing on
+  // leaving the list
   var narrow = window.matchMedia('(max-width: 760px)');
   var touch = window.matchMedia('(hover: none)');
   function tapping() {
@@ -83,11 +84,13 @@
     year.textContent = work.year;
     a.appendChild(title);
     a.appendChild(year);
-    a.addEventListener('mouseenter', function () { if (!tapping()) show(i); });
-    a.addEventListener('focus', function () { if (!tapping()) show(i); });
+    // tabbed to, not clicked
+    a.addEventListener('focus', function () { if (!tapping() && a.matches(':focus-visible')) show(i); });
     a.addEventListener('click', function (e) {
-      // the first tap previews, the second goes to the work
-      if (tapping() && showing !== i) {
+      // the first click or tap previews, the second goes to the work; one
+      // into a new tab goes straight there
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (showing !== i) {
         e.preventDefault();
         show(i);
       }
