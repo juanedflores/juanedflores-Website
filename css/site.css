@@ -308,6 +308,10 @@ img {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+/* the ← arrow bent back on itself is the → one, mirrored */
+.page-turn[data-turn='-1'].round svg {
+  transform: scaleX(-1);
+}
 .page-turn:hover:not(:disabled) {
   color: var(--ink);
 }
@@ -430,6 +434,19 @@ img {
     clip-path: inset(0 0 0 0);
   }
 }
+/* and closing, the same wipe back (js/works.js hides it after) */
+.index-panel.closing {
+  animation: index-close 0.22s ease-in both;
+  pointer-events: none;
+}
+@keyframes index-close {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+  }
+}
 .index-list {
   margin: 0;
   padding: 0;
@@ -548,6 +565,7 @@ img {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .index-panel.closing,
   .index-preview.fresh *,
   .home .works li.arriving,
   .home .works.turn-next > li,
@@ -629,6 +647,23 @@ img {
   .home .work img {
     flex: none;
     aspect-ratio: 3 / 2;
+  }
+}
+
+/* a long title, there and back (js/titles.js), resting at each end */
+@keyframes title-slide {
+  0%,
+  15% {
+    transform: none;
+  }
+  85%,
+  100% {
+    transform: translateX(var(--shift));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .work-title.marquee .title-text {
+    animation: none;
   }
 }
 
@@ -874,16 +909,53 @@ img {
   height: auto;
   margin-bottom: 28px;
 }
-/* under the statement: the CV, and the mark at the far end of the line */
-.statement-end {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  margin-top: 8px;
+/* the guiding questions, one to a line */
+.questions {
+  margin: 0 0 0.5em;
+  padding: 0;
+  list-style: none;
 }
-.statement-end .about-links {
+/* a question that wraps hangs in under its first line */
+.questions li {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+.questions li + li {
+  margin-top: 0.5em;
+}
+/* a footnote to the statement, and its number in the text, kept with its
+   word */
+.fn-word {
+  white-space: nowrap;
+}
+.fn-ref {
+  text-decoration: none;
+}
+.fn-ref sup {
+  margin-left: 1px;
+  font-size: 0.7em;
+  line-height: 0;
+}
+.about .footnote {
   margin: 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+/* the mark, at the foot of the left column, sharing its cell */
+.about > section:first-child,
+.statement-end {
+  grid-column: 1;
+  grid-row: 1;
+}
+.about > section + section {
+  grid-column: 2;
+  grid-row: 1;
+}
+.statement-end {
+  align-self: end;
+  justify-self: start;
+  animation: about-in 0.6s ease-out 0.68s both;
 }
 .statement-end .mark {
   display: block;
@@ -1004,9 +1076,13 @@ body > .point-chip::after {
 .lang-toggle button[aria-pressed='true'] {
   text-decoration: underline;
 }
-/* the links under the portrait, under their own label */
+/* the links under the portrait, under their own label: the CV and email,
+   then elsewhere */
 .about h2 + .about-links {
   margin-top: 0;
+}
+.about .about-links + .about-links {
+  margin-top: 8px;
 }
 
 /* On a screen big enough, About is one window, like the works: the portrait
@@ -1041,10 +1117,22 @@ body > .point-chip::after {
   .about-page .about p {
     margin: 0 0 0.75em;
   }
+  .about-page .about .footnote {
+    margin-bottom: 0;
+  }
+  /* one question to a line here, so they can sit close */
+  .about-page .questions li + li {
+    margin-top: 0.1em;
+  }
+  /* the questions belong to the statement: closer under it */
+  .about-page .about p + .questions-head {
+    margin-top: 14px;
+  }
   .about-page .portrait + h2 {
     margin-top: 20px;
   }
-  .about-page h2 + .about-links {
+  .about-page h2 + .about-links,
+  .about-page .about-links + .about-links {
     column-gap: 18px;
   }
   /* the words shrink a little with a shorter window, so they still fit */
@@ -1257,6 +1345,13 @@ body > .point-chip::after {
   .about .portrait {
     margin-bottom: 0;
   }
+  /* on a phone, one after another, the mark after the statement */
+  .about > section:first-child,
+  .about > section + section,
+  .statement-end {
+    grid-column: auto;
+    grid-row: auto;
+  }
   .about .portrait + h2 {
     margin-top: 20px;
   }
@@ -1267,16 +1362,22 @@ body > .point-chip::after {
   :root {
     --reel-pad: 18px;
   }
+  /* on a phone the photos take all the room they can: little air around the
+     grid, and a slim footer */
   .home > .page {
-    padding-top: 24px;
-    padding-bottom: 20px;
+    padding-top: 14px;
+    padding-bottom: 12px;
   }
   .home .section-title {
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   .home .shelf {
     --gap-x: 14px;
-    --gap-y: 20px;
+    --gap-y: 14px;
+  }
+  .home .site-footer {
+    padding-top: 10px;
+    padding-bottom: 14px;
   }
   .home .works {
     gap: var(--gap-y) var(--gap-x);
@@ -1300,9 +1401,20 @@ body > .point-chip::after {
   .home .work img {
     margin-bottom: 8px;
   }
+  /* one line, so the photos line up and get the room; a title too long for
+     it slides along to show the rest (js/titles.js), or is cut short */
   .home .work-title {
-    min-height: 2.7em; /* two lines, so the photos line up */
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 0.95rem;
+  }
+  .home .work-title.marquee {
+    text-overflow: clip;
+  }
+  .home .work-title.marquee .title-text {
+    display: inline-block;
+    animation: title-slide var(--slide) ease-in-out 1s infinite alternate;
   }
   .home .work-meta {
     font-size: 0.75rem;

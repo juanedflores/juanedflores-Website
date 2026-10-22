@@ -71,9 +71,20 @@
           />
           <h2 data-tr="links">Links</h2>
           <ul class="about-links">
+            <li><a href="cv.html">CV</a></li>
+            <li>
+              <a
+                href="files/juan-eduardo-flores-cv.pdf"
+                download
+                aria-label="CV (PDF)"
+                >PDF</a
+              >
+            </li>
             <li>
               <a href="mailto:juanedflores@gmail.com" data-tr="email">Email</a>
             </li>
+          </ul>
+          <ul class="about-links">
             <li>
               <a href="https://www.instagram.com/juanedflores">Instagram</a>
             </li>
@@ -87,7 +98,9 @@
           <h2 data-tr="language">Language</h2>
           <div class="lang-toggle" role="group" aria-label="Language">
             <button type="button" lang="en" aria-pressed="true">English</button>
-            <button type="button" lang="es" aria-pressed="false">Español</button>
+            <button type="button" lang="es" aria-pressed="false">
+              Español
+            </button>
           </div>
         </section>
 
@@ -118,12 +131,13 @@
             <a href="https://voltaje.co/el-salon/"
               >Voltaje – Salón de Arte y Tecnología</a
             >
-            in Bogotá, Colombia; the
+            in Bogotá, Colombia;
             <a href="https://ccemx.aecid.es/">Centro Cultural de España</a>
-            in Mexico City; the
-            <a href="https://darmstaedtersezession.net/">Darmstädter Sezession</a>
+            in Mexico City;
+            <a href="https://darmstaedtersezession.net/"
+              >Darmstädter Sezession</a
+            >
             in Darmstadt, Germany; and
-            the
             <a
               href="https://www.hongmuseum.cn/the-plan-of-going-home-residency-program.html"
               >Hong Museum</a
@@ -139,46 +153,63 @@
           <h2 data-tr="statement">Artist statement</h2>
 
           <p data-tr="statement-1">
-            Working with motion and sound, I explore the tension between control
-            and entropy. My process begins with travel: the passage from
+            Working with motion and sound, I follow messages on their way from
             <span data-point="a">point A</span> to
-            <span data-point="b">point B</span>, what a message keeps along the
-            way, and what it leaves behind. The artifact, the record, and the
-            archive matter less to me than the systems that carry them. I
-            stress-test those systems, looking for unlikely ways to store,
-            process, and transform data, and listening for noise and decay.
-            Through the interplay of labor, automation, and the everyday, I ask
-            how little a message needs in order to be received and remembered,
-            how the barely perceivable can be louder than the amplified, and how
-            to fit something heavy into a light package. If information is
-            measured by surprise, I look for the moments where surprise and the
-            mundane combine into wonder.
+            <span data-point="b">point B</span>: what they keep along the way,
+            and what they leave behind. The artifact, the record, and the archive
+            matter less to me than the systems that carry them. I stress-test
+            those systems, looking for unlikely ways to store, process, and
+            transform signals, and listening for noise and decay.
           </p>
-
-          <!-- the CV, and under it the mark (A to B, by a winding road) -->
-          <div class="statement-end">
-            <ul class="about-links cv-links">
-              <li><a href="cv.html">CV</a></li>
-              <li>
-                <a href="files/juan-eduardo-flores-cv.pdf" download>CV (PDF)</a>
-              </li>
-            </ul>
-            <button
-              class="mark-toggle"
-              type="button"
-              aria-pressed="false"
-              aria-label="Send points from point A to point B"
+          <h2 class="questions-head" data-tr="questions">Guiding questions</h2>
+          <ul class="questions" data-tr="questions-list">
+            <li>
+              How little does a message need in order to be received and
+              remembered?
+            </li>
+            <li>
+              How can the barely perceptible be louder than the amplified?
+            </li>
+            <li>How do you fit something heavy into a light package?</li>
+            <li>
+              If information is measured by surprise, where do surprise and the
+              mundane combine into
+              <span class="fn-word"
+                >wonder?<a class="fn-ref" href="#fn-wonder"
+                  ><sup>1</sup></a
+                ></span
+              >
+            </li>
+          </ul>
+          <p class="footnote" id="fn-wonder">
+            1. Philip Fisher,
+            <a href="https://www.hup.harvard.edu/books/9780674955622"
+              ><cite
+                >Wonder, the Rainbow, and the Aesthetics of Rare
+                Experiences</cite
+              ></a
             >
-              <img
-                class="mark"
-                src="images/mark-ab.svg"
-                width="28"
-                height="28"
-                alt=""
-              />
-            </button>
-          </div>
+          </p>
         </section>
+
+        <!-- the mark (A to B, by a winding road), at the foot of the left
+             column; after the statement on a phone -->
+        <div class="statement-end">
+          <button
+            class="mark-toggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="Send points from point A to point B"
+          >
+            <img
+              class="mark"
+              src="images/mark-ab.svg"
+              width="28"
+              height="28"
+              alt=""
+            />
+          </button>
+        </div>
       </div>
 
       <!-- the same words in Spanish, each standing in for its [data-tr] -->
@@ -228,21 +259,34 @@
         </p>
         <h2 data-tr="statement">Declaración de artista</h2>
         <p data-tr="statement-1">
-          En mi trabajo con el movimiento y el sonido, exploro la tensión entre
-          el control y la entropía. Mi proceso comienza con el viaje: el
+          En mi trabajo con el movimiento y el sonido, sigo los mensajes en su
           trayecto del <span data-point="a">punto A</span> al
-          <span data-point="b">punto B</span>, lo que un mensaje conserva en el
-          camino y lo que deja atrás. El artefacto, el registro y el archivo me
-          importan menos que los sistemas que los transportan. Llevo esos
-          sistemas al límite, buscando formas improbables de almacenar,
-          procesar y transformar datos, y escuchando el ruido y la degradación.
-          A través de la interacción entre el trabajo, la automatización y lo
-          cotidiano, me pregunto qué tan poco necesita un mensaje para ser
-          recibido y recordado, cómo lo apenas perceptible puede sonar más
-          fuerte que lo amplificado y cómo meter algo pesado en un paquete
-          ligero. Si la información se mide por la sorpresa, busco los momentos
-          en que la sorpresa y lo ordinario se combinan hasta volverse asombro.
+          <span data-point="b">punto B</span>: lo que conservan en el camino y lo
+          que dejan atrás. El artefacto, el registro y el archivo me importan
+          menos que los sistemas que los transportan. Llevo esos sistemas al
+          límite, buscando formas improbables de almacenar, procesar y
+          transformar señales, y escuchando el ruido y la degradación.
         </p>
+        <h2 data-tr="questions">Preguntas guía</h2>
+        <ul data-tr="questions-list">
+          <li>
+            ¿Qué tan poco necesita un mensaje para ser recibido y recordado?
+          </li>
+          <li>
+            ¿Cómo puede lo apenas perceptible sonar más fuerte que lo
+            amplificado?
+          </li>
+          <li>¿Cómo meter algo pesado en un paquete ligero?</li>
+          <li>
+            Si la información se mide por la sorpresa, ¿dónde se combinan la
+            sorpresa y lo ordinario hasta volverse
+            <span class="fn-word"
+              >asombro?<a class="fn-ref" href="#fn-wonder"
+                ><sup>1</sup></a
+              ></span
+            >
+          </li>
+        </ul>
       </template>
       <script>
         // the page in English or Spanish; the choice is remembered
@@ -252,16 +296,20 @@
           var english = {};
           function show(lang) {
             // the points fly from the words on show: put them back first
-            var egg = document.querySelector('.mark-toggle[aria-pressed="true"]');
+            var egg = document.querySelector(
+              '.mark-toggle[aria-pressed="true"]',
+            );
             if (egg) egg.click();
-            document.querySelectorAll(".about [data-tr]").forEach(function (el) {
-              var key = el.dataset.tr;
-              if (!(key in english)) english[key] = el.innerHTML;
-              var es = spanish.querySelector('[data-tr="' + key + '"]');
-              el.innerHTML = lang === "es" ? es.innerHTML : english[key];
-              if (lang === "es") el.lang = "es";
-              else el.removeAttribute("lang");
-            });
+            document
+              .querySelectorAll(".about [data-tr]")
+              .forEach(function (el) {
+                var key = el.dataset.tr;
+                if (!(key in english)) english[key] = el.innerHTML;
+                var es = spanish.querySelector('[data-tr="' + key + '"]');
+                el.innerHTML = lang === "es" ? es.innerHTML : english[key];
+                if (lang === "es") el.lang = "es";
+                else el.removeAttribute("lang");
+              });
             buttons.forEach(function (b) {
               b.setAttribute("aria-pressed", b.lang === lang);
             });

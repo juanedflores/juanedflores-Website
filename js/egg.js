@@ -1,4 +1,4 @@
-// About page, an easter egg: the mark under the statement (two points, A and
+// About page, an easter egg: the mark (two points, A and
 // B, joined by a winding road) is a button. Pressed, "point A" and "point B"
 // lift out of the statement as points like the mark's, dots that can be
 // dragged anywhere, and once they're far enough

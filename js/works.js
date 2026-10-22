@@ -5,7 +5,8 @@
 // and the line about it from the list (data-blurb) below. It opens on the
 // work at the top right of the page, and the work previewed last stays there
 // when the index closes, the others fading back in around it. Index again,
-// Esc, or (with a mouse) leaving the list closes it. The list and previews
+// Esc, or (with a mouse) leaving the list closes it, the list wiping away
+// the way it came and the works fading back in. The list and previews
 // are read off the works themselves, so a new work shows up here on its own.
 // On a phone the list takes the whole width and a tapped title opens its
 // preview right under it; with no pointer to hover, the first tap on a title
@@ -13,7 +14,9 @@
 // The page index on the right shows the works four at a time once there are
 // more than fit one screen, turned with its arrows or the ← and → keys; until
 // then it reads 1 / 1. On a touch screen a sideways swipe across the works
-// turns the page too. While the index is open it steps aside, since the
+// turns the page too. The pages go round: on from the last is the first, and
+// back from the first is the last, and at either end the arrow that goes
+// round bends back on itself to say so. While the index is open it steps aside, since the
 // index already shows every work.
 
 (function () {
@@ -158,9 +161,10 @@
   }
 
   // back to the grid: the works the index covered fade back in, one after
-  // another; the one at the top right was showing all along
-  function reveal() {
-    var top = Math.min(items.length - 1, page * PER_PAGE + 1);
+  // another; the one at the top right was showing all along, unless on a
+  // phone the index covered it too
+  function reveal(all) {
+    var top = all ? -1 : Math.min(items.length - 1, page * PER_PAGE + 1);
     var n = 0;
     items.forEach(function (li, i) {
       if (li.hidden || i === top) return;
@@ -176,16 +180,46 @@
     });
   }
 
+  // open, and not on its way out
+  function isOpen() {
+    return !panel.hidden && !panel.classList.contains('closing');
+  }
+
+  // closing, the list wipes away the way it came in (see .closing in
+  // site.css), then is hidden
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var closing = null;
+  function shut() {
+    if (still.matches) {
+      panel.hidden = true;
+      return;
+    }
+    panel.classList.add('closing');
+    closing = setTimeout(function () {
+      closing = null;
+      panel.classList.remove('closing');
+      panel.hidden = true;
+    }, 220);
+  }
+
   function open(on) {
     clearTimeout(leaving); // a close still waiting from before doesn't count
     leaving = null;
+    var was = isOpen();
+    clearTimeout(closing);
+    closing = null;
+    panel.classList.remove('closing');
     toggle.setAttribute('aria-expanded', on ? 'true' : 'false');
-    panel.hidden = !on;
     pages.classList.toggle('away', on);
-    if (!on) {
+    if (on) panel.hidden = false;
+    else if (was) shut();
+    else panel.hidden = true;
+    if (!on && was) {
       if (showing >= 0 && !preview.classList.contains('inline')) {
         keep(showing);
         reveal();
+      } else if (narrow.matches) {
+        reveal(true);
       }
       preview.hidden = true;
       showing = -1;
@@ -196,9 +230,9 @@
   }
 
   toggle.addEventListener('click', function () {
-    open(panel.hidden);
+    open(!isOpen());
     // it opens on the work at the top right of the page, which it covers
-    if (!panel.hidden && !narrow.matches) {
+    if (isOpen() && !narrow.matches) {
       var there = items[Math.min(items.length - 1, page * PER_PAGE + 1)];
       show(works.findIndex(function (work) { return work.li === there; }), true);
     }
@@ -216,14 +250,14 @@
     return x >= list.left && x <= right && y >= top && y <= list.bottom;
   }
   function watch(x, y) {
-    if (tapping() || panel.hidden) return;
+    if (tapping() || !isOpen()) return;
     if (inside(x, y)) {
       clearTimeout(leaving);
       leaving = null;
     } else if (leaving === null) {
       leaving = setTimeout(function () {
         leaving = null;
-        if (!panel.hidden) open(false);
+        if (isOpen()) open(false);
       }, 250);
     }
   }
@@ -236,7 +270,7 @@
   });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !panel.hidden) {
+    if (e.key === 'Escape' && isOpen()) {
       open(false);
       toggle.focus();
     }
@@ -250,20 +284,36 @@
   var count = Math.max(1, Math.ceil(items.length / PER_PAGE));
   var page = 0;
 
-  function turn(to) {
+  // each arrow, straight, or bent back on itself where it goes round (drawn
+  // for →; the ← one is the same, mirrored in site.css)
+  var STRAIGHT = ['M17 6H1.5M6.5 1 1.5 6l5 5', 'M1 6h15.5M11.5 1l5 5-5 5'];
+  var ROUND = 'M1 1.5h12.5a3.5 3.5 0 0 1 0 7H2.5M5.5 5.5l-3 3 3 3';
+  var LABELS = [['Previous page', 'Last page'], ['Next page', 'First page']];
+  function arrows() {
+    Array.prototype.forEach.call(turns, function (button, side) {
+      var round = count > 1 && page === (side ? count - 1 : 0);
+      button.disabled = count < 2;
+      button.classList.toggle('round', round);
+      button.querySelector('path').setAttribute('d', round ? ROUND : STRAIGHT[side]);
+      button.setAttribute('aria-label', LABELS[side][round ? 1 : 0]);
+    });
+  }
+
+  // `by`: a step, forwards (1) or back (-1), going round at the ends;
+  // without it, straight to page `to`
+  function turn(to, by) {
     var from = page;
-    page = Math.max(0, Math.min(count - 1, to));
+    page = by ? (page + by + count) % count : Math.max(0, Math.min(count - 1, to));
     items.forEach(function (li, i) {
       li.hidden = Math.floor(i / PER_PAGE) !== page;
     });
     at.textContent = page + 1 + ' / ' + count;
-    turns[0].disabled = page === 0;
-    turns[1].disabled = page === count - 1;
+    arrows();
     // the new page slides in from the side it was turned towards
     if (page !== from) {
       list.classList.remove('turn-next', 'turn-prev');
       void list.offsetWidth; // so turning again straight away replays the slide
-      list.classList.add(page > from ? 'turn-next' : 'turn-prev');
+      list.classList.add((by || page - from) > 0 ? 'turn-next' : 'turn-prev');
       // then off again, so it can't stand in for the index's own fade-in
       clearTimeout(sliding);
       sliding = setTimeout(function () {
@@ -275,7 +325,7 @@
 
   Array.prototype.forEach.call(turns, function (button) {
     button.addEventListener('click', function () {
-      turn(page + +button.getAttribute('data-turn'));
+      turn(null, +button.getAttribute('data-turn'));
     });
   });
 
@@ -286,8 +336,8 @@
     if (document.querySelector('.intro')) return;
     // nor behind the index, which shows every work at once
     if (pages.classList.contains('away')) return;
-    if (e.key === 'ArrowLeft') turn(page - 1);
-    else if (e.key === 'ArrowRight') turn(page + 1);
+    if (e.key === 'ArrowLeft') turn(null, -1);
+    else if (e.key === 'ArrowRight') turn(null, 1);
   });
 
   // on a touch screen, a sideways swipe across the works turns the page:
@@ -309,7 +359,7 @@
     startX = null;
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
     swiped = Date.now();
-    turn(page + (dx < 0 ? 1 : -1));
+    turn(null, dx < 0 ? 1 : -1);
   }, { passive: true });
   // a swipe that began on a work turns the page; it doesn't open the work
   shelf.addEventListener('click', function (e) {
