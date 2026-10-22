@@ -505,23 +505,48 @@ img {
   padding: 0;
   list-style: none;
 }
+/* inset like the Index button's word, so the one being previewed can be
+   filled in the same way */
 .index-list .index-title {
+  position: relative;
+  z-index: 0;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px 0;
+  padding: 12px;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
   font-weight: 600;
   font-size: 1.1rem;
   line-height: 1.35;
   text-decoration: none;
+  transition: color 0.2s;
 }
 .index-list .index-title:hover,
-.index-list .index-title:focus-visible,
-.index-list .index-title.previewing {
+.index-list .index-title:focus-visible {
   color: var(--ink);
+}
+/* the one being previewed, dark like the pressed button: the fill grows in
+   from the left, the words turning light as it passes, and draws back the
+   way it came when another is picked */
+.index-list .index-title::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -1px;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease-in;
+}
+.index-list .index-title.previewing {
+  color: var(--paper);
+  transition: color 0.2s 0.06s;
+}
+.index-list .index-title.previewing::before {
+  transform: none;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .index-list .index-year {
   flex: none;
@@ -624,6 +649,10 @@ img {
   .home .works.turn-next > li,
   .home .works.turn-prev > li {
     animation: none;
+  }
+  .index-list .index-title,
+  .index-list .index-title::before {
+    transition: none;
   }
 }
 .index-go {
@@ -1439,7 +1468,6 @@ body > .point-chip::after {
     width: 100%;
   }
   .index-list .index-title {
-    padding: 12px 0;
     font-size: 1.05rem;
   }
   .index-list .index-title.previewing {
