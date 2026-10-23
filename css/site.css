@@ -521,11 +521,19 @@ img {
   font-size: 1.1rem;
   line-height: 1.35;
   text-decoration: none;
-  transition: color 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
 .index-list .index-title:hover,
 .index-list .index-title:focus-visible {
   color: var(--ink);
+}
+/* the one under the pointer, a light grey under the dark fill */
+@media (hover: hover) {
+  .index-list .index-title:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
 }
 /* the one being previewed, dark like the pressed button: the fill grows in
    from the left, the words turning light as it passes, and draws back the
