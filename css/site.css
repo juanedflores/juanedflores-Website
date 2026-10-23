@@ -997,20 +997,6 @@ img {
   height: auto;
   margin-bottom: 28px;
 }
-/* the guiding questions, one to a line */
-.questions {
-  margin: 0 0 0.5em;
-  padding: 0;
-  list-style: none;
-}
-/* a question that wraps hangs in under its first line */
-.questions li {
-  padding-left: 1em;
-  text-indent: -1em;
-}
-.questions li + li {
-  margin-top: 0.5em;
-}
 /* a footnote to the statement, and its number in the text, kept with its
    word */
 .fn-word {
@@ -1030,20 +1016,9 @@ img {
   font-family: var(--mono);
   font-size: 0.8rem;
 }
-/* the mark, at the foot of the left column, sharing its cell */
-.about > section:first-child,
+/* the mark, at the end of the statement and its notes */
 .statement-end {
-  grid-column: 1;
-  grid-row: 1;
-}
-.about > section + section {
-  grid-column: 2;
-  grid-row: 1;
-}
-.statement-end {
-  align-self: end;
-  justify-self: start;
-  animation: about-in 0.6s ease-out 0.68s both;
+  margin-top: 20px;
 }
 .statement-end .mark {
   display: block;
@@ -1135,7 +1110,7 @@ body > .point-chip::after {
   height: 100%;
   pointer-events: none;
 }
-/* the statement after the bio */
+/* the CV and the statement after the bio */
 .about p + h2 {
   margin-top: 36px;
 }
@@ -1164,13 +1139,9 @@ body > .point-chip::after {
 .lang-toggle button[aria-pressed='true'] {
   text-decoration: underline;
 }
-/* the links under the portrait, under their own label: the CV and email,
-   then elsewhere */
+/* the links under the portrait, under their own label */
 .about h2 + .about-links {
   margin-top: 0;
-}
-.about .about-links + .about-links {
-  margin-top: 8px;
 }
 
 /* On a screen big enough, About is one window, like the works: the portrait
@@ -1208,19 +1179,10 @@ body > .point-chip::after {
   .about-page .about .footnote {
     margin-bottom: 0;
   }
-  /* one question to a line here, so they can sit close */
-  .about-page .questions li + li {
-    margin-top: 0.1em;
-  }
-  /* the questions belong to the statement: closer under it */
-  .about-page .about p + .questions-head {
-    margin-top: 14px;
-  }
   .about-page .portrait + h2 {
     margin-top: 20px;
   }
-  .about-page h2 + .about-links,
-  .about-page .about-links + .about-links {
+  .about-page h2 + .about-links {
     column-gap: 18px;
   }
   /* the words shrink a little with a shorter window, so they still fit */
@@ -1432,13 +1394,6 @@ body > .point-chip::after {
   }
   .about .portrait {
     margin-bottom: 0;
-  }
-  /* on a phone, one after another, the mark after the statement */
-  .about > section:first-child,
-  .about > section + section,
-  .statement-end {
-    grid-column: auto;
-    grid-row: auto;
   }
   .about .portrait + h2 {
     margin-top: 20px;
